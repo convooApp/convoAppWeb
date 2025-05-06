@@ -1,0 +1,521 @@
+/* Reset and Base Styles */
+html {
+    scroll-behavior: smooth;
+  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #FFFFFF;
+    line-height: 1.6;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Container */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  header {
+    background-color: #1E1E1E;
+    padding: 1rem 0;
+    border-bottom: 1px solid #7A4F69;
+  }
+  
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #B83280;
+  }
+  
+  .download-btn-wrapper .btn {
+    background-color: #B83280;
+    color: #FFFFFF;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+  }
+  
+  /* Hero Section */
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #121212, #1E1E1E);
+    padding: 2rem 0;
+  }
+  
+  .hero-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .hero-content {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+  }
+  
+  .hero-content p {
+    margin-bottom: 2rem;
+    color: #AAAAAA;
+  }
+  
+  .hero-content .btn {
+    padding: 0.8rem 1.4rem;
+    background-color: #B83280;
+    color: #FFFFFF;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+  }
+  
+  .btn-secondary {
+    background-color: #6B4B5A;
+    color: #FFFFFF;
+  }
+  
+  .hero-image {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+  }
+  
+  .hero-image img {
+    max-width: 100%;
+    border-radius: 1rem;
+  }
+  
+  /* How It Works */
+  .how-it-works {
+    padding: 4rem 0;
+    background-color: #1E1E1E;
+  }
+  
+  .section-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .section-heading h2 {
+    font-size: 2rem;
+    color: #FFFFFF;
+  }
+  
+  .section-heading p {
+    color: #AAAAAA;
+  }
+  
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-around;
+  }
+  
+  .step {
+    flex: 1;
+    min-width: 250px;
+    background-color: #23242A;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #7A4F69;
+    text-align: center;
+  }
+
+  .step h3 {
+    font-size: 1.5rem;
+    color: #B83280;
+    margin-bottom: 1rem;
+  }
+  
+  .step-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B83280;
+    margin-bottom: 1rem;
+  }
+  
+  /* Download Section */
+  .download {
+    padding: 4rem 0;
+    text-align: center;
+    background-color: #1E1E1E;
+  }
+  
+  .download h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+  }
+  
+  .download p {
+    color: #AAAAAA;
+    margin-bottom: 2rem;
+  }
+  
+  .app-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .app-button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    background-color: #B83280;
+    color: #FFFFFF;
+    border-radius: 0.5rem;
+    transition: background 0.3s;
+  }
+  
+  .app-button:hover {
+    background-color: #a02770;
+  }
+  
+  .app-button svg {
+    flex-shrink: 0;
+    color: #FFFFFF;
+  }
+  
+  .app-button div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .app-button small {
+    font-size: 0.75rem;
+    color: #BBBBBB;
+  }
+  
+  .app-button strong {
+    font-size: 1rem;
+    color: #FFFFFF;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .hero {
+      text-align: center;
+    }
+  
+    .hero-flex {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+  
+    .hero-content p {
+      font-size: 1rem;
+    }
+  
+    .hero-content .btn {
+      display: block;
+      margin: 0.5rem auto;
+    }
+  
+    .steps {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .step {
+      max-width: 90%;
+    }
+  
+    .header-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 1.6rem;
+    }
+  
+    .hero-content p {
+      font-size: 0.95rem;
+    }
+  
+    .download h2 {
+      font-size: 1.6rem;
+    }
+  
+    .app-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  /* Dating Problems Section */
+.dating-problems {
+    padding: 6rem 0;
+    background-color: #1E1E1E;
+  }
+  
+  .dating-problems .section-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .dating-problems .section-heading h2 {
+    font-size: 2rem;
+    color: #FFFFFF;
+  }
+  
+  .dating-problems .section-heading p {
+    color: #AAAAAA;
+  }
+  
+  .dating-problems .problems-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+  
+  .dating-problems .problem {
+    flex: 1;
+    min-width: 280px;
+    background-color: #23242A;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #7A4F69;
+    text-align: center;
+  }
+  
+  .dating-problems .problem h3 {
+    font-size: 1.6rem;
+    color: #B83280;
+    margin-bottom: 1rem;
+  }
+  
+  .dating-problems .problem p {
+    color: #AAAAAA;
+  }
+  
+  .dating-problems .solution {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  
+  .dating-problems .solution h3 {
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dating-problems .solution p {
+    color: #AAAAAA;
+    margin-bottom: 2rem;
+  }/* Section Divider */
+.section-divider {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #B83280, #7A4F69, #B83280);
+  margin: 4rem 0;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 6rem 0;
+  padding-bottom: 4rem;
+  background-color: #1E1E1E;
+  border-top: 3px solid #B83280; /* Adds a distinguishing top border */
+}
+
+.how-it-works .section-heading {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.how-it-works .section-heading h2 {
+  font-size: 2rem;
+  color: #FFFFFF;
+}
+
+.how-it-works .section-heading p {
+  color: #AAAAAA;
+}
+
+.how-it-works .steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.how-it-works .step {
+  flex: 1;
+  min-width: 250px;
+  background-color: #23242A;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #7A4F69;
+  text-align: center;
+}
+
+.how-it-works .step h3 {
+  font-size: 1.5rem;
+  color: #B83280;
+  margin-bottom: 1rem;
+}
+
+/* Dating Problems Section */
+.dating-problems {
+  padding: 6rem 0;
+  background-color: #23242A;
+}
+
+.dating-problems .section-heading {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dating-problems .section-heading h2 {
+  font-size: 2rem;
+  color: #FFFFFF;
+}
+
+.dating-problems .section-heading p {
+  color: #AAAAAA;
+}
+
+.dating-problems .problems-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.dating-problems .problem {
+  flex: 1;
+  min-width: 280px;
+  background-color: #23242A;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #7A4F69;
+  text-align: center;
+}
+
+.dating-problems .problem h3 {
+  font-size: 1.6rem;
+  color: #B83280;
+  margin-bottom: 1rem;
+}
+
+.dating-problems .problem p {
+  color: #AAAAAA;
+}
+
+.dating-problems .solution {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.dating-problems .solution h3 {
+  font-size: 1.8rem;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+}
+
+.dating-problems .solution p {
+  color: #AAAAAA;
+  margin-bottom: 2rem;
+}
+
+.dating-problems .solution .btn {
+  padding: 0.8rem 1.4rem;
+  background-color: #B83280;
+  color: #FFFFFF;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.dating-problems .solution .btn:hover {
+  background-color: #a02770;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hero-flex {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .problems-content {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+  
+  .dating-problems .solution .btn {
+    padding: 0.8rem 1.4rem;
+    background-color: #B83280;
+    color: #FFFFFF;
+    border-radius: 0.5rem;
+    text-decoration: none;
+  }
+  
+  .dating-problems .solution .btn:hover {
+    background-color: #a02770;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .dating-problems .problems-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .dating-problems .problem {
+      max-width: 90%;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  
+  
