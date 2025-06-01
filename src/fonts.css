@@ -1,0 +1,54 @@
+/* Custom Font Definitions */
+
+/* Poppins - Extra Light */
+@font-face {
+  font-family: 'Poppins-ExtraLight';
+  src: url('assets/fonts/Poppins/Poppins-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Poppins - Light */
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('assets/fonts/Poppins/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Poppins - Regular */
+@font-face {
+  font-family: 'Poppins-Regular';
+  src: url('assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Nunito - Regular */
+@font-face {
+  font-family: 'Nunito-Regular';
+  src: url('assets/fonts/Nunito/Nunito-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter - Regular */
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('assets/fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nunito-SemiBold';
+  src: url('assets/fonts/Nunito/static/Nunito-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

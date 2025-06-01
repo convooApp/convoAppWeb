@@ -1,521 +1,552 @@
 /* Reset and Base Styles */
-html {
-    scroll-behavior: smooth;
-  }
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121212;
-    color: #FFFFFF;
-    line-height: 1.6;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  /* Container */
-  .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Header */
-  header {
-    background-color: #1E1E1E;
-    padding: 1rem 0;
-    border-bottom: 1px solid #7A4F69;
-  }
-  
-  .header-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #B83280;
-  }
-  
-  .download-btn-wrapper .btn {
-    background-color: #B83280;
-    color: #FFFFFF;
-    padding: 0.6rem 1.2rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-  }
-  
-  /* Hero Section */
-  .hero {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    background: linear-gradient(135deg, #121212, #1E1E1E);
-    padding: 2rem 0;
-  }
-  
-  .hero-flex {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .hero-content {
-    flex: 1;
-    min-width: 280px;
-  }
-  
-  .hero-content h1 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-    color: #FFFFFF;
-  }
-  
-  .hero-content p {
-    margin-bottom: 2rem;
-    color: #AAAAAA;
-  }
-  
-  .hero-content .btn {
-    padding: 0.8rem 1.4rem;
-    background-color: #B83280;
-    color: #FFFFFF;
-    border-radius: 0.5rem;
-    margin-right: 1rem;
-  }
-  
-  .btn-secondary {
-    background-color: #6B4B5A;
-    color: #FFFFFF;
-  }
-  
-  .hero-image {
-    flex: 1;
-    min-width: 280px;
-    text-align: center;
-  }
-  
-  .hero-image img {
-    max-width: 100%;
-    border-radius: 1rem;
-  }
-  
-  /* How It Works */
-  .how-it-works {
-    padding: 4rem 0;
-    background-color: #1E1E1E;
-  }
-  
-  .section-heading {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  
-  .section-heading h2 {
-    font-size: 2rem;
-    color: #FFFFFF;
-  }
-  
-  .section-heading p {
-    color: #AAAAAA;
-  }
-  
-  .steps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-around;
-  }
-  
-  .step {
-    flex: 1;
-    min-width: 250px;
-    background-color: #23242A;
-    padding: 2rem;
-    border-radius: 1rem;
-    border: 1px solid #7A4F69;
-    text-align: center;
-  }
-
-  .step h3 {
-    font-size: 1.5rem;
-    color: #B83280;
-    margin-bottom: 1rem;
-  }
-  
-  .step-number {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #B83280;
-    margin-bottom: 1rem;
-  }
-  
-  /* Download Section */
-  .download {
-    padding: 4rem 0;
-    text-align: center;
-    background-color: #1E1E1E;
-  }
-  
-  .download h2 {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    color: #FFFFFF;
-  }
-  
-  .download p {
-    color: #AAAAAA;
-    margin-bottom: 2rem;
-  }
-  
-  .app-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .app-button {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.2rem;
-    background-color: #B83280;
-    color: #FFFFFF;
-    border-radius: 0.5rem;
-    transition: background 0.3s;
-  }
-  
-  .app-button:hover {
-    background-color: #a02770;
-  }
-  
-  .app-button svg {
-    flex-shrink: 0;
-    color: #FFFFFF;
-  }
-  
-  .app-button div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .app-button small {
-    font-size: 0.75rem;
-    color: #BBBBBB;
-  }
-  
-  .app-button strong {
-    font-size: 1rem;
-    color: #FFFFFF;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .hero {
-      text-align: center;
-    }
-  
-    .hero-flex {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    .hero-content h1 {
-      font-size: 2rem;
-    }
-  
-    .hero-content p {
-      font-size: 1rem;
-    }
-  
-    .hero-content .btn {
-      display: block;
-      margin: 0.5rem auto;
-    }
-  
-    .steps {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .step {
-      max-width: 90%;
-    }
-  
-    .header-inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .hero-content h1 {
-      font-size: 1.6rem;
-    }
-  
-    .hero-content p {
-      font-size: 0.95rem;
-    }
-  
-    .download h2 {
-      font-size: 1.6rem;
-    }
-  
-    .app-button {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-  
-  /* Dating Problems Section */
-.dating-problems {
-    padding: 4rem 0;
-    background-color: #1E1E1E;
-  }
-  
-  .dating-problems .section-heading {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  
-  .dating-problems .section-heading h2 {
-    font-size: 2rem;
-    color: #FFFFFF;
-  }
-  
-  .dating-problems .section-heading p {
-    color: #AAAAAA;
-  }
-  
-  .dating-problems .problems-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-between;
-  }
-  
-  .dating-problems .problem {
-    flex: 1;
-    min-width: 280px;
-    background-color: #23242A;
-    padding: 2rem;
-    border-radius: 1rem;
-    border: 1px solid #7A4F69;
-    text-align: center;
-  }
-  
-  .dating-problems .problem h3 {
-    font-size: 1.6rem;
-    color: #B83280;
-    margin-bottom: 1rem;
-  }
-  
-  .dating-problems .problem p {
-    color: #AAAAAA;
-  }
-  
-  .dating-problems .solution {
-    margin-top: 3rem;
-    text-align: center;
-  }
-  
-  .dating-problems .solution h3 {
-    font-size: 1.8rem;
-    color: #FFFFFF;
-    margin-bottom: 1.5rem;
-  }
-  
-  .dating-problems .solution p {
-    color: #AAAAAA;
-    margin-bottom: 2rem;
-  }/* Section Divider */
-.section-divider {
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to right, #B83280, #7A4F69, #B83280);
-  margin: 4rem 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* How It Works Section */
-.how-it-works {
-  padding: 6rem 0;
-  padding-bottom: 4rem;
-  background-color: #1E1E1E;
-  /*border-top: 3px solid #B83280;*/ /* Adds a distinguishing top border */
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  height: 100%;
 }
 
-.how-it-works .section-heading {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.how-it-works .section-heading h2 {
-  font-size: 2rem;
+body {
+  font-family: 'Poppins', 'Nunito', 'Inter', sans-serif;
+  background-color: #121212;
   color: #FFFFFF;
+  line-height: 1.6;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  perspective: 1px; /* For parallax effect */
 }
 
-.how-it-works .section-heading p {
-  color: #AAAAAA;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.how-it-works .steps {
+/* Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-5px) translateX(-50%);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Section Styles */
+.section {
+  height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform, opacity;
 }
 
-.how-it-works .step {
-  flex: 1;
-  min-width: 250px;
-  background-color: #23242A;
-  padding: 2rem;
-  border-radius: 1rem;
-  border: 1px solid #7A4F69;
-  text-align: center;
+.section.active-section {
+  z-index: 2;
 }
 
-.how-it-works .step h3 {
-  font-size: 1.5rem;
-  color: #B83280;
-  margin-bottom: 1rem;
+.section:not(.active-section) {
+  opacity: 0.8;
 }
 
-/* Dating Problems Section */
-.dating-problems {
-  padding: 6rem 0;
-  background-color: #23242A;
-}
-
-.dating-problems .section-heading {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.dating-problems .section-heading h2 {
-  font-size: 2rem;
-  color: #FFFFFF;
-}
-
-.dating-problems .section-heading p {
-  color: #AAAAAA;
-}
-
-.dating-problems .problems-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-between;
-}
-
-.dating-problems .problem {
-  flex: 1;
-  min-width: 280px;
-  background-color: #23242A;
-  padding: 2rem;
-  border-radius: 1rem;
-  border: 1px solid #7A4F69;
-  text-align: center;
-}
-
-.dating-problems .problem h3 {
-  font-size: 1.6rem;
-  color: #B83280;
-  margin-bottom: 1rem;
-}
-
-.dating-problems .problem p {
-  color: #AAAAAA;
-}
-
-.dating-problems .solution {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.dating-problems .solution h3 {
-  font-size: 1.8rem;
-  color: #FFFFFF;
-  margin-bottom: 1.5rem;
-}
-
-.dating-problems .solution p {
-  color: #AAAAAA;
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
   margin-bottom: 2rem;
+  text-align: center;
+  color: #FFFFFF;
+  animation: fadeIn 1s ease-out;
 }
 
-.dating-problems .solution .btn {
-  padding: 0.8rem 1.4rem;
+/* Section 1: Intro */
+#intro {
+  background-color: #121212;
+  text-align: center;
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+  animation: scaleIn 1.2s ease-out;
+}
+
+.logo-img {
+  max-width: 200px;
+  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #B83280;
+  margin: 0;
+  background: linear-gradient(45deg, #B83280, #d65db1, #B83280);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease infinite;
+}
+
+.tagline {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  margin-bottom: 3rem;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-indicator:hover {
+  opacity: 0.7;
+}
+
+.scroll-indicator span {
+  margin-bottom: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Navigation Dots */
+.section-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.section-dot.active {
+  background-color: #B83280;
+  transform: scale(1.2);
+}
+
+.section-dot:hover {
+  background-color: rgba(184, 50, 128, 0.7);
+}
+
+/* Section 2: Features */
+#features {
+  background-color: #121212;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.feature-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.2s);
+}
+
+.feature-card:nth-child(1) {
+  --card-index: 1;
+}
+
+.feature-card:nth-child(2) {
+  --card-index: 2;
+}
+
+.feature-card:nth-child(3) {
+  --card-index: 3;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(184, 50, 128, 0.2);
+}
+
+.feature-icon {
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+.feature-card h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #B83280;
+  transition: color 0.3s ease;
+}
+
+.feature-card:hover h3 {
+  color: #d65db1;
+}
+
+.feature-card p {
+  font-family: 'Nunito', sans-serif;
+  color: #FFFFFF;
+}
+
+/* Section 3: How It Works */
+#how-it-works {
+  background-color: #121212;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: calc(var(--step-index, 0) * 0.3s);
+}
+
+.step:nth-child(1) {
+  --step-index: 1;
+  animation: slideInLeft 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.step:nth-child(2) {
+  --step-index: 2;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.step:nth-child(3) {
+  --step-index: 3;
+  animation: slideInRight 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.step:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(184, 50, 128, 0.2);
+}
+
+.step-number {
   background-color: #B83280;
   color: #FFFFFF;
-  border-radius: 0.5rem;
-  text-decoration: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.dating-problems .solution .btn:hover {
-  background-color: #a02770;
+.step:hover .step-number {
+  transform: scale(1.1);
+  background-color: #d65db1;
+}
+
+.step h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #FFFFFF;
+  transition: color 0.3s ease;
+}
+
+.step:hover h3 {
+  color: #B83280;
+}
+
+.step p {
+  font-family: 'Nunito', sans-serif;
+  color: #FFFFFF;
+}
+
+/* Section 4: Download */
+#download {
+  background-color: #121212;
+  text-align: center;
+}
+
+.download-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  color: #FFFFFF;
+  animation: fadeIn 1s ease-out;
+}
+
+.app-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.app-button {
+  display: flex;
+  align-items: center;
+  background-color: #B83280;
+  color: #FFFFFF;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: scaleIn 0.8s ease-out;
+  animation-delay: calc(var(--button-index, 0) * 0.2s);
+}
+
+.app-button:nth-child(1) {
+  --button-index: 1;
+}
+
+.app-button:nth-child(2) {
+  --button-index: 2;
+}
+
+.app-button:hover {
+  background-color: #d65db1;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(184, 50, 128, 0.3);
+}
+
+.app-button svg {
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.app-button:hover svg {
+  transform: scale(1.1);
+}
+
+.app-button div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.app-button small {
+  font-size: 0.7rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.app-button strong {
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Intersection Observer Animation Classes */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(to right, #B83280, #d65db1);
+  z-index: 1000;
+  transition: width 0.1s ease;
+}
+
+/* Smooth Scroll Transition Effects */
+.scroll-transition {
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1.000);
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .hero-flex {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .section {
+    padding: 4rem 0;
   }
-
+  
   .steps {
     flex-direction: column;
-    align-items: center;
+  }
+  
+  .step {
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo-text {
+    font-size: 3rem;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
   }
 
-  .problems-content {
-    flex-direction: column;
-    align-items: center;
+  .section-nav {
+    right: 1rem;
   }
 }
 
-  
-  .dating-problems .solution .btn {
-    padding: 0.8rem 1.4rem;
-    background-color: #B83280;
-    color: #FFFFFF;
-    border-radius: 0.5rem;
-    text-decoration: none;
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 2.5rem;
   }
   
-  .dating-problems .solution .btn:hover {
-    background-color: #a02770;
+  .tagline {
+    font-size: 1rem;
   }
   
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .dating-problems .problems-content {
-      flex-direction: column;
-      align-items: center;
-    }
+  .section-title {
+    font-size: 1.8rem;
+  }
   
-    .dating-problems .problem {
-      max-width: 90%;
-      margin-bottom: 1.5rem;
-    }
+  .app-buttons {
+    flex-direction: column;
+    align-items: center;
   }
 
-  
-  
+  .section-nav {
+    display: none;
+  }
+}

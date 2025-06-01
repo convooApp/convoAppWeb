@@ -1,0 +1,28 @@
+@import '@fontsource/poppins';
+@import '@fontsource/nunito';
+@import '@fontsource/inter';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
