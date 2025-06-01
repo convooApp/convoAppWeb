@@ -146,28 +146,28 @@ function App() {
             </span>
           </h1>
           <p className="font-inter-regular text-2xl text-[#aaaaaa] max-w-lg mx-auto mb-8">
-            Dating that begins with conversation.
+            Its not a Dating App, Its a Connection App.
           </p>
-          <div className="space-x-16 mt-12">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-8 sm:mt-12">
             <button
               onClick={() => setShowWaitlist(true)}
-              className={`${styles.button} ${styles.primaryButton}`}
+              className={`${styles.button} ${styles.primaryButton} w-full max-w-[200px] sm:w-auto`}
             >
               Join Waitlist
             </button>
             <button
               onClick={() => scrollToSection('how-it-works')}
-              className={`${styles.button} ${styles.secondaryButton}`}
+              className={`${styles.button} ${styles.secondaryButton} w-full max-w-[200px] sm:w-auto`}
             >
               Learn More
             </button>
           </div>
+          <div className={styles.scrollDown} onClick={() => scrollToSection('how-it-works')}>
+            <span>Scroll Down</span>
+            <ChevronDown size={24} />
+          </div>
         </div>
         
-        <div className={styles.scrollDown} onClick={() => scrollToSection('how-it-works')}>
-          <span>Scroll Down</span>
-          <ChevronDown size={24} />
-        </div>
       </section>
 
       <section 
