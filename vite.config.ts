@@ -1,18 +1,31 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  // Use empty string for GitHub Pages to resolve paths correctly
+  // For GitHub Pages deployment
   base: '',
   build: {
-    // Generate assets with hashed filenames for better caching
-    assetsDir: 'assets',
-    // Ensure index.html is at the root
-    outDir: 'dist',
+    // Ensure CSS and other assets use relative paths
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        // Ensure assets use relative paths
+        assetFileNames: (assetInfo) => {
+          // Keep the original path for font files
+          if (assetInfo.name && /\.(woff2?|ttf|otf|eot)$/.test(assetInfo.name)) {
+            return 'assets/fonts/[name][extname]';
+          }
+          return 'assets/[name].[hash][extname]';
+        },
+        chunkFileNames: 'assets/[name].[hash].js',
+        entryFileNames: 'assets/[name].[hash].js',
+      }
+    }
   }
 });
