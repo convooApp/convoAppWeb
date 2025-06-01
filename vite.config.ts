@@ -7,5 +7,12 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: './', // Use relative paths instead of absolute
+  // Use empty string for GitHub Pages to resolve paths correctly
+  base: '',
+  build: {
+    // Generate assets with hashed filenames for better caching
+    assetsDir: 'assets',
+    // Ensure index.html is at the root
+    outDir: 'dist',
+  }
 });
