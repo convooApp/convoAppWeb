@@ -7,5 +7,5 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/convo-dating-app/', // Set base path for GitHub Pages deployment
+  base: './', // Use relative paths instead of absolute
 });
