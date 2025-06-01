@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from './common/Button';
-import { Check, Instagram, Twitter } from 'lucide-react';
+import { Check, Instagram, Twitter, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface WaitlistFormProps {
@@ -56,14 +56,17 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
         
       if (supabaseError) {
         console.error('Error submitting to waitlist:', supabaseError);
-        setError('Something went wrong. Please try again.');
+        if (supabaseError.code === '23505') {
+          setError('You are already on the waitlist.');
+        } else {
+          setError('Something went wrong. Please try again.');
+        }
         setIsSubmitting(false);
         return;
       }
       
       setSubmitted(true);
     } catch (err) {
-      console.error('Error:', err);
       setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -72,43 +75,59 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
   
   if (submitted) {
     return (
-      <div className="text-center py-8">
-        <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
-          <Check className="h-8 w-8 text-green-500" />
+      <div className="relative bg-white rounded-xl shadow-lg max-w-md w-full p-6 md:p-8">
+        <button 
+          onClick={onClose} 
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+          aria-label="Close"
+        >
+          <X size={24} />
+        </button>
+        <div className="text-center py-8">
+          <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+            <Check className="h-8 w-8 text-green-500" />
+          </div>
+          <h3 className="text-2xl font-bold mb-4">You're on the list! 💘</h3>
+          <p className="text-gray-600 mb-6">
+            We'll let you know the moment sparks are ready to fly.
+            <br />
+            In the meantime, follow us for sneak peeks.
+          </p>
+          
+          <div className="flex justify-center space-x-6 mb-6">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+               className="text-pink-600 hover:text-pink-700 transition-colors">
+              <Instagram size={28} />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+               className="text-pink-600 hover:text-pink-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.321 5.562a5.124 5.124 0 0 1-3.035-2.49 5.124 5.124 0 0 1-.32-1.009h-3.48v11.99c0 .86-.398 1.625-1.02 2.128a2.916 2.916 0 0 1-1.98.686c-1.62 0-2.93-1.322-2.93-2.95 0-1.63 1.31-2.95 2.93-2.95.323 0 .636.053.93.152v-3.563a6.492 6.492 0 0 0-.93-.067c-3.58 0-6.48 2.95-6.48 6.587 0 3.638 2.9 6.587 6.48 6.587 3.58 0 6.48-2.95 6.48-6.587V8.45a8.74 8.74 0 0 0 4.956 1.54v-3.473a5.116 5.116 0 0 1-1.6-.955Z"/>
+              </svg>
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+               className="text-pink-600 hover:text-pink-700 transition-colors">
+              <Twitter size={28} />
+            </a>
+          </div>
+          
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
         </div>
-        <h3 className="text-2xl font-bold mb-4">You're on the list! 💘</h3>
-        <p className="text-gray-600 mb-6">
-          We'll let you know the moment sparks are ready to fly.
-          <br />
-          In the meantime, follow us for sneak peeks.
-        </p>
-        
-        <div className="flex justify-center space-x-6 mb-6">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
-             className="text-pink-600 hover:text-pink-700 transition-colors">
-            <Instagram size={28} />
-          </a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
-             className="text-pink-600 hover:text-pink-700 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19.321 5.562a5.124 5.124 0 0 1-3.035-2.49 5.124 5.124 0 0 1-.32-1.009h-3.48v11.99c0 .86-.398 1.625-1.02 2.128a2.916 2.916 0 0 1-1.98.686c-1.62 0-2.93-1.322-2.93-2.95 0-1.63 1.31-2.95 2.93-2.95.323 0 .636.053.93.152v-3.563a6.492 6.492 0 0 0-.93-.067c-3.58 0-6.48 2.95-6.48 6.587 0 3.638 2.9 6.587 6.48 6.587 3.58 0 6.48-2.95 6.48-6.587V8.45a8.74 8.74 0 0 0 4.956 1.54v-3.473a5.116 5.116 0 0 1-1.6-.955Z"/>
-            </svg>
-          </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-             className="text-pink-600 hover:text-pink-700 transition-colors">
-            <Twitter size={28} />
-          </a>
-        </div>
-        
-        <Button variant="outline" onClick={onClose}>
-          Close
-        </Button>
       </div>
     );
   }
   
   return (
-    <div>
+    <div className="relative bg-white rounded-xl shadow-lg max-w-md w-full p-6 md:p-8">
+      <button 
+        onClick={onClose} 
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+        aria-label="Close"
+      >
+        <X size={24} />
+      </button>
       <h3 className="text-2xl font-bold mb-2">Join the Waitlist</h3>
       <p className="text-gray-600 mb-6">
         Be among the first to experience meaningful connections through conversation.
@@ -151,7 +170,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
         <div className="mb-6">
           <label htmlFor="location" className="block text-gray-700 mb-2">
             <span className="flex items-center">
-              <span>📍 City or Zipcode</span>
+              <span>City or Zipcode</span>
               <span className="text-pink-600 ml-1">*</span>
             </span>
           </label>

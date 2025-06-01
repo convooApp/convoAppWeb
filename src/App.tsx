@@ -9,9 +9,6 @@ function App() {
   const howItWorksHeadingRef = useRef(null);
   const howItWorksContentRef = useRef(null);
   const teaserBoxRef = useRef(null);
-  const whyConvooHeadingRef = useRef(null);
-  const whyConvooContentRef = useRef(null);
-  const whyConvooTaglineRef = useRef(null);
   const joinSectionRef = useRef(null);
   const joinHeadingRef = useRef(null);
   const joinContentRef = useRef(null);
@@ -71,18 +68,6 @@ function App() {
 
     if (teaserBoxRef.current) {
       contentObserver.observe(teaserBoxRef.current);
-    }
-
-    if (whyConvooHeadingRef.current) {
-      contentObserver.observe(whyConvooHeadingRef.current);
-    }
-
-    if (whyConvooContentRef.current) {
-      contentObserver.observe(whyConvooContentRef.current);
-    }
-
-    if (whyConvooTaglineRef.current) {
-      contentObserver.observe(whyConvooTaglineRef.current);
     }
 
     if (joinHeadingRef.current) {
@@ -247,18 +232,18 @@ function App() {
 
       <section id="why-convoo" className="scroll-section min-h-screen bg-[#121212] flex items-center justify-center py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 ref={whyConvooHeadingRef} className={`${styles.sectionHeading} text-white mb-10 md:mb-14`}>
+          <h2 className="text-white mb-10 md:mb-14 text-center text-3xl md:text-4xl lg:text-5xl font-poppins font-light">
             Why Convoo?
           </h2>
           
-          <div ref={whyConvooContentRef} className={`${styles.staggered} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
             {/* Card 1 - Gradient effect */}
             <div className={`${styles.cardGradient1} p-4 md:p-6 rounded-xl`}>
               <div className="flex items-center mb-3 md:mb-4">
                 <div className={`${styles.iconContainer} mr-3`}>
                   <Heart size={24} color="#B83280" />
                 </div>
-                <h3 className="font-nunito text-xl md:text-2xl font-semibold text-[#B83280]">Looks aren't everything</h3>
+                <h3 className="font-nunito text-xl md:text-2xl font-bold text-[#B83280]">Looks aren't everything</h3>
               </div>
               <p className="font-inter text-white/90 font-bold mb-2 md:mb-3 text-base md:text-lg">Talk first. Feel the spark.</p>
               <p className="font-inter italic text-[#FFFFFF]/80 text-sm md:text-base">Before you see each other, you feel each other. Chemistry comes first — looks come later.</p>
