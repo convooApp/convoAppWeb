@@ -145,7 +145,7 @@ function App() {
               <span className={styles.secondDot}>.</span>
             </span>
           </h1>
-          <p className="font-inter-regular text-2xl text-[#aaaaaa] max-w-lg mx-auto mb-8">
+          <p className="font-inter-regular text-1xl text-[#aaaaaa] max-w-lg mx-auto mb-8">
             Its not a Dating App, Its a Connection App.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-8 sm:mt-12">

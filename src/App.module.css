@@ -523,7 +523,7 @@
 
 @media (max-width: 768px) {
   .thinHeading {
-    font-size: 6rem;
+    font-size: 12rem;
   }
   
   .sectionHeading {
@@ -550,10 +550,10 @@
 
 @media (max-width: 480px) {
   .thinHeading {
-    font-size: 4rem;
+    font-size: 5rem;
   }
   
   .sectionHeading {
-    font-size: 2.5rem;
+    font-size: 1rem;
   }
 }
