@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Clock, EyeOff, UserSearch, ChevronDown, Heart } from 'lucide-react';
 import { WaitlistForm } from './components/WaitlistForm';
+import { BetaForm } from './components/BetaForm';
 import styles from './App.module.css';
 
 function App() {
   const [showWaitlist, setShowWaitlist] = useState(false);
+  const [showBetaForm, setShowBetaForm] = useState(false);
   const howItWorksSectionRef = useRef(null);
   const howItWorksHeadingRef = useRef(null);
   const howItWorksContentRef = useRef(null);
@@ -162,13 +164,14 @@ function App() {
               Learn More
             </button>
           </div>
+          <p className="text-[#aaaaaa] text-sm italic pt-6">Want early access? <span className="text-[#B83280] cursor-pointer hover:underline" onClick={() => setShowBetaForm(true)}>Sign up as a beta tester</span></p>
           <div className={styles.scrollDown} onClick={() => scrollToSection('how-it-works')}>
             <span>Scroll Down</span>
             <ChevronDown size={24} />
           </div>
         </div>
         
-      </section>
+      </section>  
 
       <section 
         id="how-it-works" 
@@ -351,6 +354,13 @@ function App() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full">
             <WaitlistForm onClose={() => setShowWaitlist(false)} />
+          </div>
+        </div>
+      )}
+      {showBetaForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+            <BetaForm onClose={() => setShowBetaForm(false)} />
           </div>
         </div>
       )}

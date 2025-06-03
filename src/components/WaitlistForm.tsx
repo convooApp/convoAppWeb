@@ -87,7 +87,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
             <Check className="h-8 w-8 text-green-500" />
           </div>
-          <h3 className="text-2xl font-bold mb-4">You're on the list! 💘</h3>
+          <h3 className="text-2xl font-bold mb-4">You're on the list!</h3>
           <p className="text-gray-600 mb-6">
             We'll let you know the moment sparks are ready to fly.
             <br />
@@ -194,7 +194,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
             className="w-full text-lg font-semibold"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Count Me In 💌'}
+            {isSubmitting ? 'Submitting...' : 'Count Me In'}
           </Button>
         </div>
       </form>
