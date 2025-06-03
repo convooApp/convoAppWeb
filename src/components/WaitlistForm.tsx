@@ -95,19 +95,13 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
           </p>
           
           <div className="flex justify-center space-x-6 mb-6">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+            <a href="https://www.instagram.com/convooapp/" target="_blank" rel="noopener noreferrer" 
                className="text-pink-600 hover:text-pink-700 transition-colors">
               <Instagram size={28} />
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://x.com/convooapp" target="_blank" rel="noopener noreferrer"
                className="text-pink-600 hover:text-pink-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.321 5.562a5.124 5.124 0 0 1-3.035-2.49 5.124 5.124 0 0 1-.32-1.009h-3.48v11.99c0 .86-.398 1.625-1.02 2.128a2.916 2.916 0 0 1-1.98.686c-1.62 0-2.93-1.322-2.93-2.95 0-1.63 1.31-2.95 2.93-2.95.323 0 .636.053.93.152v-3.563a6.492 6.492 0 0 0-.93-.067c-3.58 0-6.48 2.95-6.48 6.587 0 3.638 2.9 6.587 6.48 6.587 3.58 0 6.48-2.95 6.48-6.587V8.45a8.74 8.74 0 0 0 4.956 1.54v-3.473a5.116 5.116 0 0 1-1.6-.955Z"/>
-              </svg>
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-               className="text-pink-600 hover:text-pink-700 transition-colors">
-              <Twitter size={28} />
+              <X size={28} />
             </a>
           </div>
           
