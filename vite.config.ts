@@ -9,7 +9,7 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   // For GitHub Pages deployment
-  base: '',
+  base: '/',
   build: {
     // Ensure CSS and other assets use relative paths
     cssCodeSplit: true,
