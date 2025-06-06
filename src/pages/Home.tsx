@@ -3,6 +3,7 @@ import { Clock, EyeOff, UserSearch, ChevronDown, Heart } from 'lucide-react';
 import { WaitlistForm } from '../components/WaitlistForm';
 import { BetaForm } from '../components/BetaForm';
 import styles from '../App.module.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [showWaitlist, setShowWaitlist] = useState(false);
@@ -24,6 +25,13 @@ const Home = () => {
       threshold: 0.1,
     };
 
+    // Use more sensitive options for headings to ensure they're detected earlier
+    const headingObserverOptions = {
+      root: null,
+      rootMargin: '0px 0px -10% 0px', // Trigger slightly before the element enters the viewport
+      threshold: 0.01,
+    };
+
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -37,8 +45,6 @@ const Home = () => {
         if (entry.isIntersecting) {
           if (entry.target.classList.contains(styles.staggered)) {
             entry.target.classList.add(styles.staggeredVisible);
-          } else if (entry.target.classList.contains(styles.sectionHeading)) {
-            entry.target.classList.add(styles.sectionHeadingVisible);
           } else if (entry.target.classList.contains(styles.teaserBox)) {
             entry.target.classList.add(styles.teaserBoxVisible);
           } else {
@@ -47,6 +53,15 @@ const Home = () => {
         }
       });
     }, observerOptions);
+    
+    // Separate observer for headings with more sensitive detection
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(styles.sectionHeadingVisible);
+        }
+      });
+    }, headingObserverOptions);
 
     // Observe sections
     if (howItWorksSectionRef.current) {
@@ -61,7 +76,7 @@ const Home = () => {
 
     // Observe content elements
     if (howItWorksHeadingRef.current) {
-      contentObserver.observe(howItWorksHeadingRef.current);
+      headingObserver.observe(howItWorksHeadingRef.current);
     }
 
     if (howItWorksContentRef.current) {
@@ -73,7 +88,7 @@ const Home = () => {
     }
 
     if (joinHeadingRef.current) {
-      contentObserver.observe(joinHeadingRef.current);
+      headingObserver.observe(joinHeadingRef.current);
     }
 
     if (joinContentRef.current) {
@@ -120,6 +135,7 @@ const Home = () => {
     return () => {
       sectionObserver.disconnect();
       contentObserver.disconnect();
+      headingObserver.disconnect();
       window.removeEventListener('wheel', handleWheel);
     };
   }, []);
@@ -172,13 +188,11 @@ const Home = () => {
         </div>
       </section>  
 
-      <section 
-        id="how-it-works" 
-        ref={howItWorksSectionRef}
-        className={`${styles.section} scroll-section min-h-screen bg-[#FFFFFF] flex items-center justify-center py-16 md:py-20`}
-      >
+      <section id="how-it-works" className={`${styles.section} scroll-section min-h-screen bg-[#FFFFFF] flex items-center justify-center py-16 md:py-20`} ref={howItWorksSectionRef}>
         <div className="container mx-auto px-4 md:px-6">
-          <h2 ref={howItWorksHeadingRef} className={`${styles.sectionHeading} text-center mb-10 md:mb-16`}>How It Works</h2>
+          <h2 ref={howItWorksHeadingRef} className={`${styles.sectionHeading} text-center mb-10 md:mb-16`}>
+            How It Works
+          </h2>
           <div 
             ref={howItWorksContentRef} 
             className={`${styles.staggered} grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto`}
@@ -347,9 +361,9 @@ const Home = () => {
           <footer className="w-full py-6 text-center mt-20">
             <div className="container mx-auto px-4">
               <div className="text-[#aaaaaa] text-sm">
-                <a href="/terms" className="text-[#B83280] hover:underline mx-2">Terms of Service</a>
+                <Link to="/terms" className="text-[#B83280] hover:underline mx-2">Terms of Service</Link>
                 <span className="mx-1">|</span>
-                <a href="/privacy" className="text-[#B83280] hover:underline mx-2">Privacy Policy</a>
+                <Link to="/privacy" className="text-[#B83280] hover:underline mx-2">Privacy Policy</Link>
               </div>
               <div className="text-[#666666] text-xs mt-2">
                 &copy; {new Date().getFullYear()} Convoo. All rights reserved.
