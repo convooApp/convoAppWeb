@@ -190,7 +190,7 @@ const Home = () => {
 
       <section id="how-it-works" className={`${styles.section} scroll-section min-h-screen bg-[#FFFFFF] flex items-center justify-center py-16 md:py-20`} ref={howItWorksSectionRef}>
         <div className="container mx-auto px-4 md:px-6">
-          <h2 ref={howItWorksHeadingRef} className={`${styles.sectionHeading} text-center mb-10 md:mb-16`}>
+          <h2 ref={howItWorksHeadingRef} className={`${styles.sectionHeading} text-center mb-10 md:mb-16 ${styles.sectionHeadingVisible}`}>
             How It Works
           </h2>
           <div 
