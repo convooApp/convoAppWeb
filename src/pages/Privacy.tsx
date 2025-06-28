@@ -38,12 +38,20 @@ const Privacy: React.FC = () => {
             Depending on your location, you may have rights to access, correct, or delete your personal information. Contact us to exercise these rights.
           </p>
 
-          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">6. Changes to This Policy</h2>
+          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">6. Account Deletion</h2>
+          <p className="mb-4">
+            You have the right to delete your account and associated personal data at any time. When you delete your account, we will remove your profile information, conversations, matches, and personal settings from our active databases.
+          </p>
+          <p className="mb-4">
+            We may retain certain information in anonymized form for analytics purposes and as required for legal compliance for up to 30 days after deletion. For detailed instructions on how to delete your account, please visit our <Link to="/delete-account" className="text-[#B83280] hover:underline">Account Deletion Guide</Link>.
+          </p>
+
+          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">7. Changes to This Policy</h2>
           <p className="mb-4">
             We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.
           </p>
 
-          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">7. Contact Us</h2>
+          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">8. Contact Us</h2>
           <p className="mb-4">
             If you have any questions about this Privacy Policy, please contact us at privacy@convoo.app.
           </p>
