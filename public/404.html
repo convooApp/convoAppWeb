@@ -2,28 +2,45 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Convoo App</title>
+  <title>Convoo Dating App</title>
   <script type="text/javascript">
     // Single Page Apps for GitHub Pages
     // MIT License
+    // https://github.com/rafgraph/spa-github-pages
     // This script takes the current URL and converts the path and query
     // string into just a query string, and then redirects the browser
     // to the new URL with only a query string and hash fragment.
     var pathSegmentsToKeep = 0;
 
     var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+    var newUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '');
+    var path = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/';
+    
+    // Remove any query params that might cause conflicts
+    var cleanUrl = newUrl + path;
+    
+    // Handle the path correctly for the hash router
+    var remainingPath = l.pathname.slice(path.length);
+    if (remainingPath) {
+      cleanUrl += '#/' + remainingPath;
+      // Add any query parameters back
+      if (l.search) {
+        cleanUrl += l.search.replace('?', '&');
+      }
+    } else {
+      // If we're at the root path, just use the hash
+      cleanUrl += l.search ? '#/' + l.search.slice(1) : '#/';
+    }
+    
+    // Add any hash fragments back
+    if (l.hash && !remainingPath) {
+      cleanUrl += l.hash;
+    }
+    
+    window.location.replace(cleanUrl);
   </script>
 </head>
 <body>
-  <h2 style="text-align: center; font-family: sans-serif; color: #B83280; margin-top: 50px;">
-    Redirecting to Convoo App...
-  </h2>
+  <h1>Redirecting...</h1>
 </body>
 </html>
