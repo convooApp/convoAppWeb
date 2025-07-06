@@ -163,24 +163,52 @@ const Home = () => {
               <span className={styles.secondDot}>.</span>
             </span>
           </h1>
-          <p className="font-inter-regular text-1xl text-[#aaaaaa] max-w-lg mx-auto mb-8">
-            Its not a Dating App, Its a Connection App.
+          <p className="font-inter-regular text-1xl text-[#aaaaaa] max-w-lg mx-auto mb-4">
+            Talk First. Then Decide.
           </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-8 pt-12">
+            <div className={`${styles.featureHighlight} p-3 rounded-lg`}>
+              <div className={`${styles.iconContainer} mx-auto mb-2`}>
+                <Clock size={20} color="#B83280" />
+              </div>
+              <p className="font-inter text-sm text-white/80">Daily Matching Events</p>
+            </div>
+            <div className={`${styles.featureHighlight} p-3 rounded-lg`}>
+              <div className={`${styles.iconContainer} mx-auto mb-2`}>
+                <EyeOff size={20} color="#B83280" />
+              </div>
+              <p className="font-inter text-sm text-white/80">Blind Conversations</p>
+            </div>
+            <div className={`${styles.featureHighlight} p-3 rounded-lg`}>
+              <div className={`${styles.iconContainer} mx-auto mb-2`}>
+                <Heart size={20} color="#B83280" />
+              </div>
+              <p className="font-inter text-sm text-white/80">Mutual Choice</p>
+            </div>
+          </div>
+          
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-8 sm:mt-12">
-            <button
-              onClick={() => setShowWaitlist(true)}
-              className={`${styles.button} ${styles.primaryButton} w-full max-w-[200px] sm:w-auto`}
+            <a 
+              href="https://testflight.apple.com/join/zNPd2bpr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`${styles.button} ${styles.primaryButton} w-full max-w-[220px] sm:w-auto flex items-center justify-center gap-2 group`}
             >
-              Join Waitlist
-            </button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M9 7v0a3 3 0 0 1 6 0v0"/><rect width="18" height="14" x="3" y="10" rx="2"/></svg>
+              <span>iOS Beta <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+            </a>
             <button
               onClick={() => scrollToSection('how-it-works')}
-              className={`${styles.button} ${styles.secondaryButton} w-full max-w-[200px] sm:w-auto`}
+              className={`${styles.button} ${styles.secondaryButton} w-full max-w-[220px] sm:w-auto`}
             >
               Learn More
             </button>
           </div>
-          <p className="text-[#aaaaaa] text-sm italic pt-6">Want early access? <span className="text-[#B83280] cursor-pointer hover:underline" onClick={() => setShowBetaForm(true)}>Sign up as a beta tester</span></p>
+          <p className="text-[#aaaaaa] text-sm pt-6">
+
+            <span className="text-[#B83280] cursor-pointer hover:underline" onClick={() => setShowBetaForm(true)}>Android users sign up here</span>
+          </p>
           <div className={styles.scrollDown} onClick={() => scrollToSection('how-it-works')}>
             <span>Scroll Down</span>
             <ChevronDown size={24} />
@@ -229,18 +257,27 @@ const Home = () => {
             
             <h3 className="text-center font-nunito text-2xl font-bold text-[#B83280] mb-4">Want In?</h3>
             <p className="text-center font-inter text-gray-700 mb-6">
-              We're testing this with a small group. Want to be among the first to experience it?
+              Our iOS beta is now available! Android coming soon.
             </p>
-            <div className="text-center">
+            <div className="text-center flex flex-col sm:flex-row justify-center items-center gap-4">
+              <a
+                href="https://testflight.apple.com/join/zNPd2bpr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.button} ${styles.primaryButton} flex items-center justify-center gap-2 group`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M9 7v0a3 3 0 0 1 6 0v0"/><rect width="18" height="14" x="3" y="10" rx="2"/></svg>
+                <span>Download iOS Beta <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+              </a>
               <button
                 onClick={() => setShowWaitlist(true)}
-                className={`${styles.button} ${styles.primaryButton}`}
+                className={`${styles.button} ${styles.secondaryButton} group`}
               >
-                Join the Waitlist
+                <span>Join Android Waitlist <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
               </button>
             </div>
             <p className="text-center font-inter text-gray-500 text-sm mt-4">
-              No previews. No filters. Just real connection.
+              Limited spots available for early access.
             </p>
           </div>
         </div>
@@ -346,14 +383,25 @@ const Home = () => {
                 <span className="font-bold">Just real conversations that matter.</span>
               </p>
               <div ref={joinButtonRef} className={`${styles.staggered}`}>
-                <button
-                  onClick={() => setShowWaitlist(true)}
-                  className={`${styles.button} ${styles.primaryButton} text-lg px-8 py-4`}
-                >
-                  Join Waitlist Now
-                </button>
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                  <a
+                    href="https://testflight.apple.com/join/zNPd2bpr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.button} ${styles.primaryButton} text-lg px-8 py-4 flex items-center justify-center gap-2 group`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M9 7v0a3 3 0 0 1 6 0v0"/><rect width="18" height="14" x="3" y="10" rx="2"/></svg>
+                    <span>Download iOS Beta <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+                  </a>
+                  <button
+                    onClick={() => setShowWaitlist(true)}
+                    className={`${styles.button} ${styles.secondaryButton} text-lg px-8 py-4 group`}
+                  >
+                    <span>Join Android Waitlist <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+                  </button>
+                </div>
                 <p className="text-center font-inter text-gray-500 text-sm mt-4">
-                  Limited spots available for early access.
+                  iOS beta available now. Android coming soon.
                 </p>
               </div>
             </div>
