@@ -21,23 +21,28 @@ const Terms: React.FC = () => {
             <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">3. User Conduct</h2>
             <p className="mb-4">You agree not to use Convoo for any unlawful purpose or in any way that could damage, disable, or impair our services. Prohibited activities include harassment, hate speech, and sharing explicit content without consent.</p>
             
-            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">4. Messaging</h2>
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">4. Child Safety</h2>
+            <p className="mb-4">Convoo is strictly for users 18 years of age and older. We have a zero-tolerance policy for any content or behavior that sexually exploits, abuses, or endangers children. Please review our <Link to="/child-safety" className="text-[#B83280] hover:underline">Child Safety Policy</Link> for more information on how we protect minors and prevent abuse.</p>
+            
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">5. Messaging</h2>
             <p className="mb-4">Convoo facilitates connections through blind conversations. You understand that all communications should be respectful and appropriate. We reserve the right to terminate accounts that violate these standards.</p>
             
-            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">5. Privacy</h2>
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">6. Privacy</h2>
             <p className="mb-4">Your privacy is important to us. Please review our <Link to="/privacy" className="text-[#B83280] hover:underline">Privacy Policy</Link> to understand how we collect, use, and share your information.</p>
             
-            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">6. Termination</h2>
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">7. Termination</h2>
             <p className="mb-4">We reserve the right to suspend or terminate your account at our sole discretion, without notice, for conduct that we believe violates these Terms or is harmful to other users or us.</p>
             
-            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">7. Changes to Terms</h2>
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">8. Changes to Terms</h2>
             <p className="mb-4">We may modify these Terms at any time. Your continued use of Convoo after any changes indicates your acceptance of the modified Terms.</p>
             
-            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">8. Contact Us</h2>
+            <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">9. Contact Us</h2>
             <p className="mb-4">If you have any questions about these Terms, please contact us at support@convoo.app.</p>
             
             <div className="mt-8 text-center">
-              <Link to="/" className="text-[#B83280] hover:underline">Return to Home</Link>
+              <Link to="/" className="text-[#B83280] hover:underline mr-4">Return to Home</Link>
+              <Link to="/privacy" className="text-[#B83280] hover:underline mr-4">Privacy Policy</Link>
+              <Link to="/child-safety" className="text-[#B83280] hover:underline">Child Safety Policy</Link>
             </div>
           </div>
         </div>
