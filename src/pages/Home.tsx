@@ -167,7 +167,7 @@ const Home = () => {
             Talk First. Then Decide.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-8 pt-12">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-8 pt-12">
             <div className={`${styles.featureHighlight} p-3 rounded-lg`}>
               <div className={`${styles.iconContainer} mx-auto mb-2`}>
                 <Clock size={20} color="#B83280" />
@@ -186,7 +186,7 @@ const Home = () => {
               </div>
               <p className="font-inter text-sm text-white/80">Mutual Choice</p>
             </div>
-          </div>
+          </div> */}
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-8 sm:mt-12">
             <a 
@@ -199,18 +199,14 @@ const Home = () => {
               <span>iOS Beta <span className="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
             </a>
             <button
-              onClick={() => scrollToSection('how-it-works')}
+              onClick={() => setShowBetaForm(true)}
               className={`${styles.button} ${styles.secondaryButton} w-full max-w-[220px] sm:w-auto`}
             >
-              Learn More
+              Android users
             </button>
           </div>
-          <p className="text-[#aaaaaa] text-sm pt-6">
-
-            <span className="text-[#B83280] cursor-pointer hover:underline" onClick={() => setShowBetaForm(true)}>Android users sign up here</span>
-          </p>
           <div className={styles.scrollDown} onClick={() => scrollToSection('how-it-works')}>
-            <span>Scroll Down</span>
+            <span>More Info</span>
             <ChevronDown size={24} />
           </div>
         </div>
