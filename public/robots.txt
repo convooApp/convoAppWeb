@@ -1,0 +1,7 @@
+# robots.txt for convoo.app
+# Allow all web crawlers full access
+
+User-agent: *
+Disallow:
+
+Sitemap: https://convoo.app/sitemap.xml
