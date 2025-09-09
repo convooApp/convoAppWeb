@@ -4,6 +4,8 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import DeleteAccount from './pages/DeleteAccount';
 import CSAEPolicy from './pages/CSAEPolicy';
+import Support from './pages/Support';
+import Contact from './pages/Contact';
 import './fonts.css';
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/delete-account" element={<DeleteAccount />} />
             <Route path="/child-safety" element={<CSAEPolicy />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </div>
 
