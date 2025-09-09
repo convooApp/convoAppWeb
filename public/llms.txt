@@ -1,0 +1,8 @@
+# llms.txt for convoo.app
+# This file expresses this website's stance on data usage by Large Language Models (LLMs)
+
+User-agent: *
+Allow: /
+
+Contact: admin@convoo.app
+Policy: https://convoo.app/privacy-policy
