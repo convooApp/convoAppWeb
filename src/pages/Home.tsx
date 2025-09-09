@@ -408,6 +408,8 @@ const Home = () => {
                 <Link to="/terms" className="text-[#B83280] hover:underline mx-2">Terms of Service</Link>
                 <span className="mx-1">|</span>
                 <Link to="/privacy" className="text-[#B83280] hover:underline mx-2">Privacy Policy</Link>
+                <span className="mx-1">|</span>
+                <Link to="/support" className="text-[#B83280] hover:underline mx-2">Support</Link>  
               </div>
               <div className="text-[#666666] text-xs mt-2">
                 &copy; {new Date().getFullYear()} Convoo. All rights reserved.
