@@ -56,9 +56,9 @@ const Privacy: React.FC = () => {
             We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.
           </p>
 
-          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]">9. Contact Us</h2>
+          <h2 className="text-xl font-bold mt-6 mb-3 text-[#B83280]" >9. Contact Us</h2>
           <p className="mb-4">
-            If you have any questions about this Privacy Policy, please contact us at privacy@convoo.app.
+            If you have any questions about this Privacy Policy, please contact us at support@support.convoo.app or <Link to="/contact" className="text-[#B83280] hover:underline">Support Center</Link>.
           </p>
 
           <div className="mt-8 text-center">
