@@ -159,7 +159,7 @@ const Home = () => {
       <div 
        className="absolute inset-0 bg-center bg-no-repeat opacity-40"
        style={{ 
-        backgroundImage: 'url(/public/assets/1.png)', 
+         backgroundImage: 'url(/assets/1.png)', 
          backgroundPosition: 'center 30%',
          backgroundSize: 'cover'
        }}
