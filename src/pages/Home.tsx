@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Clock, EyeOff, UserSearch, ChevronDown, Heart } from 'lucide-react';
 import { WaitlistForm } from '../components/WaitlistForm';
 import { BetaForm } from '../components/BetaForm';
 import styles from '../App.module.css';
@@ -160,7 +159,7 @@ const Home = () => {
       <div 
        className="absolute inset-0 bg-center bg-no-repeat opacity-40"
        style={{ 
-         backgroundImage: 'url(/assets/images/1.png)', 
+        backgroundImage: 'url(/public/assets/1.png)', 
          backgroundPosition: 'center 30%',
          backgroundSize: 'cover'
        }}
