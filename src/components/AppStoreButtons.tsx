@@ -6,7 +6,7 @@ export const AppStoreButtons = ({ onAndroidClick }: AppStoreButtonsProps) => {
   return (
     <div className="flex flex-col items-center gap-4 mt-8 sm:mt-12">
       <a 
-        href="https://apps.apple.com/app/convoo" 
+        href="https://apps.apple.com/us/app/convoo/id6746660683" 
         target="_blank" 
         rel="noopener noreferrer"
         className="transition-transform hover:scale-105 duration-300"
