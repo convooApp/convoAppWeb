@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { WaitlistForm } from '../components/WaitlistForm';
 import { BetaForm } from '../components/BetaForm';
+import { EventsModal } from '../components/EventsModal';
 import styles from '../App.module.css';
 import { Link } from 'react-router-dom';
 import { AppStoreButtons } from '../components/AppStoreButtons';
@@ -8,6 +9,7 @@ import { AppStoreButtons } from '../components/AppStoreButtons';
 const Home = () => {
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [showBetaForm, setShowBetaForm] = useState(false);
+  const [showEventsModal, setShowEventsModal] = useState(false);
   const howItWorksSectionRef = useRef(null);
   const howItWorksHeadingRef = useRef(null);
   const howItWorksContentRef = useRef(null);
@@ -165,6 +167,14 @@ const Home = () => {
        }}
       ></div>
       <div className="absolute inset-0 bg-black/30"></div>
+
+      <div className="absolute top-6 right-6 z-20">
+        <button 
+        onClick={() => setShowEventsModal(true)}
+        className="px-4 py-2 text-white font-medium opacity-60 hover:opacity-80 transition-opacity duration-300">
+          Events
+        </button>
+      </div>
       
       {/* Hero Content */}
       <div className="flex-1 flex items-center justify-center">
@@ -219,6 +229,11 @@ const Home = () => {
           </div>
         </div>
       )}
+
+      <EventsModal 
+        isOpen={showEventsModal} 
+        onClose={() => setShowEventsModal(false)} 
+      />    
     </>
   );
 };
