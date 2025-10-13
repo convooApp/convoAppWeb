@@ -174,7 +174,7 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
                             {event.title}
                             {isToday(event.start_time) && (
                               <span className="ml-2 px-2 py-1 bg-[#B83280] text-white text-xs rounded-full">
-                                Today
+                                Next Event
                               </span>
                             )}
                           </h3>
