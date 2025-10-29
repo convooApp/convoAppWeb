@@ -6,6 +6,7 @@ import DeleteAccount from './pages/DeleteAccount';
 import CSAEPolicy from './pages/CSAEPolicy';
 import Support from './pages/Support';
 import Contact from './pages/Contact';
+import Business from './pages/Business';
 import './fonts.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/child-safety" element={<CSAEPolicy />} />
             <Route path="/support" element={<Support />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/business" element={<Business />} />
           </Routes>
         </div>
 

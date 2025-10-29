@@ -76,7 +76,7 @@ const Home = () => {
       sectionObserver.observe(joinSectionRef.current as any);
     }
 
-    // Observe content elements
+    // Observe content elementsw
     if (howItWorksHeadingRef.current) {
       headingObserver.observe(howItWorksHeadingRef.current);
     }
@@ -84,7 +84,7 @@ const Home = () => {
     if (howItWorksContentRef.current) {
       contentObserver.observe(howItWorksContentRef.current);
     }
-
+    
     if (teaserBoxRef.current) {
       contentObserver.observe(teaserBoxRef.current);
     }
@@ -204,7 +204,9 @@ const Home = () => {
             <span className="mx-1">|</span>
             <Link to="/privacy" className="text-[#B83280] hover:underline mx-2 font-bold">Privacy Policy</Link>
             <span className="mx-1">|</span>
-            <Link to="/support" className="text-[#B83280] hover:underline mx-2 font-bold">Support</Link>  
+            <Link to="/support" className="text-[#B83280] hover:underline mx-2 font-bold">Support</Link>
+            <span className="mx-1">|</span>
+            <Link to="/business" className="text-[#B83280] hover:underline mx-2 font-bold">Be a Matchmaker</Link>
           </div>
           <div className="text-[#666666] text-xs mt-2">
             &copy; {new Date().getFullYear()} Convoo. All rights reserved.
