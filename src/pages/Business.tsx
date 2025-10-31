@@ -576,7 +576,7 @@ const Business: React.FC = () => {
             See how your hosted event appears to users at different stages
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {/* Before Events */}
             <div className="text-center">
               <h3 className="text-2xl font-bold text-[#B83280] mb-6">Before Events</h3>
