@@ -76,6 +76,17 @@ const Business: React.FC = () => {
         </div>
       </section>
 
+      <div className="text-center mt-4">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScmznqroaEvGlfo-gGfDS1XBuuE8lpiZqFEDu04Stp3-HJBVA/viewform?usp=dialog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-12 py-5 bg-[#B83280] text-white text-lg font-semibold rounded-lg hover:bg-[#9A2B6B] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-[#B83280]/50"
+            >
+              Apply to Become a Matchmaker
+            </a>
+          </div>
+
       {/* Benefits Section */}
       <section
         data-observe-key="benefits"
@@ -554,7 +565,7 @@ const Business: React.FC = () => {
         data-observe-key="ex"
         ref={(el) => (sectionRefs.current.ex = el as HTMLDivElement | null)}
         className={`py-20 px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${
-          isVisible.usecases ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          isVisible.ex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className="max-w-6xl mx-auto">
@@ -565,7 +576,7 @@ const Business: React.FC = () => {
             See how your hosted event appears to users at different stages
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {/* Before Events */}
             <div className="text-center">
               <h3 className="text-2xl font-bold text-[#B83280] mb-6">Before Events</h3>
@@ -607,6 +618,7 @@ const Business: React.FC = () => {
                 />
               </div>
             </div>
+         
           </div>
         </div>
       </section>
