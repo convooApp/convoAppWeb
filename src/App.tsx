@@ -8,6 +8,7 @@ import Support from './pages/Support';
 import Contact from './pages/Contact';
 import Business from './pages/Business';
 import './fonts.css';
+import Events from './pages/Events';
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/business" element={<Business />} />
+            <Route path="/events" element={<Events />} />
           </Routes>
         </div>
-
       </div>
     </Router>
   );
