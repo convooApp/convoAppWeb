@@ -125,7 +125,11 @@ const Events: React.FC = () => {
           {/* Header */}
           <div className="mt-8 text-center">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl shadow-[0_14px_60px_-30px_rgba(184,50,128,0.9)]">
-              <img src={convooLogo} alt="Convoo Logo" className="h-20 w-20 object-contain" />
+              <img
+                src="assets/Convoo-logo-removebg-preview.png"
+                alt="Convoo Logo"
+                className="h-20 w-20 object-contain"
+              />
             </div>
 
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
