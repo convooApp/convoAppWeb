@@ -140,6 +140,11 @@ const Events: React.FC = () => {
             </p>
           </div>
 
+          <div className="mt-6 mb-6 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center">
+            <div className="text-sm text-white/60 mb-1">Today's Event Code</div>
+            <div className="text-lg font-semibold text-[#B83280]">BELTLINE</div>
+          </div>
+
           {/* Content card */}
           <div className="mt-10">
             <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur shadow-[0_30px_120px_-60px_rgba(184,50,128,0.65)] sm:p-8">
