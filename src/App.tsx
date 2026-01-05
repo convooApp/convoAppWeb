@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Business from './pages/Business';
 import './fonts.css';
 import Events from './pages/Events';
+import DownloadNow from './pages/downloadNow';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/business" element={<Business />} />
+            <Route path="/download-now" element={<DownloadNow />} />
             <Route path="/events" element={<Events />} />
           </Routes>
         </div>

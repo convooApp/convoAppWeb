@@ -30,7 +30,7 @@ function formatSeconds(ms: number) {
   return `${s}s`;
 }
 
-const Events: React.FC = () => {
+const DownloadNow: React.FC = () => {
   const [device, setDevice] = useState<DeviceType>('desktop');
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -138,11 +138,6 @@ const Events: React.FC = () => {
               Live Dating Events, meet new people, and connect with others in real-time.
             </p>
           </div>
-
-          {/* <div className="mt-6 mb-6 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center">
-            <div className="text-sm text-white/60 mb-1">Today's Event Code</div>
-            <div className="text-lg font-semibold text-[#B83280]">BELTLINE</div>
-          </div> */}
 
           {/* Content card */}
           <div className="mt-10">
@@ -299,4 +294,4 @@ const Events: React.FC = () => {
   );
 };
 
-export default Events;
+export default DownloadNow;
