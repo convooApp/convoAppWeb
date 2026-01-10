@@ -1,4 +1,5 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Home from './pages/Home';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
@@ -11,9 +12,20 @@ import './fonts.css';
 import Events from './pages/Events';
 import DownloadNow from './pages/downloadNow';
 
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
           <Routes>
