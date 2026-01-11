@@ -271,7 +271,7 @@ useEffect(() => {
                   <div className="font-extrabold text-xs text-[rgba(245,242,248,.6)] uppercase tracking-[.16em] mb-3">Upcoming</div>
                   <div className="font-black text-2xl mb-3">Atlanta - BeltLine Pop-up</div>
                   <div className="text-[rgba(245,242,248,.7)] mb-2">
-                    Date: <strong className="text-white">Jan 17</strong> • Time: <strong className="text-white">6:30–8:00 PM</strong>
+                    Date: <strong className="text-white">Jan 17</strong> • Time: <strong className="text-white">4:00–6:00 PM</strong>
                   </div>
                   <div className="text-[rgba(245,242,248,.6)] text-sm">Bring a friend. Join live. Chat first.</div>
                 </div>
