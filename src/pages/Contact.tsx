@@ -30,7 +30,6 @@ const Contact: React.FC = () => {
     })
     
     if (supabaseError) {
-      console.error('Error submitting to tech support:', supabaseError);
       return;
     }
     

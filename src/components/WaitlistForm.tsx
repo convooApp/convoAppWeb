@@ -55,7 +55,6 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onClose }) => {
         ]);
         
       if (supabaseError) {
-        console.error('Error submitting to waitlist:', supabaseError);
         if (supabaseError.code === '23505') {
           setError('You are already on the waitlist.');
         } else {

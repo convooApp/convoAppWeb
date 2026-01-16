@@ -54,7 +54,6 @@ export const BetaForm: React.FC<BetaFormProps> = ({ onClose }) => {
         ]);
         
       if (supabaseError) {
-        console.error('Error submitting to beta testers:', supabaseError);
         if (supabaseError.code === '23505') {
           setError('This email is already registered for beta testing.');
         } else {

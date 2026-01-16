@@ -301,9 +301,9 @@ useEffect(() => {
                 </p>
               </div>
               <div className="flex gap-3 flex-wrap">
-                <button onClick={() => setShowWaitlist(true)} className="inline-flex items-center justify-center gap-2 border border-[rgba(245,242,248,.15)] bg-[rgba(245,242,248,.06)] text-white px-5 py-3 rounded-xl no-underline font-bold text-sm transition-all hover:bg-[rgba(245,242,248,.12)] hover:border-[rgba(245,242,248,.25)] cursor-pointer">
-                  Join Android waitlist
-                </button>
+        <Link to="/events" className="inline-flex items-center justify-center gap-2 border border-[rgba(245,242,248,.15)] bg-[rgba(245,242,248,.06)] text-white px-5 py-3 rounded-xl no-underline font-bold text-sm transition-all hover:bg-[rgba(245,242,248,.12)] hover:border-[rgba(245,242,248,.25)] cursor-pointer">
+        Join Android waitlist
+      </Link>
               </div>
             </div>
           </section>

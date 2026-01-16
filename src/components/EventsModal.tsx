@@ -51,7 +51,6 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
       }
     } catch (err) {
       setError(err as Error);
-      console.error('Error fetching events:', err);
     } finally {
       setLoading(false);
     }
