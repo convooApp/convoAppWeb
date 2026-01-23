@@ -269,10 +269,10 @@ useEffect(() => {
               <div className="flex flex-col md:flex-row gap-6 items-start justify-between">
                 <div className="flex-1">
                   <div className="font-extrabold text-xs text-[rgba(245,242,248,.6)] uppercase tracking-[.16em] mb-3">Upcoming</div>
-                  <div className="font-black text-2xl mb-3">Atlanta - BeltLine Pop-up</div>
-                  <div className="text-[rgba(245,242,248,.7)] mb-2">
+                  <div className="font-black text-2xl mb-3">We’ll resume IRL events in the coming months.</div>
+                  {/* <div className="text-[rgba(245,242,248,.7)] mb-2">
                     Date: <strong className="text-white">Jan 17</strong> • Time: <strong className="text-white">4:00–6:00 PM</strong>
-                  </div>
+                  </div> */}
                   <div className="text-[rgba(245,242,248,.6)] text-sm">Bring a friend. Join live. Chat first.</div>
                 </div>
                 <div className="flex gap-3 items-center flex-wrap">
