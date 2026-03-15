@@ -159,11 +159,11 @@ const PILLARS = [
 ];
 
 const USE_CASES = [
-  "Singles nights at local bars & rooftops",
-  "College campus dating events",
-  "Run clubs & fitness community mixers",
-  "Friend-hosted blind date nights",
-  "Neighborhood singles meetups",
+  { who: "Creators & influencers", desc: "Drop a code to your followers and host a live dating room for your audience." },
+  { who: "College organizations", desc: "Run a speed-dating night for your campus club or Greek chapter." },
+  { who: "Run clubs & fitness crews", desc: "Turn your weekly group into a mixer — same energy, new connections." },
+  { who: "Friend groups & social hosts", desc: "Curate a blind date night for your circle without a venue or app fees." },
+  { who: "Local event organizers", desc: "Pair a Convoo room with your IRL event so guests connect before they arrive." },
 ];
 
 const EARN_ROWS = [
@@ -376,7 +376,7 @@ const Home = () => {
           id="top"
           style={{
             position: "relative",
-            height: "calc(100vh - 73px)",
+            minHeight: "calc(100vh - 73px)",
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -417,52 +417,9 @@ const Home = () => {
               alignItems: "center",
             }}
           >
-            <div
-              style={{
-                maxWidth: "1200px",
-                margin: "0 auto",
-                width: "100%",
-                padding: "0 2rem",
-                display: "grid",
-                gridTemplateColumns: "1.2fr 0.8fr",
-                gap: "3rem",
-                alignItems: "center",
-              }}
-            >
+            <div className="max-w-[1200px] mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-12 items-center">
               {/* Left */}
               <div data-reveal="">
-                {/* Kicker */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    marginBottom: "1.25rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: "7px",
-                      height: "7px",
-                      borderRadius: "50%",
-                      background: "#B83280",
-                      display: "inline-block",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "0.7rem",
-                      letterSpacing: "0.2em",
-                      color: "#B83280",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    LIVE · CITY BY CITY
-                  </span>
-                </div>
-
                 {/* Headline */}
                 <h1
                   style={{
@@ -501,25 +458,6 @@ const Home = () => {
                   style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}
                 >
                   <a
-                    href="#events"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      border: "1px solid rgba(184,50,128,0.6)",
-                      background: "linear-gradient(135deg, #B83280, #ff4fb3)",
-                      color: "white",
-                      padding: "0.875rem 1.75rem",
-                      borderRadius: "12px",
-                      textDecoration: "none",
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
-                      boxShadow: "0 10px 40px rgba(184,50,128,0.3)",
-                    }}
-                  >
-                    Join Tonight's Event
-                  </a>
-                  <a
                     href="#how"
                     onClick={(e) => {
                       e.preventDefault();
@@ -544,9 +482,10 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Right — Today's Event card */}
+              {/* Right — Today's Event card (desktop only) */}
               <aside
                 data-reveal=""
+                className="hidden lg:block"
                 style={{
                   transitionDelay: "0.15s",
                   background:
@@ -739,10 +678,8 @@ const Home = () => {
             </div>
 
             {/* 5-step flow */}
-            <div
-              className="relative"
-              style={{ display: "flex", flexWrap: "wrap", gap: 0 }}
-            >
+            {/* Mobile: vertical list. Desktop: horizontal row */}
+            <div className="relative flex flex-col gap-4 md:flex-row md:gap-0">
               {/* Connecting line (desktop only) */}
               <div
                 className="hidden md:block absolute pointer-events-none"
@@ -760,21 +697,15 @@ const Home = () => {
                 <div
                   key={i}
                   data-reveal=""
-                  style={{
-                    flex: "1 1 160px",
-                    padding: "0 1rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    textAlign: "center",
-                    transitionDelay: `${i * 0.1}s`,
-                  }}
+                  className="flex flex-row items-center gap-4 md:flex-col md:items-center md:text-center md:flex-1 md:px-4"
+                  style={{ transitionDelay: `${i * 0.1}s` }}
                 >
                   {/* Orb */}
                   <div
+                    className="shrink-0"
                     style={{
-                      width: "72px",
-                      height: "72px",
+                      width: "60px",
+                      height: "60px",
                       borderRadius: "50%",
                       border: step.pinkBg
                         ? "1px solid #B83280"
@@ -783,13 +714,10 @@ const Home = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: "1.5rem",
-                      position: "relative",
                       boxShadow: step.pinkBg
                         ? "0 0 32px rgba(184,50,128,0.4)"
                         : "none",
                       transition: "border-color 0.35s, box-shadow 0.35s",
-                      flexShrink: 0,
                       animation: !step.pinkBg
                         ? "orb-pulse 2s ease-in-out infinite"
                         : undefined,
@@ -815,37 +743,40 @@ const Home = () => {
                     {step.icon}
                   </div>
 
-                  <div
-                    style={{
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.18em",
-                      color: "#B83280",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      marginBottom: "0.5rem",
-                    }}
-                  >
-                    Step {i + 1}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                      color: "white",
-                      marginBottom: "0.5rem",
-                      lineHeight: 1.25,
-                    }}
-                  >
-                    {step.title}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "rgba(255,255,255,0.45)",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {step.subtitle}
+                  {/* Text */}
+                  <div className="flex flex-col md:items-center md:mt-6">
+                    <div
+                      style={{
+                        fontSize: "0.6rem",
+                        letterSpacing: "0.18em",
+                        color: "#B83280",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        marginBottom: "0.3rem",
+                      }}
+                    >
+                      Step {i + 1}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.95rem",
+                        fontWeight: 700,
+                        color: "white",
+                        marginBottom: "0.3rem",
+                        lineHeight: 1.25,
+                      }}
+                    >
+                      {step.title}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.78rem",
+                        color: "rgba(255,255,255,0.45)",
+                        lineHeight: 1.65,
+                      }}
+                    >
+                      {step.subtitle}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -985,10 +916,10 @@ const Home = () => {
                   lineHeight: 1.15,
                 }}
               >
-                Your Community.
+                Host your own
                 <br />
                 <em style={{ color: "#B83280", fontStyle: "italic" }}>
-                  Your event.
+                  dating event.
                 </em>
               </h2>
               <p
@@ -1000,35 +931,24 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Events on Convoo happen live inside the app — every night at 7
-                PM and through private event codes. A host generates a unique
-                code. Guests enter it in the app and unlock a live matching
-                room. Access-controlled, intentional, and real-time.
+                Convoo lets anyone create a private live dating room — no venue,
+                no ticket system, no third-party tools. Generate a unique event
+                code, share it with your community, and your guests unlock a
+                live matching room inside the app. Fully access-controlled and
+                real-time.
               </p>
 
               {/* Use case list */}
               <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
                 {USE_CASES.map((item) => (
                   <li
-                    key={item}
-                    className="group"
+                    key={item.who}
                     style={{
                       display: "flex",
-                      alignItems: "center",
+                      alignItems: "flex-start",
                       gap: "1rem",
                       padding: "1rem 0",
                       borderBottom: "1px solid rgba(255,255,255,0.06)",
-                      fontSize: "0.9rem",
-                      color: "rgba(255,255,255,0.75)",
-                      cursor: "default",
-                      transition: "color 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = "white";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.color =
-                        "rgba(255,255,255,0.75)";
                     }}
                   >
                     <span
@@ -1038,18 +958,17 @@ const Home = () => {
                         borderRadius: "50%",
                         background: "#B83280",
                         flexShrink: 0,
-                        transition: "box-shadow 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.boxShadow =
-                          "0 0 6px #B83280";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.boxShadow =
-                          "none";
+                        marginTop: "0.45rem",
                       }}
                     />
-                    {item}
+                    <div>
+                      <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "white" }}>
+                        {item.who}
+                      </div>
+                      <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", marginTop: "0.2rem", lineHeight: 1.6 }}>
+                        {item.desc}
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -1067,9 +986,9 @@ const Home = () => {
                   lineHeight: 1.75,
                 }}
               >
-                "Only people with the code can join — no public feed, no random
-                strangers. Every room is tight, intentional, and live inside the
-                app."
+                "Generate a unique code. Share it anywhere — Instagram, group
+                chat, email list. Your guests tap it in the app and land in a
+                live matching room built just for them."
               </div>
 
               <a
@@ -1104,7 +1023,7 @@ const Home = () => {
                     "rgba(184,50,128,0.5)";
                 }}
               >
-                Host an Event →
+                Apply to host an event →
               </a>
             </div>
 
@@ -1287,9 +1206,9 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Passes are Convoo's in-app currency. Use 1 Pass to join an
-                extra live event and have one more conversation. No Pass used
-                until a conversation actually starts.
+                Passes are Convoo's in-app currency. Use 1 Pass to join an extra
+                live event and have one more conversation. No Pass used until a
+                conversation actually starts.
               </p>
             </div>
 
@@ -1485,7 +1404,11 @@ const Home = () => {
                   ].map((line) => (
                     <div
                       key={line}
-                      style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                      }}
                     >
                       <div
                         style={{
@@ -1496,7 +1419,12 @@ const Home = () => {
                           flexShrink: 0,
                         }}
                       />
-                      <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)" }}>
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "rgba(255,255,255,0.6)",
+                        }}
+                      >
                         {line}
                       </span>
                     </div>
