@@ -167,7 +167,7 @@ const USE_CASES = [
 ];
 
 const EARN_ROWS = [
-  { action: "Attend a live event", reward: "+2 Passes" },
+  { action: "Show up at 7 PM daily", reward: "+2 Passes" },
   { action: "Invite a friend", reward: "+1 Pass each" },
   { action: "Rate on App Store", reward: "+2 Passes" },
 ];
@@ -1287,9 +1287,9 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Passes are Convoo's in-app currency. One Pass unlocks one live
-                conversation. No Pass, no spam — every interaction is
-                deliberate.
+                Passes are Convoo's in-app currency. Use 1 Pass to join an
+                extra live event and have one more conversation. No Pass used
+                until a conversation actually starts.
               </p>
             </div>
 
@@ -1362,110 +1362,145 @@ const Home = () => {
                 ))}
               </div>
 
-              {/* Mock Pass card */}
+              {/* Pass balance card */}
               <div
                 data-reveal=""
                 style={{
                   transitionDelay: "0.15s",
-                  border: "1px solid rgba(184,50,128,0.5)",
-                  background: "linear-gradient(135deg, #0f0f1e, #1a0a14)",
+                  border: "1px solid rgba(184,50,128,0.4)",
+                  background: "linear-gradient(135deg, #0f0f1e, #180a14)",
                   borderRadius: "20px",
-                  padding: "2.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  gap: "2rem",
-                  minHeight: "220px",
-                  boxShadow:
-                    "0 0 60px rgba(184,50,128,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                  padding: "2rem",
                   position: "relative",
                   overflow: "hidden",
+                  boxShadow: "0 0 60px rgba(184,50,128,0.15)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
                 }}
               >
+                {/* Glow */}
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    pointerEvents: "none",
                     background:
-                      "radial-gradient(ellipse at 80% 20%, rgba(184,50,128,0.15) 0%, transparent 60%)",
+                      "radial-gradient(ellipse at 75% 20%, rgba(184,50,128,0.14) 0%, transparent 55%)",
+                    pointerEvents: "none",
                   }}
                 />
-                <div style={{ position: "relative", zIndex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.22em",
-                      color: "rgba(255,255,255,0.35)",
-                      textTransform: "uppercase",
-                      marginBottom: "1.5rem",
-                      fontFamily: "'Courier New', monospace",
-                    }}
-                  >
-                    CONVOO PASS
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'Courier New', monospace",
-                      fontSize: "1.1rem",
-                      letterSpacing: "0.18em",
-                      color: "rgba(255,255,255,0.5)",
-                    }}
-                  >
-                    **** **** **** 0001
-                  </div>
-                </div>
+                {/* Top row — label + balance */}
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-end",
                     position: "relative",
                     zIndex: 1,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
                   }}
                 >
                   <div>
                     <div
                       style={{
                         fontSize: "0.55rem",
-                        letterSpacing: "0.18em",
-                        color: "rgba(255,255,255,0.3)",
+                        letterSpacing: "0.22em",
+                        color: "rgba(255,255,255,0.28)",
                         textTransform: "uppercase",
-                        marginBottom: "0.3rem",
+                        marginBottom: "0.5rem",
                       }}
                     >
-                      MEMBER STATUS
+                      Convoo Passes
                     </div>
                     <div
                       style={{
-                        fontSize: "0.85rem",
-                        fontWeight: 700,
-                        color: "#ff4fb3",
-                        letterSpacing: "0.08em",
+                        fontSize: "2rem",
+                        fontWeight: 800,
+                        letterSpacing: "-0.02em",
+                        color: "#fff",
                       }}
                     >
-                      Founding Member
+                      5
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.7rem",
+                        color: "rgba(255,255,255,0.35)",
+                        marginTop: "0.15rem",
+                      }}
+                    >
+                      passes available
                     </div>
                   </div>
+                  {/* Token icon */}
                   <div
                     style={{
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.12em",
-                      color: "rgba(255,255,255,0.3)",
-                      textTransform: "uppercase",
-                      textAlign: "right",
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "50%",
+                      background: "rgba(184,50,128,0.2)",
+                      border: "2px solid rgba(184,50,128,0.45)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
                     }}
                   >
-                    <div>Always</div>
-                    <div
-                      style={{
-                        color: "rgba(255,255,255,0.5)",
-                        fontWeight: 700,
-                      }}
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#ff4fb3"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      Free
-                    </div>
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
                   </div>
+                </div>
+                {/* Divider */}
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    height: "1px",
+                    background: "rgba(245,242,248,0.06)",
+                  }}
+                />
+                {/* Bottom — what a pass does */}
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.6rem",
+                  }}
+                >
+                  {[
+                    "1 Pass = 1 extra live conversation",
+                    "Only used when a conversation starts",
+                    "Passes don't expire — use them anytime",
+                  ].map((line) => (
+                    <div
+                      key={line}
+                      style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                    >
+                      <div
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          borderRadius: "50%",
+                          background: "#B83280",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)" }}>
+                        {line}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
