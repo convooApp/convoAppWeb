@@ -1097,8 +1097,8 @@ const Home = () => {
 
               {/* Card body */}
               <div
+                className="px-6 py-10 md:px-10 md:py-12"
                 style={{
-                  padding: "3rem 2.5rem",
                   textAlign: "center",
                   position: "relative",
                   zIndex: 1,
@@ -1110,7 +1110,7 @@ const Home = () => {
                     letterSpacing: "0.22em",
                     color: "rgba(255,255,255,0.35)",
                     textTransform: "uppercase",
-                    marginBottom: "1.5rem",
+                    marginBottom: "1.25rem",
                   }}
                 >
                   ENTER EVENT CODE
@@ -1119,9 +1119,9 @@ const Home = () => {
                 <div
                   style={{
                     fontFamily: "'Courier New', monospace",
-                    fontSize: "2.8rem",
+                    fontSize: "clamp(1.8rem, 6vw, 2.8rem)",
                     fontWeight: 700,
-                    letterSpacing: "0.2em",
+                    letterSpacing: "0.18em",
                     color: "#B83280",
                     textShadow: "0 0 30px rgba(184,50,128,0.4)",
                     marginBottom: "0.5rem",
@@ -1134,11 +1134,10 @@ const Home = () => {
                   <span className="lp-cursor" />
                 </div>
                 <div
+                  className="grid grid-cols-3 gap-3"
                   style={{
                     borderTop: "1px solid rgba(255,255,255,0.05)",
-                    paddingTop: "1.8rem",
-                    display: "flex",
-                    justifyContent: "space-around",
+                    paddingTop: "1.5rem",
                   }}
                 >
                   {[
@@ -1150,7 +1149,7 @@ const Home = () => {
                       <span
                         style={{
                           display: "block",
-                          fontSize: "1.5rem",
+                          fontSize: "clamp(1rem, 3.5vw, 1.5rem)",
                           fontWeight: 700,
                           color: "white",
                         }}
@@ -1160,8 +1159,8 @@ const Home = () => {
                       <span
                         style={{
                           display: "block",
-                          fontSize: "0.6rem",
-                          letterSpacing: "0.16em",
+                          fontSize: "0.55rem",
+                          letterSpacing: "0.12em",
                           textTransform: "uppercase",
                           color: "rgba(255,255,255,0.35)",
                           marginTop: "0.2rem",
