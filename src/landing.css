@@ -1,0 +1,96 @@
+/* ═══════════════════════════════════════════════════════
+   landing.css — Convoo landing page animations & helpers
+═══════════════════════════════════════════════════════ */
+
+/* ── Ticker ──────────────────────────────────────────── */
+@keyframes lp-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.lp-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: lp-ticker 30s linear infinite;
+}
+
+/* ── Cursor blink ─────────────────────────────────────── */
+@keyframes lp-blink {
+  0%,  49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.lp-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 2.8rem;
+  background: #B83280;
+  margin-left: 0.15rem;
+  vertical-align: middle;
+  animation: lp-blink 1.1s step-end infinite;
+}
+
+/* ── Hero rings ───────────────────────────────────────── */
+@keyframes lp-ring-pulse {
+  0%,  100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1);     }
+  50%        { opacity: 0.9;  transform: translate(-50%, -50%) scale(1.015); }
+}
+.lp-ring {
+  position: absolute;
+  border: 1px solid rgba(184,50,128,0.2);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: lp-ring-pulse 4s ease-in-out infinite;
+}
+.lp-ring-1 { width: 520px; height: 520px; animation-delay: 0s;   }
+.lp-ring-2 { width: 400px; height: 400px; animation-delay: 1.5s; }
+.lp-ring-3 { width: 280px; height: 280px; animation-delay: 3s;   }
+
+/* ── Scroll reveal ────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+              transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+[data-reveal].lp-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Vision section pillar hover bar ─────────────────── */
+.lp-pillar {
+  position: relative;
+  padding-left: 1.5rem;
+  cursor: default;
+}
+.lp-pillar::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: #B83280;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.lp-pillar:hover::before { transform: scaleY(1); }
+
+/* ── Live border pulse ────────────────────────────────── */
+@keyframes pulse-border {
+  0%,  100% { border-left-color: #B83280; }
+  50%        { border-left-color: #ff4fb3; box-shadow: -4px 0 20px rgba(255,79,179,0.6); }
+}
+
+/* ── Orb idle pulse ───────────────────────────────────── */
+@keyframes orb-pulse {
+  0%,  100% { box-shadow: none; }
+  50%        { box-shadow: 0 0 24px rgba(184,50,128,0.4); border-color: #B83280; }
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .lp-ring-1 { width: 312px; height: 312px; }
+  .lp-ring-2 { width: 240px; height: 240px; }
+  .lp-ring-3 { width: 168px; height: 168px; }
+  .lp-ticker-track { animation-duration: 22s; }
+}
