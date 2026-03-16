@@ -8,12 +8,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 73px;
-}
-
-.snap-section {
-  scroll-snap-align: start;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

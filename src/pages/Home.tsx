@@ -260,7 +260,7 @@ const Home = () => {
   /* ── render ─────────────────────────────────────────── */
   return (
     <>
-      <div className="bg-[#0a0a0a] text-white min-h-screen">
+      <div className="bg-[#0a0a0a] text-white">
         {/* ── Nav ─────────────────────────────────────────── */}
         <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(10,10,10,.8)] border-b border-white/[0.06]">
           <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-6 px-8 py-4">
@@ -358,7 +358,6 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="top"
-          className="snap-section"
           style={{
             position: "relative",
             minHeight: "calc(100vh - 73px)",
@@ -588,7 +587,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════════
             SECTION 2 — HOW IT WORKS
         ══════════════════════════════════════════════════ */}
-        <section id="how" className="snap-section py-20 md:py-28 px-8">
+        <section id="how" className="py-20 px-8">
           <div className="max-w-[1100px] mx-auto">
             <div data-reveal="" className="text-center mb-16">
               <h2
@@ -843,7 +842,7 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="live"
-          className="snap-section py-24 px-8"
+          className="py-24 px-8"
           style={{ background: "#0f0f1a" }}
         >
           <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-20 items-start">
@@ -945,41 +944,6 @@ const Home = () => {
                 chat, email list. Your guests tap it in the app and land in a
                 live matching room built just for them."
               </div>
-
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeMnGv9DEDomSQ6OnjNnBrszxmBjwPqefzgCx-zXqCR3i_2sw/viewform"
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  marginTop: "1.5rem",
-                  border: "1px solid rgba(184,50,128,0.5)",
-                  background: "rgba(184,50,128,0.1)",
-                  color: "white",
-                  padding: "0.85rem 1.5rem",
-                  borderRadius: "12px",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  fontSize: "0.9rem",
-                  transition: "background 0.2s, border-color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "rgba(184,50,128,0.2)";
-                  (e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(184,50,128,0.8)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "rgba(184,50,128,0.1)";
-                  (e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(184,50,128,0.5)";
-                }}
-              >
-                Apply to host an event →
-              </a>
             </div>
 
             {/* Right — Terminal card */}
@@ -1071,6 +1035,43 @@ const Home = () => {
                   ENTER EVENT CODE
                 </div>
 
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeMnGv9DEDomSQ6OnjNnBrszxmBjwPqefzgCx-zXqCR3i_2sw/viewform"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.4rem",
+                    marginBottom: "1.25rem",
+                    border: "1px solid rgba(184,50,128,0.45)",
+                    background: "rgba(184,50,128,0.1)",
+                    color: "#ff4fb3",
+                    padding: "0.55rem 1.1rem",
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                    fontWeight: 700,
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.02em",
+                    transition: "background 0.2s, border-color 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(184,50,128,0.22)";
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(184,50,128,0.8)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(184,50,128,0.1)";
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(184,50,128,0.45)";
+                  }}
+                >
+                  Apply to host an event →
+                </a>
+
                 <div
                   style={{
                     fontFamily: "'Courier New', monospace",
@@ -1133,7 +1134,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════════
             SECTION 5 — CONVOO PASSES
         ══════════════════════════════════════════════════ */}
-        <section id="events" className="snap-section py-24 px-8">
+        <section id="events" className="py-24 px-8">
           <div className="max-w-[1100px] mx-auto">
             <div data-reveal="" style={{ marginBottom: "3.5rem" }}>
               <h2
@@ -1393,7 +1394,7 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="about"
-          className="snap-section py-24 px-8"
+          className="snap-section py-12 px-8"
           style={{ background: "rgba(255,255,255,0.015)" }}
         >
           <div className="max-w-[860px] mx-auto">
