@@ -52,14 +52,15 @@ const TICKER = [
 
 const HOW_STEPS = [
   {
-    title: "Join the live event",
-    subtitle: "Every night at 7 PM, a live event opens inside the app.",
+    title: "Join the event",
+    subtitle:
+      "Every night at 7 PM — or via a private event code — a live matching room opens inside the app.",
     pinkBg: true,
     icon: (
       <svg
         viewBox="0 0 24 24"
-        width="20"
-        height="20"
+        width="22"
+        height="22"
         stroke="white"
         strokeWidth="1.5"
         fill="none"
@@ -71,13 +72,14 @@ const HOW_STEPS = [
   },
   {
     title: "Start a conversation",
-    subtitle: "1-on-1 text chat. No photos yet. Just words.",
+    subtitle:
+      "You're matched 1-on-1. No photos yet — just a real text conversation to see if there's a spark.",
     pinkBg: false,
     icon: (
       <svg
         viewBox="0 0 24 24"
-        width="20"
-        height="20"
+        width="22"
+        height="22"
         stroke="#B83280"
         strokeWidth="1.5"
         fill="none"
@@ -87,54 +89,21 @@ const HOW_STEPS = [
     ),
   },
   {
-    title: "Conversation sparks",
-    subtitle: "Prompts keep the chat flowing naturally.",
-    pinkBg: false,
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        width="20"
-        height="20"
-        stroke="#B83280"
-        strokeWidth="1.5"
-        fill="none"
-      >
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-      </svg>
-    ),
-  },
-  {
     title: "Profiles reveal",
-    subtitle: "After the convo, photos are unlocked.",
+    subtitle:
+      "After the chat, photos unlock. If you're both interested, it's a match. Mutual opt-in only. No pressure, ever.",
     pinkBg: false,
     icon: (
       <svg
         viewBox="0 0 24 24"
-        width="20"
-        height="20"
+        width="22"
+        height="22"
         stroke="#B83280"
         strokeWidth="1.5"
         fill="none"
       >
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
         <circle cx="12" cy="12" r="3" />
-      </svg>
-    ),
-  },
-  {
-    title: "Both decide to match",
-    subtitle: "Mutual opt-in only. No pressure, ever.",
-    pinkBg: false,
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        width="20"
-        height="20"
-        stroke="#B83280"
-        strokeWidth="1.5"
-        fill="none"
-      >
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
       </svg>
     ),
   },
@@ -159,11 +128,26 @@ const PILLARS = [
 ];
 
 const USE_CASES = [
-  { who: "Creators & influencers", desc: "Drop a code to your followers and host a live dating room for your audience." },
-  { who: "College organizations", desc: "Run a speed-dating night for your campus club or Greek chapter." },
-  { who: "Run clubs & fitness crews", desc: "Turn your weekly group into a mixer — same energy, new connections." },
-  { who: "Friend groups & social hosts", desc: "Curate a blind date night for your circle without a venue or app fees." },
-  { who: "Local event organizers", desc: "Pair a Convoo room with your IRL event so guests connect before they arrive." },
+  {
+    who: "Creators & influencers",
+    desc: "Drop a code to your followers and host a live dating room for your audience.",
+  },
+  {
+    who: "College organizations",
+    desc: "Run a speed-dating night for your campus club or Greek chapter.",
+  },
+  {
+    who: "Run clubs & fitness crews",
+    desc: "Turn your weekly group into a mixer — same energy, new connections.",
+  },
+  {
+    who: "Friend groups & social hosts",
+    desc: "Curate a blind date night for your circle without a venue or app fees.",
+  },
+  {
+    who: "Local event organizers",
+    desc: "Pair a Convoo room with your IRL event so guests connect before they arrive.",
+  },
 ];
 
 const EARN_ROWS = [
@@ -374,6 +358,7 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="top"
+          className="snap-section"
           style={{
             position: "relative",
             minHeight: "calc(100vh - 73px)",
@@ -431,8 +416,7 @@ const Home = () => {
                     letterSpacing: "-0.02em",
                   }}
                 >
-                  Stop{" "}
-                  <span style={{ color: "#B83280" }}>feeling nothing.</span>
+                  Stop <span style={{ color: "#B83280" }}>swiping.</span>
                   <br />
                   Start a real conversation.
                 </h1>
@@ -600,54 +584,11 @@ const Home = () => {
               </aside>
             </div>
           </div>
-
-          {/* Ticker strip — always at the bottom of the viewport */}
-          <div
-            style={{
-              flexShrink: 0,
-              height: "40px",
-              background: "rgba(0,0,0,0.5)",
-              borderTop: "1px solid rgba(255,255,255,0.06)",
-              overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              position: "relative",
-              zIndex: 10,
-            }}
-          >
-            <div className="lp-ticker-track">
-              {[0, 1].map((copy) => (
-                <span
-                  key={copy}
-                  style={{ display: "inline-flex", alignItems: "center" }}
-                >
-                  {TICKER.map((item, j) => (
-                    <span
-                      key={j}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "1.25rem",
-                        marginRight: "1.25rem",
-                        fontSize: "0.65rem",
-                        letterSpacing: "0.2em",
-                        color: "rgba(255,255,255,0.35)",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item}
-                      <span style={{ color: "#B83280" }}>·</span>
-                    </span>
-                  ))}
-                </span>
-              ))}
-            </div>
-          </div>
         </section>
         {/* ══════════════════════════════════════════════════
             SECTION 2 — HOW IT WORKS
         ══════════════════════════════════════════════════ */}
-        <section id="how" className="py-24 px-8">
+        <section id="how" className="snap-section py-20 md:py-28 px-8">
           <div className="max-w-[1100px] mx-auto">
             <div data-reveal="" className="text-center mb-16">
               <h2
@@ -677,9 +618,9 @@ const Home = () => {
               </p>
             </div>
 
-            {/* 5-step flow */}
+            {/* 3-step flow */}
             {/* Mobile: vertical list. Desktop: horizontal row */}
-            <div className="relative flex flex-col gap-4 md:flex-row md:gap-0">
+            <div className="relative flex flex-col gap-8 md:flex-row md:gap-0 md:max-w-[860px] md:mx-auto">
               {/* Connecting line (desktop only) */}
               <div
                 className="hidden md:block absolute pointer-events-none"
@@ -697,7 +638,7 @@ const Home = () => {
                 <div
                   key={i}
                   data-reveal=""
-                  className="flex flex-row items-center gap-4 md:flex-col md:items-center md:text-center md:flex-1 md:px-4"
+                  className="flex flex-row items-start gap-5 md:flex-col md:items-center md:text-center md:flex-1 md:px-8"
                   style={{ transitionDelay: `${i * 0.1}s` }}
                 >
                   {/* Orb */}
@@ -770,9 +711,10 @@ const Home = () => {
                     </div>
                     <div
                       style={{
-                        fontSize: "0.78rem",
+                        fontSize: "0.82rem",
                         color: "rgba(255,255,255,0.45)",
-                        lineHeight: 1.65,
+                        lineHeight: 1.7,
+                        marginTop: "0.2rem",
                       }}
                     >
                       {step.subtitle}
@@ -901,7 +843,7 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="live"
-          className="py-24 px-8"
+          className="snap-section py-24 px-8"
           style={{ background: "#0f0f1a" }}
         >
           <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-20 items-start">
@@ -962,10 +904,23 @@ const Home = () => {
                       }}
                     />
                     <div>
-                      <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "white" }}>
+                      <div
+                        style={{
+                          fontSize: "0.9rem",
+                          fontWeight: 600,
+                          color: "white",
+                        }}
+                      >
                         {item.who}
                       </div>
-                      <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", marginTop: "0.2rem", lineHeight: 1.6 }}>
+                      <div
+                        style={{
+                          fontSize: "0.82rem",
+                          color: "rgba(255,255,255,0.45)",
+                          marginTop: "0.2rem",
+                          lineHeight: 1.6,
+                        }}
+                      >
                         {item.desc}
                       </div>
                     </div>
@@ -1178,7 +1133,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════════
             SECTION 5 — CONVOO PASSES
         ══════════════════════════════════════════════════ */}
-        <section id="events" className="py-24 px-8">
+        <section id="events" className="snap-section py-24 px-8">
           <div className="max-w-[1100px] mx-auto">
             <div data-reveal="" style={{ marginBottom: "3.5rem" }}>
               <h2
@@ -1438,7 +1393,7 @@ const Home = () => {
         ══════════════════════════════════════════════════ */}
         <section
           id="about"
-          className="py-24 px-8"
+          className="snap-section py-24 px-8"
           style={{ background: "rgba(255,255,255,0.015)" }}
         >
           <div className="max-w-[860px] mx-auto">
