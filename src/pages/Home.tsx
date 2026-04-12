@@ -148,6 +148,10 @@ const USE_CASES = [
     who: "Local event organizers",
     desc: "Pair a Convoo room with your IRL event so guests connect before they arrive.",
   },
+  {
+    who: "Speed dating organizers",
+    desc: "Replace your existing event infrastructure with one code. We handle the matching.",
+  },
 ];
 
 const EARN_ROWS = [
@@ -956,11 +960,8 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Convoo lets anyone create a private live dating room — no venue,
-                no ticket system, no third-party tools. Generate a unique event
-                code, share it with your community, and your guests unlock a
-                live matching room inside the app. Fully access-controlled and
-                real-time.
+                Your community. Your vibe. One code and your guests are inside a
+                live matching room — no venue, no fees, no friction.
               </p>
 
               {/* Use case list */}
@@ -1010,24 +1011,6 @@ const Home = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* Pink callout */}
-              <div
-                style={{
-                  marginTop: "2rem",
-                  padding: "1.2rem 1.5rem",
-                  borderLeft: "2px solid #B83280",
-                  background: "rgba(184,50,128,0.08)",
-                  fontSize: "0.85rem",
-                  fontStyle: "italic",
-                  color: "rgba(255,255,255,0.8)",
-                  lineHeight: 1.75,
-                }}
-              >
-                "Generate a unique code. Share it anywhere — Instagram, group
-                chat, email list. Your guests tap it in the app and land in a
-                live matching room built just for them."
-              </div>
             </div>
 
             {/* Right — Terminal card */}
@@ -1153,7 +1136,7 @@ const Home = () => {
                       "rgba(184,50,128,0.45)";
                   }}
                 >
-                  Apply to host an event →
+                  Get your event code →
                 </a>
 
                 <div
