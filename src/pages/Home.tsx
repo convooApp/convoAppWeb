@@ -1689,7 +1689,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-center gap-3">
-                {/* App Store */}
+                {/* App Store Listing */}
                 <a
                   href="https://apps.apple.com/us/app/convoo/id6746660683"
                   target="_blank"
