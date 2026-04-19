@@ -1135,7 +1135,7 @@ const Home = () => {
                       "rgba(184,50,128,0.45)";
                   }}
                 >
-                  Get your event code →
+                  Create your own community →
                 </a>
 
                 <div
