@@ -12,6 +12,7 @@ import './fonts.css';
 import Events from './pages/Events';
 import DownloadNow from './pages/downloadNow';
 import Links from './pages/Links';
+import ApplyToHost from './pages/ApplyToHost';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
             <Route path="/download-now" element={<DownloadNow />} />
             <Route path="/events" element={<Events />} />
             <Route path="/links" element={<Links />} />
+            <Route path="/apply-to-host" element={<ApplyToHost />} />
           </Routes>
         </div>
       </div>

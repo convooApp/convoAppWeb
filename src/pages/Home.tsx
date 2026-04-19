@@ -1103,8 +1103,7 @@ const Home = () => {
                 </div>
 
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeMnGv9DEDomSQ6OnjNnBrszxmBjwPqefzgCx-zXqCR3i_2sw/viewform"
-                  target="_blank"
+                  href="#/apply-to-host"
                   rel="noreferrer"
                   style={{
                     display: "inline-flex",
