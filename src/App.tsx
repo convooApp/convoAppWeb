@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
 import Terms from './pages/Terms';
@@ -24,9 +24,9 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
+function AppRoutes() {
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
@@ -46,7 +46,25 @@ function App() {
           </Routes>
         </div>
       </div>
-    </Router>
+    </>
+  );
+}
+
+function App() {
+  const isApplyToHost = window.location.pathname === '/apply-to-host';
+
+  if (isApplyToHost) {
+    return (
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    );
+  }
+
+  return (
+    <HashRouter>
+      <AppRoutes />
+    </HashRouter>
   );
 }
 

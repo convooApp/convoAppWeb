@@ -2,36 +2,54 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
-/* ─── Config ──────────────────────────────────────────────────────────────── */
+/* ─── Types ───────────────────────────────────────────────────────────────── */
 
 interface FormData {
   name: string;
   email: string;
-  eventTitle: string;
-  eventDescription: string;
+  phone: string;
+  communityName: string;
+  communitySize: string;
   hostingAs: string;
-  eventSetup: string;
-  eventKind: string;
-  expectedPeople: string;
   timeWindow: string;
-  eventCode: string;
   additionalNotes: string;
 }
 
 const EMPTY: FormData = {
   name: "",
   email: "",
-  eventTitle: "",
-  eventDescription: "",
+  phone: "",
+  communityName: "",
+  communitySize: "",
   hostingAs: "",
-  eventSetup: "",
-  eventKind: "",
-  expectedPeople: "",
   timeWindow: "",
-  eventCode: "",
   additionalNotes: "",
 };
 
+/* ─── Pill selector ───────────────────────────────────────────────────────── */
+interface PillGroupProps {
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}
+const PillGroup: React.FC<PillGroupProps> = ({ options, value, onChange }) => (
+  <div className="flex flex-wrap gap-2 mt-1">
+    {options.map((opt) => (
+      <button
+        key={opt}
+        type="button"
+        onClick={() => onChange(opt)}
+        className={`px-4 py-2 rounded-full border text-sm font-medium transition-all duration-150 ${
+          value === opt
+            ? "border-[#B83280]/60 bg-[#B83280]/15 text-white"
+            : "border-white/[0.08] bg-white/[0.03] text-white/50 hover:border-white/20 hover:text-white/75"
+        }`}
+      >
+        {opt}
+      </button>
+    ))}
+  </div>
+);
 
 /* ─── Radio card ──────────────────────────────────────────────────────────── */
 interface RadioCardProps {
@@ -125,21 +143,44 @@ const StepHead: React.FC<{ n: string; title: string; sub: string }> = ({
   </div>
 );
 
-/* ─── Input ───────────────────────────────────────────────────────────────── */
+/* ─── Input class ─────────────────────────────────────────────────────────── */
 const inputCls =
   "w-full px-4 py-3.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-white placeholder-white/20 text-sm outline-none transition-all focus:border-[#B83280]/50 focus:bg-[#B83280]/[0.04] hover:border-white/20";
+
+/* ─── FAQ accordion ───────────────────────────────────────────────────────── */
+const FAQ_ITEMS = [
+  {
+    q: "How much time does this take from me?",
+    a: "About 20 minutes total. Fill out this form (2 min), hop on a quick call with our team (10–15 min), then share the event code with your community. We handle everything else.",
+  },
+  {
+    q: "What if my community isn't focused on dating?",
+    a: "That's fine. Many of our best events come from groups that just want something fun and social to do together. The app creates real conversations — romantic or not.",
+  },
+  {
+    q: "What if no one shows up?",
+    a: "We'll reschedule at no cost. Events need at least 6 people to run well — if you're unsure about turnout, just tell us and we'll help you figure out the right size and timing.",
+  },
+  {
+    q: "Can I cancel after applying?",
+    a: "Yes, anytime before the event goes live. Just reply to our email or text us. No commitment until your community actually joins.",
+  },
+  {
+    q: "Does it cost anything?",
+    a: "No charge to host. Convoo is free for your community to use. We're growing and want more events on the platform — that's the deal.",
+  },
+];
 
 /* ─── Main page ───────────────────────────────────────────────────────────── */
 const ApplyToHost: React.FC = () => {
   const [form, setForm] = useState<FormData>(EMPTY);
-  const [charCount, setCharCount] = useState(0);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
   const errorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Add focus style for inputs (Tailwind can't do focus on custom colors without plugin)
     const style = document.createElement("style");
     style.id = "ath-css";
     style.textContent = `
@@ -149,38 +190,6 @@ const ApplyToHost: React.FC = () => {
       @keyframes ath-spin  { to{transform:rotate(360deg)} }
       .ath-ring { animation: ath-ring 2.2s ease-in-out infinite; }
       .ath-spin { animation: ath-spin .7s linear infinite; }
-      
-      /* Fix date and time picker styling for dark theme */
-      input[type="date"], input[type="time"] {
-        color-scheme: dark;
-      }
-      
-      /* Force calendar picker to be visible */
-      input[type="date"]::-webkit-calendar-picker-indicator {
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E") no-repeat center;
-        background-size: 16px 16px;
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-        filter: none !important;
-        opacity: 1 !important;
-      }
-      
-      input[type="time"]::-webkit-calendar-picker-indicator {
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E") no-repeat center;
-        background-size: 16px 16px;
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-        filter: none !important;
-        opacity: 1 !important;
-      }
-      
-      input[type="time"]::-webkit-inner-spin-button,
-      input[type="time"]::-webkit-outer-spin-button {
-        filter: invert(1) brightness(1.5);
-        opacity: 1;
-      }
     `;
     document.head.appendChild(style);
     return () => document.getElementById("ath-css")?.remove();
@@ -201,13 +210,10 @@ const ApplyToHost: React.FC = () => {
     if (!form.name.trim()) return "Please enter your name.";
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       return "Please enter a valid email.";
-    if (!form.eventTitle.trim()) return "Please give your event a title.";
+    if (!form.phone.trim()) return "Please enter your phone number.";
     if (!form.hostingAs) return "Please select who you are hosting as.";
-    if (!form.eventKind) return "Please select the kind of event.";
-    if (!form.expectedPeople.trim())
-      return "Please enter expected attendee count.";
-    if (!form.timeWindow.trim()) return "Please enter a time window.";
-    if (!form.eventCode.trim()) return "Please enter a desired event code.";
+    if (!form.communitySize) return "Please select your community size.";
+    if (!form.timeWindow) return "Please select when you'd like to host.";
     return "";
   };
 
@@ -232,14 +238,11 @@ const ApplyToHost: React.FC = () => {
         {
           name: form.name.trim(),
           email: form.email.trim().toLowerCase(),
-          event_title: form.eventTitle.trim(),
-          event_description: form.eventDescription.trim(),
+          phone: form.phone.trim(),
+          community_name: form.communityName.trim(),
+          community_size: form.communitySize,
           hosting_as: form.hostingAs,
-          event_setup: form.eventSetup,
-          event_kind: form.eventKind,
-          expected_people: form.expectedPeople.trim(),
-          time_window: form.timeWindow.trim(),
-          event_code: form.eventCode.trim(),
+          time_window: form.timeWindow,
           additional_notes: form.additionalNotes.trim(),
           created_at: new Date().toISOString(),
         },
@@ -253,7 +256,7 @@ const ApplyToHost: React.FC = () => {
     }
   };
 
-  /* ── Nav — identical to Home.tsx ── */
+  /* ── Nav ── */
   const Nav = () => (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(10,10,10,.85)] border-b border-white/[0.06]">
       <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-6 px-8 py-4">
@@ -312,19 +315,17 @@ const ApplyToHost: React.FC = () => {
               </div>
             </div>
             <h2 className="text-3xl font-bold text-white mb-3">
-              You're in the queue
+              Application received
             </h2>
             <p className="text-white/55 text-base max-w-sm mx-auto leading-relaxed mb-2">
               Thanks,{" "}
               <span className="text-white font-medium">{form.name}</span>. Your
-              application for{" "}
-              <span className="text-[#B83280]">"{form.eventTitle}"</span> is
-              with us.
+              application is with us.
             </p>
             <p className="text-white/40 text-sm mb-10">
               We'll reach out to{" "}
-              <span className="text-white/60">{form.email}</span> within 2–3
-              business days.
+              <span className="text-white/60">{form.email}</span> within 24
+              hours.
             </p>
             <Link
               to="/"
@@ -338,12 +339,11 @@ const ApplyToHost: React.FC = () => {
     );
   }
 
-  /* ── Form page ── */
+  /* ── Main page ── */
   return (
     <div className="bg-[#0a0a0a] text-white min-h-screen">
       <Nav />
 
-      {/* Ambient glow — bottom right, matches convoo.app */}
       <div
         className="pointer-events-none fixed bottom-0 right-0 w-[600px] h-[600px] translate-x-1/3 translate-y-1/3 rounded-full opacity-60"
         style={{
@@ -354,7 +354,6 @@ const ApplyToHost: React.FC = () => {
 
       {/* ── Hero ── */}
       <section className="relative text-center px-6 pt-24 pb-16 overflow-hidden">
-        {/* Subtle top glow */}
         <div
           className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px]"
           style={{
@@ -363,21 +362,25 @@ const ApplyToHost: React.FC = () => {
           }}
         />
 
-        {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#B83280]/30 bg-[#B83280]/10 text-[#B83280] text-xs font-semibold uppercase tracking-widest mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-[#B83280] animate-pulse" />
-          Private In-App Events
+          Host a Private Event
         </div>
 
         <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-[1.04] tracking-tight mb-5">
-          Host your own
+          Run a singles night for
           <br />
-          <span className="text-[#B83280]">Convoo event</span>
+          <span className="text-[#B83280]">your community</span>
+          <br />
+          <span className="text-white/60 text-4xl md:text-5xl font-bold">
+            we handle the tech.
+          </span>
         </h1>
 
-        <p className="text-white/55 text-lg max-w-md mx-auto leading-relaxed mb-10">
-          Bring your group, your club, or your community into the app. We'll set
-          up a private event code — just for you.
+        <p className="text-white/55 text-lg max-w-lg mx-auto leading-relaxed mb-10">
+          Your people get a private, live matchmaking experience — real
+          conversations, real connections, done in 30 minutes. You just share
+          the code.
         </p>
 
         <div className="flex flex-wrap justify-center gap-2">
@@ -399,15 +402,262 @@ const ApplyToHost: React.FC = () => {
         </div>
       </section>
 
+      {/* ── Featured quote ── */}
+      <section className="max-w-[760px] mx-auto px-6 pb-20">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#111] px-8 py-8">
+          <div className="flex gap-1 mb-5">
+            <div className="w-3 h-3 rounded-sm bg-[#B83280]/60" />
+            <div className="w-3 h-3 rounded-sm bg-[#B83280]/60" />
+          </div>
+          <p className="text-white text-xl md:text-2xl font-semibold leading-snug mb-5">
+            There's no other dating app where you can say you're using the
+            interface while you're outside.
+          </p>
+          <p className="text-white/35 text-sm">
+            — Attendee, first Convoo live event — Atlanta
+          </p>
+        </div>
+      </section>
+
+      {/* ── How it works ── */}
+      <section className="max-w-[960px] mx-auto px-6 pb-20">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-3">
+          How it works
+        </h2>
+        <p className="text-white/40 text-sm text-center mb-12">
+          From application to live event in under a week.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            {
+              step: "01",
+              title: "Apply in 2 minutes",
+              desc: "Tell us who you are and what your community looks like. Short form — no essays.",
+            },
+            {
+              step: "02",
+              title: "We call you within 24 hours",
+              desc: "A 15-minute call to understand your community and shape the event format together.",
+            },
+            {
+              step: "03",
+              title: "Share the code, we do the rest",
+              desc: "You get a private code to share. Your people join at event time. Matching happens live, in 30 minutes.",
+            },
+          ].map(({ step, title, desc }) => (
+            <div
+              key={step}
+              className="p-6 rounded-2xl bg-[#141414] border border-white/[0.06]"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#B83280]/20 border border-[#B83280]/30 flex items-center justify-center text-[#B83280] text-xs font-bold font-mono mb-5">
+                {step}
+              </div>
+              <div className="text-lg font-bold text-white mb-2 leading-snug">
+                {title}
+              </div>
+              <div className="text-sm text-white/40 leading-relaxed">
+                {desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Built for communities ── */}
+      <section className="max-w-[960px] mx-auto px-6 pb-20">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-3">
+          Built for communities that already meet
+        </h2>
+        <p className="text-white/40 text-sm text-center mb-12">
+          If you're already the person who brings people together, this is your
+          night.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            {
+              title: "Run clubs & fitness groups",
+              desc: "Singles who already show up weekly. Give them a reason to stick around after.",
+            },
+            {
+              title: "College clubs & student orgs",
+              desc: "Valentine's, rush week, finals blow-off — make your event the one people remember.",
+            },
+            {
+              title: "Cultural & identity groups",
+              desc: "Desi, Black, Jewish, LGBTQ+, alumni — host a night just for your people.",
+            },
+            {
+              title: "Bars, cafés & venues",
+              desc: "Fill a slow Tuesday. We bring the matching; you bring the drinks.",
+            },
+            {
+              title: "Creators & local hosts",
+              desc: "Give your audience a real-world moment they'll actually post about.",
+            },
+            {
+              title: "Young professional networks",
+              desc: "Alumni chapters, co-working spaces, industry meetups — warm, low-pressure, local.",
+            },
+          ].map(({ title, desc }) => (
+            <div
+              key={title}
+              className="p-6 rounded-2xl bg-[#141414] border border-white/[0.06]"
+            >
+              <div className="text-base font-bold text-white mb-2">{title}</div>
+              <div className="text-sm text-white/40 leading-relaxed">
+                {desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Host story ── */}
+      <section className="max-w-[760px] mx-auto px-6 pb-20">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#111] p-8">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#B83280]">
+              Host story
+            </span>
+            <span className="text-xs text-white/40 border border-white/[0.12] px-2.5 py-1 rounded-full">
+              Aspirational example
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-3 leading-snug">
+            "I ran a 40-person singles night for my college club in one week."
+          </h3>
+          <p className="text-sm text-white/45 leading-relaxed mb-6">
+            Campus social chair at a 500-person university club. No events
+            experience. Just wanted to do something different for Valentine's
+            week.
+          </p>
+
+          <div className="h-px bg-white/[0.07] mb-6" />
+
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {[
+              { label: "Setup time", value: "~20 min" },
+              { label: "Attendees", value: "38" },
+              { label: "Matches made", value: "14" },
+            ].map(({ label, value }, i) => (
+              <div
+                key={label}
+                className={`text-center ${i > 0 ? "border-l border-white/[0.07]" : ""}`}
+              >
+                <div className="text-2xl font-extrabold text-[#B83280]">
+                  {value}
+                </div>
+                <div className="text-xs text-white/35 mt-1">{label}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="h-px bg-white/[0.07] mb-6" />
+
+          <blockquote className="border-l-2 border-[#B83280]/50 pl-4 text-sm text-white/45 italic leading-relaxed">
+            "I literally just filled out the form, got on a call the next day,
+            and shared a code in our group chat. People were matching before I
+            even got home."
+          </blockquote>
+        </div>
+      </section>
+
+      {/* ── What attendees are saying ── */}
+      <section className="max-w-[960px] mx-auto px-6 pb-20">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-3">
+          What attendees are saying
+        </h2>
+        <p className="text-white/40 text-sm text-center mb-12">
+          From our first live event in Atlanta.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            {
+              quote:
+                "There's a community element to it. You feel like you're part of something, not just on another app.",
+              attr: "Attendee, first Convoo event",
+            },
+            {
+              quote:
+                "It's much more than building relationships romantically — genuine friendships were created at this event as well.",
+              attr: "Attendee, first Convoo event",
+            },
+          ].map(({ quote, attr }) => (
+            <div
+              key={quote}
+              className="p-7 rounded-2xl bg-[#141414] border border-white/[0.06] flex flex-col justify-between"
+            >
+              <p className="text-white text-lg font-semibold leading-snug mb-6">
+                "{quote}"
+              </p>
+              <p className="text-white/35 text-sm">— {attr}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="max-w-[760px] mx-auto px-6 pb-20">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-12">
+          Common questions
+        </h2>
+        <div>
+          {FAQ_ITEMS.map(({ q, a }, i) => (
+            <div key={q}>
+              {i > 0 && <div className="h-px bg-white/[0.07]" />}
+              <button
+                type="button"
+                onClick={() => setOpenFaq(openFaq === q ? null : q)}
+                className="w-full flex items-center justify-between gap-4 py-5 text-left"
+              >
+                <span className="text-base font-medium text-white/80 hover:text-white transition-colors">
+                  {q}
+                </span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center">
+                  <svg
+                    className={`w-3 h-3 text-white/50 transition-transform duration-200 ${openFaq === q ? "rotate-45" : ""}`}
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path
+                      d="M6 1v10M1 6h10"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              {openFaq === q && (
+                <div className="pb-5 text-sm text-white/45 leading-relaxed">
+                  {a}
+                </div>
+              )}
+            </div>
+          ))}
+          <div className="h-px bg-white/[0.07]" />
+        </div>
+      </section>
+
       {/* ── Form ── */}
       <div className="max-w-[640px] mx-auto px-6 pb-24">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-white mb-2">Apply to host</h2>
+          <p className="text-white/40 text-sm">
+            Takes 2 minutes. We'll call you within 24 hours.
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} noValidate>
           {/* ── 01 Who are you ── */}
           <div className="mb-12">
             <StepHead
               n="01"
               title="Who are you?"
-              sub="So we know who to reply to"
+              sub="So we know who to reach out to"
             />
 
             <div className="grid sm:grid-cols-2 gap-4 mb-5">
@@ -432,6 +682,41 @@ const ApplyToHost: React.FC = () => {
                 />
               </Field>
             </div>
+
+            <Field label="Phone number" required>
+              <input
+                className={`${inputCls} ath-input`}
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                value={form.phone}
+                onChange={set("phone")}
+                autoComplete="tel"
+              />
+            </Field>
+
+            <Field
+              label="Community or group name"
+              helper="What do you call your group? (Optional — helps us personalise your event)"
+            >
+              <input
+                className={`${inputCls} ath-input`}
+                type="text"
+                placeholder='e.g. "CS Club", "Sunday Crew", "NYC Founder Circle"'
+                value={form.communityName}
+                onChange={set("communityName")}
+              />
+            </Field>
+
+            <Field label="Community size" required>
+              <PillGroup
+                options={["Under 50", "50–200", "200–1,000", "1,000+"]}
+                value={form.communitySize}
+                onChange={(v) => {
+                  setForm((p) => ({ ...p, communitySize: v }));
+                  setError("");
+                }}
+              />
+            </Field>
 
             <Field label="You're hosting as" required>
               <div className="grid sm:grid-cols-2 gap-3 mt-1">
@@ -488,188 +773,42 @@ const ApplyToHost: React.FC = () => {
           {/* divider */}
           <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-12" />
 
-          {/* ── 02 Your event ── */}
+          {/* ── 02 Timing + notes ── */}
           <div className="mb-12">
-            <StepHead n="02" title="Your event" sub="What are you planning?" />
+            <StepHead
+              n="02"
+              title="When & anything else?"
+              sub="That's all we need for now — details happen on the call"
+            />
 
-            <Field
-              label="Event title"
-              required
-              helper={
-                'What attendees will see. E.g. "Friday Vibes", "CS Club Mixer", "Valentine\'s Night".'
-              }
-            >
-              <input
-                className={`${inputCls} ath-input`}
-                type="text"
-                placeholder='e.g. "Friday Vibes"'
-                value={form.eventTitle}
-                onChange={set("eventTitle")}
+            <Field label="When would you like to host?" required>
+              <PillGroup
+                options={[
+                  "Next 2 weeks",
+                  "2–4 weeks",
+                  "1–2 months",
+                  "Just exploring",
+                ]}
+                value={form.timeWindow}
+                onChange={(v) => {
+                  setForm((p) => ({ ...p, timeWindow: v }));
+                  setError("");
+                }}
               />
             </Field>
 
             <Field
-              label="Short tagline"
-              helper="One line shown under the event name. 15 characters max."
+              label="Anything else?"
+              helper="Venue details, special requests, questions — whatever helps."
             >
-              <div className="relative">
-                <input
-                  className={`${inputCls} ath-input pr-14`}
-                  type="text"
-                  placeholder='e.g. "Speed dating"'
-                  maxLength={15}
-                  value={form.eventDescription}
-                  onChange={(e) => {
-                    set("eventDescription")(e);
-                    setCharCount(e.target.value.length);
-                  }}
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-white/25 font-mono pointer-events-none">
-                  {charCount}/15
-                </span>
-              </div>
-            </Field>
-
-            <Field label="Kind of event" required>
-              <div className="grid sm:grid-cols-2 gap-3 mt-1">
-                {[
-                  {
-                    value: "Private group event",
-                    label: "Private group",
-                    desc: "Invite-only for your circle",
-                    icon: "🔒",
-                  },
-                  {
-                    value: "College event",
-                    label: "College event",
-                    desc: "Campus-based social or club",
-                    icon: "🏫",
-                  },
-                  {
-                    value: "Creator-led matchmaking",
-                    label: "Creator-led",
-                    desc: "You curate for your audience",
-                    icon: "✨",
-                  },
-                  {
-                    value: "Offline meetup / pop-up",
-                    label: "Offline meetup",
-                    desc: "In-person with digital icebreaking",
-                    icon: "📍",
-                  },
-                ].map((opt) => (
-                  <RadioCard
-                    key={opt.value}
-                    name="eventKind"
-                    {...opt}
-                    selected={form.eventKind === opt.value}
-                    onChange={radio("eventKind")}
-                  />
-                ))}
-              </div>
-            </Field>
-          </div>
-
-          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-12" />
-
-          {/* ── 03 Setup ── */}
-          <div className="mb-12">
-            <StepHead
-              n="03"
-              title="Setup details"
-              sub="How do you want it configured?"
-            />
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field
-                label="Expected attendees"
-                required
-                helper='E.g. "20", "50–100", "200+"'
-              >
-                <input
-                  className={`${inputCls} ath-input`}
-                  type="text"
-                  placeholder='e.g. "50–100"'
-                  value={form.expectedPeople}
-                  onChange={set("expectedPeople")}
-                />
-              </Field>
-              <Field
-                label="Event date"
-                required
-                helper="Select the date of your event"
-              >
-                <input
-                  className={`${inputCls} ath-input`}
-                  type="date"
-                  value={form.timeWindow.split(" ")[0] || ""}
-                  onChange={(e) => {
-                    const time = form.timeWindow.split(" ")[1] || "19:00";
-                    setForm((p) => ({
-                      ...p,
-                      timeWindow: `${e.target.value} ${time}`,
-                    }));
-                  }}
-                />
-              </Field>
-              <Field
-                label="Event time"
-                required
-                helper="What time should the event start?"
-              >
-                <input
-                  className={`${inputCls} ath-input`}
-                  type="time"
-                  value={form.timeWindow.split(" ")[1] || "19:00"}
-                  onChange={(e) => {
-                    const date = form.timeWindow.split(" ")[0] || "";
-                    setForm((p) => ({
-                      ...p,
-                      timeWindow: `${date} ${e.target.value}`,
-                    }));
-                  }}
-                />
-              </Field>
-            </div>
-
-            <Field
-              label="Desired event code"
-              required
-              helper="What guests type into the app. Letters and numbers only, no spaces."
-            >
-              <input
-                className={`${inputCls} ath-input font-mono tracking-widest uppercase`}
-                type="text"
-                placeholder="e.g. FRIDAYFUN"
-                value={form.eventCode}
-                onChange={(e) =>
-                  setForm((p) => ({
-                    ...p,
-                    eventCode: e.target.value
-                      .toUpperCase()
-                      .replace(/[^A-Z0-9]/g, ""),
-                  }))
-                }
+              <textarea
+                className={`${inputCls} ath-input resize-none leading-relaxed`}
+                rows={4}
+                placeholder="Share anything that helps us set up the right event for you…"
+                value={form.additionalNotes}
+                onChange={set("additionalNotes")}
               />
             </Field>
-          </div>
-
-          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-12" />
-
-          {/* ── 04 Notes ── */}
-          <div className="mb-12">
-            <StepHead
-              n="04"
-              title="Anything else?"
-              sub="Optional — venue info, special requests, whatever helps"
-            />
-            <textarea
-              className={`${inputCls} ath-input resize-none leading-relaxed`}
-              rows={4}
-              placeholder="Share anything that helps us set up the right event for you…"
-              value={form.additionalNotes}
-              onChange={set("additionalNotes")}
-            />
           </div>
 
           {/* Error */}
@@ -731,11 +870,11 @@ const ApplyToHost: React.FC = () => {
                 Submitting…
               </span>
             ) : (
-              "Submit application"
+              "Submit application →"
             )}
           </button>
           <p className="text-center text-xs text-white/25 mt-4 leading-relaxed">
-            We review every application and reply within 2–3 business days.
+            We review every application and reply within 24 hours.
           </p>
         </form>
       </div>
