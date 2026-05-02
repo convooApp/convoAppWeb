@@ -14,6 +14,7 @@ import {
   Heart,
   Zap,
   Users,
+  Menu,
 } from "lucide-react";
 import "../landing.css";
 
@@ -167,6 +168,7 @@ const Home = () => {
   const [todayEvent, setTodayEvent] = useState<Event | null>(null);
   const [loadingEvent, setLoadingEvent] = useState(true);
   const [activeSection, setActiveSection] = useState("top");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [countdown, setCountdown] = useState("");
   const spyRef = useRef<IntersectionObserver | null>(null);
 
@@ -258,15 +260,24 @@ const Home = () => {
     return () => obs.disconnect();
   }, []);
 
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navHeight =
+      document.querySelector<HTMLElement>("nav[data-site-nav]")?.offsetHeight ?? 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
 
   /* ── render ─────────────────────────────────────────── */
   return (
     <>
       <div className="bg-[#0a0a0a] text-white">
         {/* ── Nav ─────────────────────────────────────────── */}
-        <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(10,10,10,.8)] border-b border-white/[0.06]">
+        <nav
+          data-site-nav
+          className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(10,10,10,.8)] border-b border-white/[0.06]"
+        >
           <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-6 px-8 py-4">
             <a
               className="flex items-center gap-3 no-underline font-bold tracking-wide text-white"
@@ -300,6 +311,47 @@ const Home = () => {
                     scrollTo(id);
                   }}
                   className="no-underline text-[rgba(245,242,248,.7)] font-medium text-sm px-4 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-all"
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((o) => !o)}
+              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl text-white/80 hover:bg-white/[0.08] hover:text-white transition-all"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+
+          <div
+            className={`md:hidden absolute left-0 right-0 top-full overflow-hidden border-b border-white/[0.06] bg-[rgba(10,10,10,.92)] backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(0,0,0,0.6)] transition-[max-height,opacity] duration-300 ease-out ${
+              mobileMenuOpen
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0 pointer-events-none"
+            }`}
+          >
+            <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-col">
+              {[
+                { id: "how", label: "How it works" },
+                { id: "pov", label: "Why Convoo" },
+                { id: "live", label: "Community" },
+                { id: "events", label: "Passes" },
+                { id: "about", label: "Our Story" },
+              ].map(({ id, label }) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    scrollTo(id);
+                  }}
+                  className="no-underline text-[rgba(245,242,248,.85)] font-medium text-base px-3 py-3 rounded-xl hover:bg-white/[0.08] hover:text-white transition-all"
                 >
                   {label}
                 </a>

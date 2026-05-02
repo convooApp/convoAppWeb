@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { X, Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { X, Calendar, Clock, MapPin, Users } from "lucide-react";
 
 dayjs.extend(utc);
-import { supabase } from '../lib/supabase';
+import { supabase } from "../lib/supabase";
 
 interface Event {
   id: string;
@@ -33,20 +33,19 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      
+
       const now = dayjs();
 
       const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .gte('start_time', now.format('YYYY-MM-DD'))
-        .order('start_time', { ascending: true });
-
+        .from("events")
+        .select("*")
+        .gte("start_time", now.format("YYYY-MM-DD"))
+        .order("start_time", { ascending: true });
 
       if (error) {
         setError(error as Error);
       } else {
-        setEvents(data as Event[] || []);
+        setEvents((data as Event[]) || []);
         setError(null);
       }
     } catch (err) {
@@ -58,53 +57,53 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
 
   const isToday = (dateString: string) => {
     // Compare the date part of the UTC timestamp with the user's local 'today'
-    const eventDate = dayjs.utc(dateString).format('YYYY-MM-DD');
-    const todayInUTC = dayjs().utc().format('YYYY-MM-DD'); // To be safe, compare UTC with UTC
+    const eventDate = dayjs.utc(dateString).format("YYYY-MM-DD");
+    const todayInUTC = dayjs().utc().format("YYYY-MM-DD"); // To be safe, compare UTC with UTC
     return eventDate === todayInUTC;
   };
 
   const formatDate = (dateString: string) => {
     const eventDate = dayjs.utc(dateString);
-    const today = dayjs().startOf('day');
-    const tomorrow = dayjs().add(1, 'day').startOf('day');
+    const today = dayjs().startOf("day");
+    const tomorrow = dayjs().add(1, "day").startOf("day");
 
-    if (eventDate.isSame(today, 'day')) {
-      return 'Today';
-    } else if (eventDate.isSame(tomorrow, 'day')) {
-      return 'Tomorrow';
+    if (eventDate.isSame(today, "day")) {
+      return "Today";
+    } else if (eventDate.isSame(tomorrow, "day")) {
+      return "Tomorrow";
     } else {
-      return eventDate.format('dddd, MMM D');
+      return eventDate.format("dddd, MMM D");
     }
   };
 
   const formatTime = (dateString: string) => {
     // Parse the date as UTC and format it in UTC.
     const date = dayjs.utc(dateString);
-    return date.format('h:mm A');
+    return date.format("h:mm A");
   };
 
   const formatDuration = (duration: string) => {
     // Handle duration format (e.g., "2:00:00", "1:30:00", etc.)
-    if (!duration) return 'Duration TBD';
-    
+    if (!duration) return "Duration TBD";
+
     try {
-      const parts = duration.split(':');
+      const parts = duration.split(":");
       if (parts.length >= 2) {
         const hours = parseInt(parts[0]);
         const minutes = parseInt(parts[1]);
-        
+
         if (hours === 0) {
           return `${minutes} minutes`;
         } else if (minutes === 0) {
-          return `${hours} hour${hours > 1 ? 's' : ''}`;
+          return `${hours} hour${hours > 1 ? "s" : ""}`;
         } else {
           return `${hours}h ${minutes}m`;
         }
       }
     } catch (error) {
-      console.error('Error parsing duration:', error);
+      console.error("Error parsing duration:", error);
     }
-    
+
     return duration;
   };
 
@@ -116,8 +115,12 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Upcoming Events</h2>
-            <p className="text-gray-600 mt-1">Connect through meaningful conversations</p>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Upcoming Events
+            </h2>
+            <p className="text-gray-600 mt-1">
+              Connect through meaningful conversations
+            </p>
           </div>
           <button
             onClick={onClose}
@@ -136,7 +139,7 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
           ) : error ? (
             <div className="text-center py-12">
               <p className="text-red-600">{error.message}</p>
-              <button 
+              <button
                 onClick={fetchEvents}
                 className="mt-4 px-4 py-2 bg-[#B83280] text-white rounded-lg hover:bg-[#a02970] transition-colors"
               >
@@ -154,7 +157,9 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
                 <div
                   key={event.id}
                   className={`bg-white border rounded-xl p-6 hover:shadow-lg transition-shadow ${
-                    isToday(event.start_time) ? 'border-[#B83280] bg-gradient-to-r from-[#4CAF50]/5 to-transparent' : 'border-gray-200'
+                    isToday(event.start_time)
+                      ? "border-[#B83280] bg-gradient-to-r from-[#4CAF50]/5 to-transparent"
+                      : "border-gray-200"
                   }`}
                 >
                   <div className="flex gap-4">
@@ -201,9 +206,15 @@ export const EventsModal = ({ isOpen, onClose }: EventsModalProps) => {
 
                       {/* Action Button */}
                       <div className="mt-4">
-                        <button 
-                        onClick={() => window.open('https://apps.apple.com/us/app/convoo/id6746660683', '_blank')}
-                        className="px-4 py-2 bg-[#B83280] text-white rounded-lg hover:bg-[#a02970] transition-colors text-sm font-medium">
+                        <button
+                          onClick={() =>
+                            window.open(
+                              "https://apps.apple.com/us/app/convoo/id6746660683",
+                              "_blank",
+                            )
+                          }
+                          className="px-4 py-2 bg-[#B83280] text-white rounded-lg hover:bg-[#a02970] transition-colors text-sm font-medium"
+                        >
                           Join Event
                         </button>
                       </div>
