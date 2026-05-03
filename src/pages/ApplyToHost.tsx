@@ -377,11 +377,38 @@ const ApplyToHost: React.FC = () => {
           </span>
         </h1>
 
-        <p className="text-white/55 text-lg max-w-lg mx-auto leading-relaxed mb-10">
-          Your people get a private, live matchmaking experience — real
-          conversations, real connections, done in 30 minutes. You just share
-          the code.
+        <p className="text-white/55 text-lg max-w-lg mx-auto leading-relaxed mb-8">
+          Your people text live for 3 minutes, photos reveal after, and both
+          decide if they want to keep talking. Real conversation before any
+          photo. We handle the tech, you just share the code.
         </p>
+
+        <button
+          type="button"
+          onClick={() =>
+            document
+              .getElementById("apply-form")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+          className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#B83280] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity mb-10"
+        >
+          Tell us about your community
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M8 3v10M3 8l5 5 5-5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
 
         <div className="flex flex-wrap justify-center gap-2">
           {[
@@ -437,13 +464,13 @@ const ApplyToHost: React.FC = () => {
             },
             {
               step: "02",
-              title: "We call you within 24 hours",
+              title: "We contact you within 24 hours",
               desc: "A 15-minute call to understand your community and shape the event format together.",
             },
             {
               step: "03",
               title: "Share the code, we do the rest",
-              desc: "You get a private code to share. Your people join at event time. Matching happens live, in 30 minutes.",
+              desc: "Your people enter the code at event time. They're paired in 3-minute live text conversations, photos reveal after, and they both decide if it's a match. All in 30 minutes.",
             },
           ].map(({ step, title, desc }) => (
             <div
@@ -461,6 +488,31 @@ const ApplyToHost: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── Stronger relationships, stronger community ── */}
+      <section className="max-w-[760px] mx-auto px-6 pb-20">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-3">
+          Be where their story started
+        </h2>
+        <p className="text-white/40 text-sm text-center mb-12">
+          When relationships start in your community, your community becomes
+          their home.
+        </p>
+
+        <div className="rounded-2xl border border-white/[0.08] bg-[#111] px-8 py-8">
+          <p className="text-white text-lg leading-relaxed mb-5">
+            When two of your members meet through Convoo, you're not just
+            hosting an event. You're becoming the place where their story
+            started. They keep showing up. They bring their partner. They invite
+            friends. The connections built inside your community become reasons
+            people stay.
+          </p>
+          <p className="text-white/55 text-base leading-relaxed">
+            Most communities give people something to do. The ones that last
+            give them someone to know.
+          </p>
         </div>
       </section>
 
@@ -643,12 +695,15 @@ const ApplyToHost: React.FC = () => {
       </section>
 
       {/* ── Form ── */}
-      <div className="max-w-[640px] mx-auto px-6 pb-24">
+      <div
+        id="apply-form"
+        className="max-w-[640px] mx-auto px-6 pb-24 scroll-mt-20"
+      >
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-white mb-2">Apply to host</h2>
-          <p className="text-white/40 text-sm">
-            Takes 2 minutes. We'll call you within 24 hours.
-          </p>
+          <h2 className="text-3xl font-bold text-white mb-2">
+            Tell us about your community
+          </h2>
+          <p className="text-white/40 text-sm">Takes 2 minutes.</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
@@ -778,7 +833,7 @@ const ApplyToHost: React.FC = () => {
             <StepHead
               n="02"
               title="When & anything else?"
-              sub="That's all we need for now — details happen on the call"
+              sub="That's all we need for now"
             />
 
             <Field label="When would you like to host?" required>
@@ -870,7 +925,7 @@ const ApplyToHost: React.FC = () => {
                 Submitting…
               </span>
             ) : (
-              "Submit application →"
+              "Send"
             )}
           </button>
           <p className="text-center text-xs text-white/25 mt-4 leading-relaxed">
