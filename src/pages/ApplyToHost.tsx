@@ -493,8 +493,8 @@ const ApplyToHost: React.FC = () => {
 
       {/* ── Stronger relationships, stronger community ── */}
       <section className="max-w-[760px] mx-auto px-6 pb-20">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-3">
-          Be where their story started
+        <h2 className="text-4xl md:text-4xl font-extrabold text-white text-center mb-3">
+          Be a part of their "How We Met" story
         </h2>
         <p className="text-white/40 text-sm text-center mb-12">
           When relationships start in your community, your community becomes

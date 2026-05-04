@@ -1,5 +1,6 @@
-import React from "react";
-import { Globe, CalendarDays, Instagram } from "lucide-react";
+import React, { useState } from "react";
+import { Globe, CalendarDays, Instagram, X } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 /* ── SVG logos ──────────────────────────────────────────────────── */
 const AppleLogo = () => (
@@ -27,10 +28,11 @@ const PlayStoreLogo = () => (
 type LinkItem = {
   label: string;
   sublabel?: string;
-  href: string;
-  external: boolean;
+  href?: string;
+  external?: boolean;
   icon: React.ReactNode;
   variant: "primary" | "store" | "event";
+  action?: "modal";
 };
 
 const links: LinkItem[] = [
@@ -59,10 +61,9 @@ const links: LinkItem[] = [
   },
   {
     label: "Attend our next In-Person Event",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSe0yc7uAKOl1qPBD7mgRDKg0InDBWTvXSSrS9_oF8B13I13tg/viewform?usp=dialog",
-    external: true,
     icon: <CalendarDays className="w-5 h-5 text-pink-400" />,
     variant: "event",
+    action: "modal",
   },
 ];
 
@@ -76,8 +77,66 @@ const variantClass: Record<LinkItem["variant"], string> = {
     "bg-transparent border-2 border-pink-500/70 text-pink-300 hover:bg-pink-500/10 hover:border-pink-400",
 };
 
+const inputCls =
+  "w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-white/30 text-sm outline-none focus:border-pink-400/60 focus:bg-white/[0.06] transition";
+
 /* ── Component ──────────────────────────────────────────────────── */
 const Links: React.FC = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    city: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const close = () => {
+    setModalOpen(false);
+    setTimeout(() => {
+      setForm({ name: "", email: "", phone: "", city: "" });
+      setError("");
+      setSubmitted(false);
+    }, 200);
+  };
+
+  const onChange =
+    (k: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((p) => ({ ...p, [k]: e.target.value }));
+      setError("");
+    };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) return setError("Please enter your name.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      return setError("Please enter a valid email.");
+    if (!form.phone.trim()) return setError("Please enter your phone number.");
+    if (!form.city.trim()) return setError("Please enter your city.");
+
+    setSubmitting(true);
+    try {
+      const { error: dbErr } = await supabase.from("event_signups").insert([
+        {
+          name: form.name.trim(),
+          email: form.email.trim().toLowerCase(),
+          phone: form.phone.trim(),
+          city: form.city.trim(),
+          created_at: new Date().toISOString(),
+        },
+      ]);
+      if (dbErr) throw dbErr;
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-5 py-14"
@@ -109,43 +168,65 @@ const Links: React.FC = () => {
 
       {/* ── Link Buttons ── */}
       <div className="w-full max-w-[340px] flex flex-col gap-3">
-        {links.map(({ label, sublabel, href, external, icon, variant }) => (
-          <a
-            key={label}
-            href={href}
-            {...(external
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-            className={`
+        {links.map((item) => {
+          const className = `
               flex items-center gap-3 px-5 py-[14px] rounded-2xl
               font-medium text-sm backdrop-blur-sm
               transition-all duration-200 ease-out
               hover:scale-[1.025] active:scale-[0.98]
-              ${variantClass[variant]}
-            `}
-          >
-            {/* Icon container */}
-            <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-xl bg-white/10">
-              {icon}
-            </span>
+              ${variantClass[item.variant]}
+            `;
+          const content = (
+            <>
+              {/* Icon container */}
+              <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-xl bg-white/10">
+                {item.icon}
+              </span>
 
-            {/* Text */}
-            {sublabel ? (
-              <span className="flex flex-col flex-1 text-center">
-                <span className="text-white/50 text-[10px] font-normal leading-none mb-0.5">
-                  {sublabel}
+              {/* Text */}
+              {item.sublabel ? (
+                <span className="flex flex-col flex-1 text-center">
+                  <span className="text-white/50 text-[10px] font-normal leading-none mb-0.5">
+                    {item.sublabel}
+                  </span>
+                  <span className="font-semibold text-[15px] leading-tight">
+                    {item.label}
+                  </span>
                 </span>
-                <span className="font-semibold text-[15px] leading-tight">
-                  {label}
+              ) : (
+                <span className="flex-1 text-center font-semibold text-[15px]">
+                  {item.label}
                 </span>
-              </span>
-            ) : (
-              <span className="flex-1 text-center font-semibold text-[15px]">
-                {label}
-              </span>
-            )}
-          </a>
-        ))}
+              )}
+            </>
+          );
+
+          if (item.action === "modal") {
+            return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className={className}
+              >
+                {content}
+              </button>
+            );
+          }
+
+          return (
+            <a
+              key={item.label}
+              href={item.href}
+              {...(item.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className={className}
+            >
+              {content}
+            </a>
+          );
+        })}
       </div>
 
       {/* ── Footer ── */}
@@ -158,6 +239,121 @@ const Links: React.FC = () => {
           © {new Date().getFullYear()} Convoo
         </span>
       </div>
+
+      {/* ── Event signup modal ── */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close"
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {submitted ? (
+              <div className="text-center py-6">
+                <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-pink-500/15 border border-pink-500/40 flex items-center justify-center">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#ec4899"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-white mb-2">
+                  You're on the list
+                </h2>
+                <p className="text-white/50 text-sm">
+                  We'll reach out with details about the next event.
+                </p>
+                <button
+                  type="button"
+                  onClick={close}
+                  className="mt-6 px-6 py-2.5 bg-pink-600 text-white rounded-xl font-semibold hover:bg-pink-500 transition"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-xl font-bold text-white mb-1">
+                  Attend our next event
+                </h2>
+                <p className="text-white/50 text-sm mb-5">
+                  Tell us where to find you.
+                </p>
+
+                <form onSubmit={submit} className="flex flex-col gap-3">
+                  <input
+                    className={inputCls}
+                    type="text"
+                    placeholder="Name"
+                    value={form.name}
+                    onChange={onChange("name")}
+                    autoComplete="name"
+                  />
+                  <input
+                    className={inputCls}
+                    type="email"
+                    placeholder="Email"
+                    value={form.email}
+                    onChange={onChange("email")}
+                    autoComplete="email"
+                  />
+                  <input
+                    className={inputCls}
+                    type="tel"
+                    placeholder="Phone"
+                    value={form.phone}
+                    onChange={onChange("phone")}
+                    autoComplete="tel"
+                  />
+                  <input
+                    className={inputCls}
+                    type="text"
+                    placeholder="City"
+                    value={form.city}
+                    onChange={onChange("city")}
+                    autoComplete="address-level2"
+                  />
+
+                  {error && (
+                    <div className="text-red-400 text-xs px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
+                      {error}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="mt-1 py-3 bg-pink-600 hover:bg-pink-500 text-white rounded-xl font-bold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {submitting ? "Submitting…" : "Submit"}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
