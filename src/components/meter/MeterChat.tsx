@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { RemoveScroll } from "react-remove-scroll";
 import { streamMessage, MeterApiError } from "../../lib/meterApi";
 import { CharacterId, getCharacterCard } from "./characters";
 import { containsProfanity } from "./profanityFilter";
@@ -6,7 +7,7 @@ import "./meter-chat.css";
 
 export interface ChatMessage {
   id: string;
-  role: "user" | "maya";
+  role: "user" | "assistant";
   content: string;
   pending?: boolean;
 }
@@ -17,7 +18,7 @@ interface MeterChatProps {
   durationMs: number;
   characterId: CharacterId;
   /** When the character texts first (Kaira / Ameya), this is their opening
-   *  line — pre-rendered as the first maya message before the user types. */
+   *  line — pre-rendered as the first assistant message before the user types. */
   opener: string | null;
   onEnd: () => void;
 }
@@ -54,8 +55,8 @@ export const MeterChat: React.FC<MeterChatProps> = ({
     opener
       ? [
           {
-            id: `maya-opener-${characterId}`,
-            role: "maya" as const,
+            id: `assistant-opener-${characterId}`,
+            role: "assistant" as const,
             content: opener,
           },
         ]
@@ -181,8 +182,8 @@ export const MeterChat: React.FC<MeterChatProps> = ({
       content: text,
     };
     const placeholder: ChatMessage = {
-      id: `maya-${Date.now()}`,
-      role: "maya",
+      id: `assistant-${Date.now()}`,
+      role: "assistant",
       content: "",
       pending: true,
     };
@@ -245,9 +246,10 @@ export const MeterChat: React.FC<MeterChatProps> = ({
   };
 
   return (
-    <div className="chat-root" data-color={card.color}>
-      <div className="chat-bg-warm" aria-hidden />
-      <div className="chat-bg-noise" aria-hidden />
+    <RemoveScroll>
+      <div className="chat-root" data-color={card.color}>
+        <div className="chat-bg-warm" aria-hidden />
+        <div className="chat-bg-noise" aria-hidden />
 
       <div className="scene-strip">
         <div className="scene-strip-left">
@@ -360,7 +362,8 @@ export const MeterChat: React.FC<MeterChatProps> = ({
           ROLL<span className="arrow">→</span>
         </button>
       </form>
-    </div>
+      </div>
+    </RemoveScroll>
   );
 };
 
