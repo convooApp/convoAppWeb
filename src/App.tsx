@@ -1,4 +1,4 @@
-import { HashRouter, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
 import Meter from './pages/Meter';
@@ -48,6 +48,9 @@ function AppRoutes() {
             <Route path="/events" element={<Events />} />
             <Route path="/links" element={<Links />} />
             <Route path="/apply-to-host" element={<ApplyToHost />} />
+            {/* Any unknown path falls back to Home so visitors never see a
+                blank screen from a stale link. */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </div>
