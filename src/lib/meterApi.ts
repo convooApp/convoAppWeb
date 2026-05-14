@@ -69,7 +69,6 @@ async function postJson<T>(path: string, body: unknown): Promise<T> {
     },
     body: JSON.stringify(body),
   });
-  console.log("res", res);
   const text = await res.text();
   let parsed: { error?: string; message?: string } & Partial<T>;
   try {

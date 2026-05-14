@@ -23,14 +23,28 @@
   font-family: 'DM Sans', sans-serif;
   background: var(--chat-bg);
   color: var(--ink);
-  height: 100dvh;
-  min-height: 100dvh;
+  /* Pin to the visual viewport so the iOS soft keyboard doesn't push the
+     whole layout out of view. The `--app-vh` var is written by MeterChat via
+     the visualViewport API; `100dvh` is the modern browser fallback; `100vh`
+     is the legacy fallback for browsers without dvh support. */
+  position: fixed;
+  inset: 0;
+  height: var(--app-vh, 100dvh);
+  min-height: 0;
   display: flex;
   flex-direction: column;
   font-size: 15px;
   line-height: 1.5;
-  position: relative;
   overflow: hidden;
+}
+/* While the chat is mounted, lock the document so iOS doesn't scroll
+   <body> behind our fixed-position chat-root when the keyboard opens. */
+.meter-chat-active,
+.meter-chat-active body {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  overscroll-behavior: none;
 }
 .chat-root *, .chat-root *::before, .chat-root *::after { box-sizing: border-box; }
 

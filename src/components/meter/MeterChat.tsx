@@ -70,6 +70,39 @@ export const MeterChat: React.FC<MeterChatProps> = ({
   const endedRef = useRef(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // iOS Safari keyboard fix: write the actual visible viewport height to a
+  // CSS var on every resize so the chat layout follows the keyboard up/down
+  // instead of getting pushed behind it. Also lock the document scroll while
+  // the chat is mounted so iOS doesn't scroll <body> to chase the focused
+  // input. Both are no-ops on browsers without visualViewport (very rare).
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add("meter-chat-active");
+
+    const setAppVh = () => {
+      const h = window.visualViewport?.height ?? window.innerHeight;
+      root.style.setProperty("--app-vh", `${h}px`);
+      // Keep the latest message in view when the keyboard opens/closes.
+      scrollRef.current?.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "auto",
+      });
+    };
+    setAppVh();
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", setAppVh);
+    vv?.addEventListener("scroll", setAppVh);
+    window.addEventListener("orientationchange", setAppVh);
+
+    return () => {
+      root.classList.remove("meter-chat-active");
+      root.style.removeProperty("--app-vh");
+      vv?.removeEventListener("resize", setAppVh);
+      vv?.removeEventListener("scroll", setAppVh);
+      window.removeEventListener("orientationchange", setAppVh);
+    };
+  }, []);
+
   // Timer state — replicates MeterTimer behavior inline so the display
   // matches the scene-strip style.
   const [remaining, setRemaining] = useState(() =>
