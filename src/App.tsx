@@ -1,8 +1,10 @@
 import { HashRouter, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
+import Meter from './pages/Meter';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import MeterPrivacy from './pages/MeterPrivacy';
 import DeleteAccount from './pages/DeleteAccount';
 import CSAEPolicy from './pages/CSAEPolicy';
 import Support from './pages/Support';
@@ -32,8 +34,11 @@ function AppRoutes() {
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/meter" element={<Meter />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/meter/privacy" element={<MeterPrivacy />} />
             <Route path="/delete-account" element={<DeleteAccount />} />
             <Route path="/child-safety" element={<CSAEPolicy />} />
             <Route path="/support" element={<Support />} />

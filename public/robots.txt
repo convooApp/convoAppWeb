@@ -1,7 +1,13 @@
 # robots.txt for convoo.app
-# Allow all web crawlers full access
+# Allow all web crawlers most of the site.
+# Block the Convoo Meter (private, share-only pre-launch experience).
 
 User-agent: *
-Disallow:
+Disallow: /meter
+Disallow: /meter/
+Disallow: /meter/privacy
+# HashRouter form too, in case any crawler decodes fragments.
+Disallow: /#/meter
+Disallow: /#/meter/privacy
 
 Sitemap: https://convoo.app/sitemap.xml

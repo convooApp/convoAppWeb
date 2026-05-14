@@ -1,0 +1,154 @@
+/* Meter-specific animations and effects used across MeterIntro and elsewhere. */
+
+@keyframes meter-drift {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50%      { transform: translateX(-50%) translateY(-20px) scale(1.05); }
+}
+
+@keyframes meter-wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50%      { transform: rotate(2deg); }
+}
+
+@keyframes meter-blink {
+  50% { opacity: 0.4; }
+}
+
+@keyframes meter-fade-up {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.meter-blob {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 700px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 45, 140, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(198, 255, 0, 0.13) 0%, transparent 50%);
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+  animation: meter-drift 12s ease-in-out infinite;
+}
+
+.meter-noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.5'/></svg>");
+  opacity: 0.04;
+  z-index: 100;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.meter-fade-up    { animation: meter-fade-up 0.7s ease-out backwards; }
+.meter-wiggle     { animation: meter-wiggle 3s ease-in-out infinite, meter-fade-up 0.7s ease-out; }
+.meter-blink-dot  { animation: meter-blink 1s infinite; }
+
+.meter-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: meter-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.meter-card:hover { transform: translateY(-4px); }
+
+.meter-card[data-color="pink"]:hover {
+  border-color: #FF2D8C;
+  box-shadow: 0 10px 0 -4px #B82362, 0 14px 28px -8px rgba(255, 45, 140, 0.35);
+}
+.meter-card[data-color="amber"]:hover {
+  border-color: #FBBF24;
+  box-shadow: 0 10px 0 -4px #B45309, 0 14px 28px -8px rgba(251, 191, 36, 0.35);
+}
+.meter-card[data-color="lime"]:hover {
+  border-color: #C6FF00;
+  box-shadow: 0 10px 0 -4px #8FAA00, 0 14px 28px -8px rgba(198, 255, 0, 0.35);
+}
+.meter-card[data-color="violet"]:hover {
+  border-color: #A78BFA;
+  box-shadow: 0 10px 0 -4px #5B21B6, 0 14px 28px -8px rgba(167, 139, 250, 0.35);
+}
+
+.meter-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.meter-card[data-color="pink"]::before   { background: linear-gradient(135deg, rgba(255, 45, 140, 0.10) 0%, transparent 60%); }
+.meter-card[data-color="amber"]::before  { background: linear-gradient(135deg, rgba(251, 191, 36, 0.10) 0%, transparent 60%); }
+.meter-card[data-color="lime"]::before   { background: linear-gradient(135deg, rgba(198, 255, 0, 0.10) 0%, transparent 60%); }
+.meter-card[data-color="violet"]::before { background: linear-gradient(135deg, rgba(167, 139, 250, 0.10) 0%, transparent 60%); }
+.meter-card:hover::before { opacity: 1; }
+
+.meter-card:hover .meter-sticker     { transform: rotate(0deg) scale(1.08); }
+.meter-card:hover .meter-avatar-glow { opacity: 1; transform: scale(1.2); }
+.meter-card:hover .meter-avatar-letter { transform: scale(1.05) rotate(-2deg); }
+
+.meter-sticker {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.meter-card[data-color="pink"]   .meter-sticker { background: #FF2D8C; color: #FFF8F2; transform: rotate(4deg); }
+.meter-card[data-color="amber"]  .meter-sticker { background: #FBBF24; color: #0A0608; transform: rotate(-4deg); }
+.meter-card[data-color="lime"]   .meter-sticker { background: #C6FF00; color: #0A0608; transform: rotate(4deg); }
+.meter-card[data-color="violet"] .meter-sticker { background: #A78BFA; color: #FFF8F2; transform: rotate(-4deg); }
+
+.meter-avatar-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.4s;
+  z-index: -1;
+  filter: blur(10px);
+}
+.meter-card[data-color="pink"]   .meter-avatar-glow { background: radial-gradient(circle, #FF2D8C 0%, transparent 70%); }
+.meter-card[data-color="amber"]  .meter-avatar-glow { background: radial-gradient(circle, #FBBF24 0%, transparent 70%); }
+.meter-card[data-color="lime"]   .meter-avatar-glow { background: radial-gradient(circle, #C6FF00 0%, transparent 70%); }
+.meter-card[data-color="violet"] .meter-avatar-glow { background: radial-gradient(circle, #A78BFA 0%, transparent 70%); }
+
+.meter-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 -8px 12px -4px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.2);
+  margin: 0 auto;
+}
+.meter-card[data-color="pink"]   .meter-avatar { background: linear-gradient(135deg, #FF2D8C 0%, #B82362 100%); }
+.meter-card[data-color="amber"]  .meter-avatar { background: linear-gradient(135deg, #FBBF24 0%, #B45309 100%); }
+.meter-card[data-color="lime"]   .meter-avatar { background: linear-gradient(135deg, #C6FF00 0%, #6B8F00 100%); }
+.meter-card[data-color="violet"] .meter-avatar { background: linear-gradient(135deg, #A78BFA 0%, #5B21B6 100%); }
+
+.meter-avatar-letter {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.meter-card[data-color="lime"] .meter-avatar-letter { color: #0A0608; }
+
+.meter-title-underline {
+  position: relative;
+  display: inline-block;
+}
+.meter-title-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: #C6FF00;
+  z-index: -1;
+  opacity: 0.5;
+  transform: skewY(-1deg);
+}

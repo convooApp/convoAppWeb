@@ -1,0 +1,550 @@
+/* Convoo Meter final result — Bollywood movie-poster card style. */
+
+.result-root {
+  --paper: #f3dfb3;
+  --paper-2: #ecd098;
+  --cream: #fef0d4;
+  --ink: #1a0806;
+  --ink-soft: #4a1e10;
+  --pink: #b83280;
+  --pink-soft: #f4a5cf;
+  --pink-deep: #6e1850;
+  --maroon: #5a0e1e;
+  --rose: #d44a6a;
+  --red: #c41e3a;
+  --red-deep: #8b1a2e;
+  --gold: #d4a02a;
+  --gold-light: #f0c460;
+
+  /* Per-character tint (overrides via data-color, same as intro/chat). */
+  --poster-bg: var(--cream);
+  --poster-soft: var(--pink-soft);
+
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.5;
+  font-size: 15px;
+  position: relative;
+  overflow-x: hidden;
+}
+.result-root *, .result-root *::before, .result-root *::after { box-sizing: border-box; }
+
+.result-root[data-color='pink']   { --poster-soft: #f4a5cf; }
+.result-root[data-color='amber']  { --poster-soft: #ffb89a; }
+.result-root[data-color='lime']   { --poster-soft: #f3e58a; }
+.result-root[data-color='violet'] { --poster-soft: #d4c3f0; }
+
+/* Warm radial + noise overlay — fixed so the texture stays still as you scroll. */
+.result-bg-warm,
+.result-bg-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.result-bg-warm {
+  background:
+    radial-gradient(ellipse 900px 600px at 50% 0%, rgba(196,30,58,0.18), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 50% 100%, rgba(184,50,128,0.16), transparent 60%);
+}
+.result-bg-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='3'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.7'/></svg>");
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+/* ============ NAV ============ */
+.result-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 5%;
+  border-bottom: 3px double var(--ink);
+  background: var(--paper);
+}
+.result-nav .logo {
+  font-family: 'Bungee', cursive;
+  font-size: 22px;
+  color: var(--red-deep);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.result-nav .logo .pink { color: var(--pink); }
+.result-nav .nav-meta {
+  font-family: 'Noto Serif Devanagari', 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--ink);
+}
+.result-nav .nav-cta {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  padding: 6px 14px;
+  text-decoration: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+@media (max-width: 520px) {
+  .result-nav .nav-meta { display: none; }
+}
+
+/* ============ MAIN SHELL ============ */
+.result-shell {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 36px 5% 50px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--gold-light);
+  padding: 6px 18px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 3px 3px 0 var(--red-deep);
+}
+
+/* ============ POSTER CARD ============ */
+.poster {
+  background: var(--poster-bg);
+  border: 3px solid var(--ink);
+  box-shadow:
+    0 0 0 6px var(--paper),
+    0 0 0 8px var(--ink),
+    12px 12px 0 8px var(--maroon);
+  padding: 32px 28px 24px;
+  margin: 0 auto 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft tinted gradient behind the hero name. */
+.poster::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 75%;
+  background: linear-gradient(180deg, var(--poster-soft) 0%, var(--poster-bg) 100%);
+  z-index: 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.poster .card-inner { position: relative; z-index: 1; }
+
+.poster .now-showing {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.poster .now-showing::before,
+.poster .now-showing::after { content: '~'; color: var(--gold); margin: 0 8px; }
+
+.poster .you-are {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--red-deep);
+  margin-bottom: 18px;
+}
+.poster .you-are::before,
+.poster .you-are::after { content: '★'; color: var(--gold); margin: 0 10px; }
+
+/* HERO NAME — big English title with gold + ink layered shadow.
+   The poster card is ~430px wide inside its padding. Anton is condensed but
+   single-word names still need ceilings or 6+ char names overflow the
+   container. Default ≤5 chars, .long modifier for 6+ chars. */
+.poster .hero-name {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: clamp(64px, 14vw, 108px);
+  line-height: 0.85;
+  letter-spacing: -2px;
+  color: var(--maroon);
+  text-transform: uppercase;
+  text-shadow:
+    3px 3px 0 var(--gold),
+    6px 6px 0 var(--ink);
+  white-space: nowrap;
+  padding: 0 6px;
+}
+.poster .hero-name.long {
+  font-size: clamp(48px, 11vw, 80px);
+  letter-spacing: -1.5px;
+}
+
+/* Devanagari subtitle — pink with single ink shadow, sits below the English.
+   The gap between English and Hindi is intentional so the two scripts read
+   as separate layers, not one stacked title. */
+.poster .hero-name-hindi {
+  font-family: 'Noto Serif Devanagari', serif;
+  font-weight: 900;
+  font-size: clamp(34px, 8vw, 56px);
+  line-height: 1;
+  color: var(--pink);
+  margin-top: 22px;
+  text-shadow: 2px 2px 0 var(--ink);
+}
+
+.poster .from-film {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  letter-spacing: 0.5px;
+}
+.poster .from-film .gold-stars { color: var(--gold); }
+.poster .from-film .pink {
+  color: var(--pink);
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poster .divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 22px 0 18px;
+}
+.poster .divider .line {
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.4;
+}
+.poster .divider .star { color: var(--gold); font-size: 14px; }
+.poster .divider .star.mid { color: var(--pink); font-size: 18px; }
+
+.poster .personality-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(26px, 5vw, 36px);
+  letter-spacing: 6px;
+  color: var(--ink);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.poster .personality-label .pink { color: var(--pink); }
+
+.poster .celebration {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(15px, 2.1vw, 18px);
+  color: var(--ink);
+  line-height: 1.55;
+  max-width: 380px;
+  margin: 0 auto 22px;
+}
+
+.poster .best-line {
+  background: var(--maroon);
+  color: var(--cream);
+  padding: 14px 22px;
+  margin: 4px auto 18px;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--gold);
+  position: relative;
+}
+.poster .best-line .label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+  display: block;
+}
+.poster .best-line .label::before,
+.poster .best-line .label::after { content: '★'; color: var(--gold); margin: 0 6px; }
+.poster .best-line-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--cream);
+  line-height: 1.4;
+}
+.poster .best-line-text::before,
+.poster .best-line-text::after {
+  content: '"';
+  color: var(--gold-light);
+  font-size: 22px;
+  vertical-align: -5px;
+  margin: 0 2px;
+}
+
+.poster .credits {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1.5px dashed var(--ink);
+  margin-top: 4px;
+}
+.poster .credit { text-align: center; }
+.poster .credit .label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: var(--red-deep);
+  display: block;
+  margin-bottom: 2px;
+}
+.poster .credit .val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+}
+
+.poster .card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--ink);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-soft);
+}
+.poster .card-footer .convoo {
+  font-family: 'Bungee', cursive;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--maroon);
+}
+
+/* ============ SHARE ROW ============ */
+.share-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--red-deep);
+  margin-bottom: 14px;
+  display: inline-block;
+}
+.share-label::before,
+.share-label::after { content: '★'; color: var(--gold); margin: 0 10px; }
+
+.share-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.share-btn {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  padding: 12px 18px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.share-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+  background: var(--gold);
+}
+.share-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.ig-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+
+/* ============ CTA ROW ============ */
+.cta-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.cta-primary {
+  background: var(--pink);
+  color: var(--paper);
+  padding: 16px 32px;
+  text-decoration: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.cta-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+  background: var(--maroon);
+}
+.cta-secondary {
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  padding: 8px 0;
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  cursor: pointer;
+}
+.cta-postsubmit {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--red-deep);
+  border: 2px solid var(--red-deep);
+  padding: 12px 22px;
+}
+
+/* ============ WHATSAPP CAPTURE CARD ============ */
+.wa-card {
+  background: var(--cream);
+  border: 2.5px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 22px 22px 18px;
+  margin: 16px auto 24px;
+  max-width: 460px;
+  text-align: left;
+}
+.wa-card .wa-heading {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+.wa-card .wa-heading strong {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 2px;
+  color: var(--red-deep);
+}
+.wa-form {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.wa-form select,
+.wa-form input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+}
+.wa-form input { min-width: 0; }
+.wa-form .wa-submit {
+  background: var(--pink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 0 16px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.wa-form .wa-submit:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.wa-form .wa-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.wa-error {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--red-deep);
+  margin-bottom: 8px;
+}
+.wa-fineprint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.wa-fineprint a { color: var(--ink); text-decoration: underline; }
+.wa-skip {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 4px 0;
+}
+@media (max-width: 480px) {
+  .wa-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ CLOSING LINE ============ */
+.closing-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin-top: 12px;
+}
+.closing-line a.pink {
+  color: var(--pink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ============ PAGE FOOTER ============ */
+.result-footer {
+  position: relative;
+  z-index: 2;
+  padding: 16px 5%;
+  border-top: 3px double var(--ink);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  background: var(--paper);
+}
+.result-footer .pink { color: var(--pink); }
+.result-footer a.pink {
+  text-decoration: none;
+}
+.result-footer a.pink:hover { text-decoration: underline; }
