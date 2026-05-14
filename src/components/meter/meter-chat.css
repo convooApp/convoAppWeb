@@ -23,27 +23,32 @@
   font-family: 'DM Sans', sans-serif;
   background: var(--chat-bg);
   color: var(--ink);
-  /* Pin to the visual viewport so the iOS soft keyboard doesn't push the
-     whole layout out of view. The `--app-vh` var is written by MeterChat via
-     the visualViewport API; `100dvh` is the modern browser fallback; `100vh`
-     is the legacy fallback for browsers without dvh support. */
-  position: fixed;
-  inset: 0;
+  /* `--app-vh` is written by MeterChat via the visualViewport API so the
+     chat fits whatever space the iOS soft keyboard leaves. `100dvh` is the
+     modern fallback, `100vh` the legacy one. */
   height: var(--app-vh, 100dvh);
   min-height: 0;
   display: flex;
   flex-direction: column;
   font-size: 15px;
   line-height: 1.5;
+  position: relative;
   overflow: hidden;
 }
-/* While the chat is mounted, lock the document so iOS doesn't scroll
-   <body> behind our fixed-position chat-root when the keyboard opens. */
+/* iOS Safari keyboard fix: when the chat is mounted, fully lock both <html>
+   and <body> so iOS can't scroll the page to chase the focused textarea.
+   Without this, focusing the input pans the layout out from under us and
+   only the input bar ends up visible.
+   This class is added in MeterChat's mount effect and removed on unmount,
+   so other pages (intro/reveal/marketing) keep normal scrolling. */
 .meter-chat-active,
 .meter-chat-active body {
-  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  position: relative;
+  overflow: hidden;
   overscroll-behavior: none;
 }
 .chat-root *, .chat-root *::before, .chat-root *::after { box-sizing: border-box; }
