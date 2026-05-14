@@ -70,36 +70,63 @@ export const MeterChat: React.FC<MeterChatProps> = ({
   const endedRef = useRef(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // iOS Safari keyboard fix: write the actual visible viewport height to a
-  // CSS var on every resize so the chat layout follows the keyboard up/down
-  // instead of getting pushed behind it. Also lock the document scroll while
-  // the chat is mounted so iOS doesn't scroll <body> to chase the focused
-  // input. Both are no-ops on browsers without visualViewport (very rare).
+  // iOS Safari soft-keyboard handling.
+  //
+  // The trick: keep the chat-root pinned to the *visual* viewport (the
+  // shrinking area above the keyboard), not the layout viewport. We do this
+  // by writing both `visualViewport.height` and `visualViewport.offsetTop`
+  // to CSS vars, and consuming them in meter-chat.css as
+  //   height: var(--app-vh)  +  top: var(--app-vt)
+  // — so when iOS pans the visual viewport (which it does even when we lock
+  // <body>), the chat-root follows the pan and stays fully on screen.
+  //
+  // We also force the layout-viewport scroll position back to (0, 0) on
+  // every visual-viewport event. iOS sometimes scrolls the document a few
+  // px when focusing an input — clobbering it keeps the math simple.
+  //
+  // Body lock is also applied to prevent any residual page scroll.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.add("meter-chat-active");
 
     const setAppVh = () => {
-      const h = window.visualViewport?.height ?? window.innerHeight;
+      const vv = window.visualViewport;
+      const h = vv?.height ?? window.innerHeight;
+      const t = vv?.offsetTop ?? 0;
       root.style.setProperty("--app-vh", `${h}px`);
-      // Keep the latest message in view when the keyboard opens/closes.
+      root.style.setProperty("--app-vt", `${t}px`);
+      // Keep latest message in view as the viewport shrinks/grows.
       scrollRef.current?.scrollTo({
         top: scrollRef.current.scrollHeight,
         behavior: "auto",
       });
     };
+
+    // Force the layout viewport back to (0, 0). iOS occasionally scrolls
+    // the document a few px when an input is focused; this undoes that.
+    const resetScroll = () => {
+      if (window.scrollX !== 0 || window.scrollY !== 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+
     setAppVh();
+    resetScroll();
+
     const vv = window.visualViewport;
     vv?.addEventListener("resize", setAppVh);
     vv?.addEventListener("scroll", setAppVh);
     window.addEventListener("orientationchange", setAppVh);
+    window.addEventListener("scroll", resetScroll, { passive: true });
 
     return () => {
       root.classList.remove("meter-chat-active");
       root.style.removeProperty("--app-vh");
+      root.style.removeProperty("--app-vt");
       vv?.removeEventListener("resize", setAppVh);
       vv?.removeEventListener("scroll", setAppVh);
       window.removeEventListener("orientationchange", setAppVh);
+      window.removeEventListener("scroll", resetScroll);
     };
   }, []);
 

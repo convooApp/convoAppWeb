@@ -23,24 +23,27 @@
   font-family: 'DM Sans', sans-serif;
   background: var(--chat-bg);
   color: var(--ink);
-  /* `--app-vh` is written by MeterChat via the visualViewport API so the
-     chat fits whatever space the iOS soft keyboard leaves. `100dvh` is the
-     modern fallback, `100vh` the legacy one. */
-  height: var(--app-vh, 100dvh);
-  min-height: 0;
   display: flex;
   flex-direction: column;
   font-size: 15px;
   line-height: 1.5;
-  position: relative;
   overflow: hidden;
+  /* Pin to the visual viewport: position+size driven by the visualViewport
+     API so the chat exactly fills the area iOS Safari leaves visible
+     (above the soft keyboard) and follows any keyboard-induced pan.
+     `--app-vh` / `--app-vt` are written by MeterChat on mount. `100dvh`
+     is the modern fallback. */
+  position: fixed;
+  top: var(--app-vt, 0px);
+  left: 0;
+  right: 0;
+  height: var(--app-vh, 100dvh);
+  min-height: 0;
 }
-/* iOS Safari keyboard fix: when the chat is mounted, fully lock both <html>
-   and <body> so iOS can't scroll the page to chase the focused textarea.
-   Without this, focusing the input pans the layout out from under us and
-   only the input bar ends up visible.
-   This class is added in MeterChat's mount effect and removed on unmount,
-   so other pages (intro/reveal/marketing) keep normal scrolling. */
+/* While the chat is mounted, lock <html>+<body> so iOS Safari can't scroll
+   the document to chase the focused textarea — we handle visibility
+   ourselves via visualViewport. The class is added by MeterChat's mount
+   effect and removed on unmount, so other pages keep normal scrolling. */
 .meter-chat-active,
 .meter-chat-active body {
   position: fixed;
@@ -50,6 +53,12 @@
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
+  touch-action: none;
+}
+/* Allow touch scrolling inside the message list specifically. */
+.meter-chat-active .chat-wrap {
+  touch-action: pan-y;
 }
 .chat-root *, .chat-root *::before, .chat-root *::after { box-sizing: border-box; }
 
