@@ -44,7 +44,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
     male: {
       name: "ROCKY",
       nameHindi: "रॉकी",
-      tagline: "the showstopper of dilli, 2023",
+      tagline: "the showstopper of delhi, 2023",
       archetypeLabel: "THE SHOWSTOPPER",
       blurb:
         "You walked in loud and stayed there. Big heart, bigger personality. The energy in the room shifts when you're in it.",

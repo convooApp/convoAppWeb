@@ -114,7 +114,7 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
           Choose Who Do You Wanna Date
         </div>
         <p className="poster-starring-sub">
-          Pick someone to start the conversation
+          Pick someone from our AI characters to start the conversation
         </p>
 
         <div className="poster-cast-grid">
