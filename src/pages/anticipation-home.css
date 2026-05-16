@@ -1,0 +1,5 @@
+/* Anticipation page — overrides specific to the .ah-dark-root scope.
+   The current design (speakeasy-dark, single pink-dot accent) doesn't
+   need ring tint overrides anymore; we keep the file in place so the
+   import in AnticipationHome.tsx stays a valid hook for future
+   dark-only tweaks without re-touching the component. */

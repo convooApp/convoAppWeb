@@ -1,6 +1,7 @@
 import { HashRouter, BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
+import AnticipationHome from './pages/AnticipationHome';
 import Meter from './pages/Meter';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
@@ -33,7 +34,7 @@ function AppRoutes() {
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<AnticipationHome />} />
             <Route path="/meter" element={<Meter />} />
             <Route path="/home" element={<Home />} />
             <Route path="/terms" element={<Terms />} />
