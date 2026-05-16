@@ -15,6 +15,10 @@ import {
   Zap,
   Users,
   Menu,
+  Camera,
+  Lock,
+  LogOut,
+  ShieldCheck,
 } from "lucide-react";
 import "../landing.css";
 
@@ -34,7 +38,6 @@ const NAV_DOTS = [
   { id: "pov", label: "Vision" },
   { id: "live", label: "Community" },
   { id: "events", label: "Passes" },
-  { id: "about", label: "Our Story" },
 ];
 
 const TICKER = [
@@ -55,7 +58,7 @@ const HOW_STEPS = [
   {
     title: "Join the event",
     subtitle:
-      "Every night at 7 PM — or via a private event code — a live matching room opens inside the app.",
+      "Every night at 7 PM  or via a private event code — a live matching room opens inside the app.",
     pinkBg: true,
     icon: (
       <svg
@@ -123,35 +126,35 @@ const PILLARS = [
   },
   {
     num: "03",
-    title: "City-only",
-    sub: "Every match is within your city. Hyper-local by design.",
+    title: "Safe by design",
+    sub: "Phone-verified profiles. Every report reviewed within 4 hours. Built with women in mind.",
   },
 ];
 
 const USE_CASES = [
   {
     who: "Creators & influencers",
-    desc: "Drop a code to your followers and host a live dating room for your audience.",
+    desc: "Drop a code to your followers, host a live dating room for your audience.",
   },
   {
-    who: "College organizations",
-    desc: "Run a speed-dating night for your campus club or Greek chapter.",
+    who: "College fests & societies",
+    desc: "IIT, NIT, BITS, DU. Run a speed-dating round at your fest. Easiest event you've ever hosted.",
   },
   {
-    who: "Run clubs & fitness crews",
-    desc: "Turn your weekly group into a mixer — same energy, new connections.",
+    who: "Wedding sangeets",
+    desc: "The cousins are bored between dance rehearsals. Run a Convoo room for the wedding party.",
   },
   {
-    who: "Friend groups & social hosts",
-    desc: "Curate a blind date night for your circle without a venue or app fees.",
+    who: "Society & RWA events",
+    desc: "The annual function needs a fresh idea this year. Here it is. Single residents only.",
   },
   {
-    who: "Local event organizers",
-    desc: "Pair a Convoo room with your IRL event so guests connect before they arrive.",
+    who: "Workplace social clubs",
+    desc: "The Friday team that organizes drinks. Same energy, new connections, no awkward intros.",
   },
   {
-    who: "Speed dating organizers",
-    desc: "Replace your existing event infrastructure with one code. We handle the matching.",
+    who: "Friend groups",
+    desc: "Curate a blind date night for your circle. No venue. No fees. Just a code and a vibe.",
   },
 ];
 
@@ -159,6 +162,33 @@ const EARN_ROWS = [
   { action: "Show up at 7 PM daily", reward: "+2 Passes" },
   { action: "Invite a friend", reward: "+1 Pass each" },
   { action: "Rate on App Store", reward: "+2 Passes" },
+];
+
+const SAFETY_CARDS = [
+  {
+    icon: <Camera size={18} strokeWidth={2} />,
+    accent: "#FF6BB5",
+    title: "Photos come after the chat. Not before.",
+    desc: "You control who sees your face. The conversation has to land first.",
+  },
+  {
+    icon: <Lock size={18} strokeWidth={2} />,
+    accent: "#A78BFA",
+    title: "One match. One chance.",
+    desc: 'No second attempts. No "hey :)" three days later. If you didn’t match, the conversation closes. Forever.',
+  },
+  {
+    icon: <LogOut size={18} strokeWidth={2} />,
+    accent: "#FBBF24",
+    title: "Leave whenever.",
+    desc: "Three minutes can feel long. Exit anytime. No explanation. No penalty.",
+  },
+  {
+    icon: <ShieldCheck size={18} strokeWidth={2} />,
+    accent: "#FF6BB5",
+    title: "Report once. Reviewed fast.",
+    desc: "Real humans, not a queue. We keep the community safe — that’s the whole point.",
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════ */
@@ -264,7 +294,8 @@ const Home = () => {
     const el = document.getElementById(id);
     if (!el) return;
     const navHeight =
-      document.querySelector<HTMLElement>("nav[data-site-nav]")?.offsetHeight ?? 0;
+      document.querySelector<HTMLElement>("nav[data-site-nav]")?.offsetHeight ??
+      0;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8;
     window.scrollTo({ top, behavior: "smooth" });
   };
@@ -301,7 +332,6 @@ const Home = () => {
                 { id: "pov", label: "Why Convoo" },
                 { id: "live", label: "Community" },
                 { id: "events", label: "Passes" },
-                { id: "about", label: "Our Story" },
               ].map(({ id, label }) => (
                 <a
                   key={id}
@@ -488,7 +518,7 @@ const Home = () => {
                   }}
                 >
                   No swiping. No algorithms. Every night at 7 PM, Convoo matches
-                  you live with someone real — and you talk before you ever see
+                  you live with someone real and you chat before you ever see
                   their face.
                 </p>
 
@@ -1006,6 +1036,146 @@ const Home = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+        {/* ══════════════════════════════════════════════════
+            SECTION 3.5 — SAFETY
+        ══════════════════════════════════════════════════ */}
+        <section
+          id="safety"
+          className="py-24 px-8"
+          style={{ background: "#08080f" }}
+        >
+          <div className="max-w-[820px] mx-auto" data-reveal="">
+            <div
+              style={{
+                position: "relative",
+                background: "linear-gradient(180deg, #14081a 0%, #0a0a14 100%)",
+                border: "1px solid rgba(184,50,128,0.18)",
+                borderRadius: "24px",
+                padding: "clamp(2rem, 5vw, 3.5rem)",
+                boxShadow:
+                  "0 0 80px rgba(184,50,128,0.10), inset 0 1px 0 rgba(255,255,255,0.04)",
+                overflow: "hidden",
+              }}
+            >
+              {/* soft glow accent */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: "-40%",
+                  right: "-20%",
+                  width: "60%",
+                  height: "120%",
+                  background:
+                    "radial-gradient(circle, rgba(184,50,128,0.18) 0%, transparent 60%)",
+                  filter: "blur(40px)",
+                  pointerEvents: "none",
+                }}
+              />
+
+              <div style={{ position: "relative" }}>
+                {/* Pink badge */}
+                {/* <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    padding: "0.4rem 0.9rem",
+                    borderRadius: "999px",
+                    background: "rgba(184,50,128,0.14)",
+                    border: "1px solid rgba(184,50,128,0.35)",
+                    color: "#FF6BB5",
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginBottom: "1.5rem",
+                  }}
+                >
+                  <span>★</span>
+                  <span>SAFE BY DESIGN</span>
+                </div> */}
+
+                {/* Heading */}
+                <h2
+                  style={{
+                    margin: 0,
+                    marginBottom: "1rem",
+                    fontSize: "clamp(2rem, 4vw, 2.7rem)",
+                    fontWeight: 700,
+                    lineHeight: 1.15,
+                    color: "white",
+                  }}
+                >
+                  Safe by design.
+                </h2>
+
+                {/* Subhead */}
+                <p
+                  style={{
+                    margin: 0,
+                    marginBottom: "2.25rem",
+                    fontSize: "1rem",
+                    color: "rgba(255,255,255,0.55)",
+                    lineHeight: 1.6,
+                    maxWidth: "560px",
+                  }}
+                >
+                  We didn’t add safety. We built around it.
+                </p>
+
+                {/* 4 safety rows */}
+                <div style={{ display: "grid", gap: "0.85rem" }}>
+                  {SAFETY_CARDS.map((card) => (
+                    <div
+                      key={card.title}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "auto 1fr",
+                        gap: "1rem",
+                        alignItems: "center",
+                        padding: "1rem 1.1rem",
+                        background: "rgba(255,255,255,0.025)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        borderRadius: "14px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "38px",
+                          height: "38px",
+                          borderRadius: "10px",
+                          background: `${card.accent}1f`,
+                          border: `1px solid ${card.accent}55`,
+                          color: card.accent,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {card.icon}
+                      </div>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "0.92rem",
+                          color: "rgba(255,255,255,0.72)",
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        <strong style={{ color: "white", fontWeight: 700 }}>
+                          {card.title}
+                        </strong>{" "}
+                        {card.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1542,320 +1712,6 @@ const Home = () => {
         {/* ══════════════════════════════════════════════════
             SECTION 6 — ABOUT / OUR STORY
         ══════════════════════════════════════════════════ */}
-        <section
-          id="about"
-          className="snap-section py-12 px-8"
-          style={{ background: "rgba(255,255,255,0.015)" }}
-        >
-          <div className="max-w-[860px] mx-auto">
-            {/* Section label */}
-            <div className="flex items-center gap-3 mb-16">
-              <span className="w-2 h-2 rounded-full bg-[#B83280] shadow-[0_0_0_6px_rgba(184,50,128,.2)]" />
-              <span className="text-xs font-extrabold text-[rgba(245,242,248,.5)] tracking-[.2em] uppercase">
-                Our story
-              </span>
-              <div className="flex-1 h-px bg-[rgba(245,242,248,.08)]" />
-            </div>
-
-            {/* Opening */}
-            <div data-reveal="" className="mb-20">
-              <h2 className="m-0 mb-6 text-[clamp(36px,5vw,60px)] leading-[1.1] font-black tracking-tight">
-                We got tired of
-                <br />
-                <span className="bg-gradient-to-br from-[#ff4fb3] via-[#B83280] to-[#ff4fb3] text-transparent bg-clip-text">
-                  swiping into nothing.
-                </span>
-              </h2>
-              <p className="m-0 text-[rgba(245,242,248,.65)] text-xl leading-relaxed max-w-[620px]">
-                Dating apps had every tool — algorithms, filters, photo stacks —
-                and still left people feeling empty. We asked why. The answer
-                was simple: you can't build real chemistry through a swipe.
-              </p>
-            </div>
-
-            {/* Story beats */}
-            <div className="relative pl-8 border-l border-[rgba(245,242,248,.1)] space-y-14">
-              {[
-                {
-                  num: "01",
-                  tag: "The problem",
-                  title: "Dating apps weren't built for connection.",
-                  body: "Swipe, match, ghost. Repeat. Success on these platforms is too heavily tied to looks, leaving most people feeling drained, not dating. The apps are built to keep you scrolling — not to actually find someone.",
-                  extra: (
-                    <div className="grid sm:grid-cols-2 gap-4 mt-6">
-                      {[
-                        {
-                          title: "Appearance Over Substance",
-                          body: "Success is too heavily tied to looks. Chemistry can't be judged from a photo.",
-                          quote: '"Everyone just swipes..."',
-                        },
-                        {
-                          title: "Emotional Fatigue",
-                          body: "Current platforms harm self-esteem and mental wellness over time.",
-                          quote: '"I feel drained using them."',
-                        },
-                        {
-                          title: "Time Drain",
-                          body: "Hours lost swiping instead of actually connecting with someone real.",
-                          quote: '"Just wasted time."',
-                        },
-                        {
-                          title: "Choice Overload",
-                          body: "Too many options creates paralysis, not clarity.",
-                          quote: '"Hard to know who\'s right."',
-                        },
-                      ].map((card) => (
-                        <div
-                          key={card.title}
-                          className="p-5 rounded-2xl border border-[rgba(245,242,248,.1)] bg-[rgba(245,242,248,.04)]"
-                        >
-                          <div className="font-bold text-[#ff4fb3] text-sm mb-2">
-                            {card.title}
-                          </div>
-                          <div className="text-[rgba(245,242,248,.65)] text-sm leading-relaxed mb-3">
-                            {card.body}
-                          </div>
-                          <div className="text-[rgba(245,242,248,.4)] text-xs italic">
-                            {card.quote}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ),
-                },
-                {
-                  num: "02",
-                  tag: "The idea",
-                  title: "What if you talked first?",
-                  body: "We flipped the model. No photo-based swiping. No endless feed. Instead, every night at 7 PM, a live event opens inside the app. You get matched with someone real-time and have a real conversation — before you ever see their photo.",
-                  extra: (
-                    <div className="mt-6 p-6 rounded-2xl bg-[radial-gradient(600px_200px_at_0%_50%,rgba(184,50,128,.15),transparent_70%)] border border-[rgba(245,242,248,.1)]">
-                      <p className="m-0 text-[rgba(245,242,248,.9)] text-lg font-semibold leading-snug">
-                        "Chemistry isn't something you see. It's something you
-                        feel in a conversation."
-                      </p>
-                    </div>
-                  ),
-                },
-                {
-                  num: "03",
-                  tag: "How it works",
-                  title: "Live events. Real-time matching. Inside the app.",
-                  body: "Every night at 7 PM, a live event opens inside Convoo. You join, get matched with someone in real-time, and have a real conversation before you ever see their photo. No algorithms. No swiping. Just presence.",
-                  extra: (
-                    <div className="grid sm:grid-cols-3 gap-4 mt-6">
-                      {[
-                        {
-                          icon: (
-                            <CalendarDays className="w-5 h-5" strokeWidth={2} />
-                          ),
-                          label: "Join the event",
-                          desc: "Every night at 7 PM inside the app.",
-                        },
-                        {
-                          icon: (
-                            <MessageCircle
-                              className="w-5 h-5"
-                              strokeWidth={2}
-                            />
-                          ),
-                          label: "Talk first",
-                          desc: "Get matched live. No photos yet.",
-                        },
-                        {
-                          icon: (
-                            <UserCheck className="w-5 h-5" strokeWidth={2} />
-                          ),
-                          label: "Then connect",
-                          desc: "Profiles unlock. You decide.",
-                        },
-                      ].map((item) => (
-                        <div
-                          key={item.label}
-                          className="p-5 rounded-2xl border border-[rgba(245,242,248,.1)] bg-[rgba(245,242,248,.04)]"
-                        >
-                          <div className="text-[#ff4fb3] mb-3">{item.icon}</div>
-                          <div className="font-bold text-white text-sm mb-1">
-                            {item.label}
-                          </div>
-                          <div className="text-[rgba(245,242,248,.55)] text-sm">
-                            {item.desc}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ),
-                },
-                {
-                  num: "04",
-                  tag: "The community",
-                  title: "Built city by city, with you.",
-                  body: "We started in Atlanta, ran live events inside the app, listened, and iterated fast. Every city we launch in is community-driven — we expand where people actually want this. If that's your city, let us know.",
-                  extra: (
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      {[
-                        {
-                          icon: (
-                            <Users
-                              className="w-4 h-4 text-[#ff4fb3]"
-                              strokeWidth={2}
-                            />
-                          ),
-                          label: "Community-first",
-                        },
-                        {
-                          icon: (
-                            <Zap
-                              className="w-4 h-4 text-[#ff4fb3]"
-                              strokeWidth={2}
-                            />
-                          ),
-                          label: "Moving fast",
-                        },
-                        {
-                          icon: (
-                            <Heart
-                              className="w-4 h-4 text-[#ff4fb3]"
-                              strokeWidth={2}
-                            />
-                          ),
-                          label: "Built for real connection",
-                        },
-                      ].map((tag) => (
-                        <div
-                          key={tag.label}
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-[rgba(184,50,128,.3)] bg-[rgba(184,50,128,.1)] text-sm font-semibold text-[rgba(245,242,248,.85)]"
-                        >
-                          {tag.icon}
-                          {tag.label}
-                        </div>
-                      ))}
-                    </div>
-                  ),
-                },
-              ].map((beat, i) => (
-                <div
-                  key={beat.num}
-                  data-reveal=""
-                  className="relative"
-                  style={{ transitionDelay: `${i * 0.1}s` }}
-                >
-                  <div className="absolute -left-[calc(2rem+14px)] top-1 w-7 h-7 rounded-full bg-[#0a0a0a] border-2 border-[#B83280] grid place-items-center shadow-[0_0_12px_rgba(184,50,128,.4)]">
-                    <span className="text-[9px] font-black text-[#ff4fb3] leading-none">
-                      {beat.num}
-                    </span>
-                  </div>
-                  <div className="text-xs font-bold text-[rgba(184,50,128,.8)] uppercase tracking-widest mb-3">
-                    {beat.tag}
-                  </div>
-                  <h3 className="m-0 mb-4 text-2xl md:text-3xl font-black tracking-tight">
-                    {beat.title}
-                  </h3>
-                  <p className="m-0 text-[rgba(245,242,248,.65)] text-base leading-relaxed">
-                    {beat.body}
-                  </p>
-                  {beat.extra}
-                </div>
-              ))}
-            </div>
-
-            {/* Closing CTA */}
-            <div
-              data-reveal=""
-              className="mt-20 p-8 md:p-10 rounded-3xl border border-[rgba(184,50,128,.3)] bg-gradient-to-br from-[rgba(184,50,128,.15)] to-[rgba(245,242,248,.03)] flex flex-col items-center text-center gap-6"
-            >
-              <div>
-                <div className="font-black text-xl md:text-2xl mb-2">
-                  Want to be part of it?
-                </div>
-                <div className="text-[rgba(245,242,248,.55)] text-sm">
-                  Join a live event inside the app or create one with a code.
-                </div>
-              </div>
-              <div className="flex flex-wrap justify-center gap-3">
-                {/* App Store Listing */}
-                <a
-                  href="https://apps.apple.com/us/app/convoo/id6746660683"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-3 border border-white/20 bg-white/10 text-white px-6 py-3 rounded-xl no-underline shadow-[0_4px_20px_rgba(0,0,0,.3)] transition-all hover:bg-white/15 hover:border-white/30"
-                >
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                  </svg>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.6rem",
-                        fontWeight: 500,
-                        opacity: 0.85,
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      Available on the
-                    </span>
-                    <span style={{ fontSize: "1rem", fontWeight: 700 }}>
-                      App Store
-                    </span>
-                  </div>
-                </a>
-
-                {/* Play Store */}
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.convooapp.convoo"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-3 border border-white/20 bg-white/10 text-white px-6 py-3 rounded-xl no-underline shadow-[0_4px_20px_rgba(0,0,0,.3)] transition-all hover:bg-white/15 hover:border-white/30"
-                >
-                  <svg width="22" height="22" viewBox="0 0 512 512" fill="none">
-                    <path d="M48 432 L48 80 L304 256 Z" fill="#34A853" />
-                    <path
-                      d="M48 80 L304 256 L384 176 L96 16 Q64 0 48 80Z"
-                      fill="#4285F4"
-                    />
-                    <path
-                      d="M48 432 L304 256 L384 336 L96 496 Q64 512 48 432Z"
-                      fill="#EA4335"
-                    />
-                    <path
-                      d="M304 256 L384 176 L448 216 Q480 240 448 296 L384 336 Z"
-                      fill="#FBBC05"
-                    />
-                  </svg>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.6rem",
-                        fontWeight: 500,
-                        opacity: 0.85,
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      Get it on
-                    </span>
-                    <span style={{ fontSize: "1rem", fontWeight: 700 }}>
-                      Google Play
-                    </span>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
         {/* ── Footer ──────────────────────────────────────── */}
         <footer className="py-12 px-8 mt-12 border-t border-[rgba(245,242,248,.08)]">
           <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between gap-6 text-sm text-[rgba(245,242,248,.5)]">
