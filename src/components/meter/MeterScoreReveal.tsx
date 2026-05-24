@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { ScoreResult, submitLead } from "../../lib/meterApi";
 import { CHARACTERS } from "./characters";
-import { getBollywoodCharacter } from "./bollywoodCharacters";
+import { getBollywoodCharacter, getBollywoodFilm } from "./bollywoodCharacters";
 import "./meter-result.css";
 
 interface MeterScoreRevealProps {
@@ -9,6 +9,8 @@ interface MeterScoreRevealProps {
   sessionId: string;
   onRestart: () => void;
 }
+
+type TemplateId = "zine" | "vintage";
 
 const SHARE_URL = "https://convoo.app";
 const INSTAGRAM_URL = "https://www.instagram.com/convooapp/";
@@ -26,12 +28,20 @@ function characterColor(characterId: string | undefined): string {
   return card?.color ?? "pink";
 }
 
-// "THE ROMANTIC" → ["THE", "ROMANTIC"]. The first word stays ink-colored,
-// the rest goes pink. Works for "THE FREE SPIRIT" / "THE WISE ONE" too.
-function splitArchetypeLabel(label: string): [string, string] {
-  const idx = label.indexOf(" ");
-  if (idx === -1) return [label, ""];
-  return [label.slice(0, idx), label.slice(idx + 1)];
+// "GEET" -> "Geet", "POO" -> "Poo". Names are single words.
+function titleCase(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+function downloadBlob(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
@@ -42,6 +52,15 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
   const waCardRef = useRef<HTMLDivElement>(null);
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
+  // Initial template can be forced via ?template= (used by the share-card
+  // PNG generator to screenshot each design).
+  const [template, setTemplate] = useState<TemplateId>(() => {
+    if (typeof window === "undefined") return "zine";
+    return new URLSearchParams(window.location.search).get("template") ===
+      "vintage"
+      ? "vintage"
+      : "zine";
+  });
   const [screenshotHint, setScreenshotHint] = useState(false);
   const [showWa, setShowWa] = useState(false);
 
@@ -58,21 +77,63 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
     () => getBollywoodCharacter(result.archetype, result.gender),
     [result.archetype, result.gender],
   );
-
-  const characterName = result.character?.name ?? "Vedika";
-  const characterCity = result.character?.city ?? "Convoo";
-  const year = new Date().getFullYear();
-
-  const [archetypePrefix, archetypeRest] = splitArchetypeLabel(
-    bolly.archetypeLabel,
+  const film = useMemo(
+    () => getBollywoodFilm(result.archetype, result.gender),
+    [result.archetype, result.gender],
   );
 
-  const openInstagram = () => {
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
-  };
+  const name = titleCase(bolly.name);
+  const zineNameClass =
+    name.length >= 8
+      ? "sc-name xlong"
+      : name.length >= 6
+        ? "sc-name long"
+        : "sc-name";
+  const quote = bolly.blurb;
+  const year = new Date().getFullYear();
 
-  const promptScreenshot = () => {
-    setScreenshotHint(true);
+  const shareResult = async () => {
+    const text = `I got ${name} (${film}) on the Convooersation Meter. find yours: ${SHARE_URL}/meter`;
+    // Pre-rendered card PNG keyed by archetype × gender × template.
+    const cardUrl = `/share-cards/${result.archetype}_${result.gender}_${template}.png`;
+    try {
+      const res = await fetch(cardUrl);
+      if (!res.ok) throw new Error("card_not_found");
+      const blob = await res.blob();
+      const file = new File(
+        [blob],
+        `convoo-${result.archetype}-${result.gender}.png`,
+        { type: "image/png" },
+      );
+      // Best path: hand the image file to the system share sheet → user
+      // picks Instagram → Add to Story.
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: "My Convoo result", text });
+        } catch {
+          /* user cancelled the share sheet */
+        }
+        return;
+      }
+      // No file-share support (most desktops): download + show the hint.
+      downloadBlob(blob, `convoo-${name.toLowerCase()}.png`);
+      setScreenshotHint(true);
+    } catch {
+      // Card not generated yet / fetch failed — fall back to text+link share.
+      if (typeof navigator !== "undefined" && navigator.share) {
+        try {
+          await navigator.share({
+            title: "My Convoo result",
+            text,
+            url: `${SHARE_URL}/meter`,
+          });
+          return;
+        } catch {
+          /* cancelled */
+        }
+      }
+      setScreenshotHint(true);
+    }
   };
 
   const submitWhatsApp = async (e: React.FormEvent) => {
@@ -98,7 +159,6 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
 
   const openWa = () => {
     setShowWa(true);
-    // Scroll the form into view and focus the input on next frame.
     requestAnimationFrame(() => {
       waCardRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -106,6 +166,45 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
       });
       phoneInputRef.current?.focus();
     });
+  };
+
+  const renderCard = () => {
+    if (template === "vintage") {
+      return (
+        <div className="share-card sc-vintage">
+          <div className="sc-vin-content">
+            <div className="sc-stars">★ ★ ★ ★ ★</div>
+            <div className="sc-name">{name}</div>
+            <div className="sc-vin-line" />
+            <div className="sc-from">From · {film}</div>
+            <div className="sc-quote">"{quote}"</div>
+            <div className="sc-vin-foot">
+              <div className="sc-who">— which one are you?</div>
+              <div className="sc-url">convoo.app/meter</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // default: bold zine
+    return (
+      <div className="share-card sc-zine">
+        <div className="sc-mid">
+          <div className={zineNameClass}>{name}.</div>
+          <div className="sc-from">From {film}</div>
+          <div className="sc-quote">"{quote}"</div>
+        </div>
+        <div className="sc-foot">
+          <div className="sc-foot-what">
+            take the
+            <br />
+            <b>Convooersation Meter</b>
+          </div>
+          <div className="sc-foot-url">convoo.app/meter</div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -131,82 +230,38 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
       <main className="result-shell">
         <div className="header-pill">YOUR CONVERSATION STYLE IS IN</div>
 
-        <div className="poster">
-          <div className="card-inner">
-            <p className="now-showing">now showing in your conversation</p>
-            <div className="you-are">YOU ARE</div>
-
-            <h1 className={`hero-name${bolly.name.length > 5 ? " long" : ""}`}>
-              {bolly.name}
-            </h1>
-            <div className="hero-name-hindi" lang="hi">
-              {bolly.nameHindi}
-            </div>
-
-            <p className="from-film">
-              <span className="gold-stars">★</span> in the style of{" "}
-              <span className="pink">{bolly.tagline}</span>{" "}
-              <span className="gold-stars">★</span>
-            </p>
-
-            <div className="divider" aria-hidden>
-              <span className="line" />
-              <span className="star">★</span>
-              <span className="star mid">✦</span>
-              <span className="star">★</span>
-              <span className="line" />
-            </div>
-
-            <h2 className="personality-label">
-              {archetypePrefix}{" "}
-              {archetypeRest ? (
-                <span className="pink">{archetypeRest}</span>
-              ) : null}
-            </h2>
-
-            <p className="celebration">{bolly.blurb}</p>
-
-            {result.best_line ? (
-              <div className="best-line">
-                <span className="label">YOUR BEST LINE</span>
-                <p className="best-line-text">{result.best_line}</p>
-              </div>
-            ) : null}
-
-            <div className="credits">
-              <div className="credit">
-                <span className="label">WITH</span>
-                <span className="val">{characterName.toUpperCase()}</span>
-              </div>
-              <div className="credit">
-                <span className="label">RUN TIME</span>
-                <span className="val">03:00</span>
-              </div>
-              <div className="credit">
-                <span className="label">SCREEN</span>
-                <span className="val">CONVOO</span>
-              </div>
-            </div>
-
-            <div className="card-footer">
-              <span className="convoo">CONVOO.APP</span> · {year}
-            </div>
-          </div>
+        <div className="template-toggle">
+          <button
+            type="button"
+            className={template === "zine" ? "active" : ""}
+            onClick={() => setTemplate("zine")}
+          >
+            ZINE
+          </button>
+          <button
+            type="button"
+            className={template === "vintage" ? "active" : ""}
+            onClick={() => setTemplate("vintage")}
+          >
+            VINTAGE
+          </button>
         </div>
+
+        <div className="share-card-stage">{renderCard()}</div>
 
         <span className="share-label">SCREENING ROOM</span>
         <div className="share-row">
-          <button className="share-btn" onClick={openInstagram}>
-            ★ TAG US ON INSTAGRAM
+          <button className="share-btn" onClick={shareResult}>
+            ↗ SHARE TO STORY
           </button>
-          <button className="share-btn" onClick={promptScreenshot}>
-            📸 SCREENSHOT FOR US?
+          <button className="share-btn" onClick={() => setScreenshotHint(true)}>
+            📸 SCREENSHOT
           </button>
         </div>
 
         {screenshotHint ? (
           <div className="ig-hint">
-            screenshot the poster above and tag{" "}
+            screenshot the card above and tag{" "}
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
               @convooapp
             </a>{" "}
@@ -219,7 +274,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
             <div className="cta-postsubmit">
               {waState === "success"
                 ? "you're on the list. don't ghost us."
-                : "your poster is yours."}
+                : "your card is yours."}
             </div>
           ) : (
             <button type="button" className="cta-primary" onClick={openWa}>
@@ -284,7 +339,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
               className="wa-skip"
               onClick={() => setWaState("skipped")}
             >
-              no thanks, just my poster
+              no thanks, just my card
             </button>
           </div>
         ) : null}

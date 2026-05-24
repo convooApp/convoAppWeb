@@ -469,3 +469,173 @@
 }
 .poster-footer .pink { color: var(--pink); }
 .poster-footer .red { color: var(--red-deep); }
+
+/* ============ ADDED CONTENT (kept in the original poster theme) ============ */
+
+/* framing line under the tagline */
+.poster-frame-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(15px, 2.2vw, 18px);
+  color: var(--ink-soft);
+  max-width: 560px;
+  margin: 0 auto 6px;
+  line-height: 1.45;
+  padding: 0 12px;
+}
+.poster-frame-line b { color: var(--ink); font-weight: 700; font-style: normal; }
+
+/* social proof chip */
+.poster-social { display: flex; justify-content: center; margin: 18px auto 20px; }
+.poster-social .inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  padding: 6px 14px;
+  transform: rotate(-0.5deg);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+}
+.poster-social .dots { display: flex; }
+.poster-social .dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  margin-left: -7px;
+  display: grid;
+  place-items: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 10px;
+  color: var(--paper);
+}
+.poster-social .dot:first-child { margin-left: 0; }
+.poster-social .dot:nth-child(1) { background: var(--pink); }
+.poster-social .dot:nth-child(2) { background: var(--red); }
+.poster-social .dot:nth-child(3) { background: var(--gold); color: var(--ink); }
+.poster-social .dot:nth-child(4) { background: var(--orange); }
+
+/* "Founder pick" featured character card */
+.poster-char.featured { border-color: var(--pink); box-shadow: 5px 5px 0 var(--pink); }
+.poster-char.featured:hover:not(:disabled) { box-shadow: 7px 7px 0 var(--pink); }
+.poster-char-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  background: var(--pink);
+  color: var(--paper);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border: 2px solid var(--ink);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* ============ SHARE-TO-STORY PREVIEW ============ */
+.poster-share-section {
+  margin: 8px 0 36px;
+  padding-top: 36px;
+  border-top: 2px dashed var(--ink);
+}
+.poster-share-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(14px, 3.5vw, 17px);
+  color: var(--ink-soft);
+  margin: 4px auto 28px;
+  max-width: 520px;
+  padding: 0 8px;
+}
+.poster-share-sub b { color: var(--ink); font-weight: 700; font-style: normal; }
+.poster-share-grid {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.poster-share-hint {
+  margin-top: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--red-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.poster-share-hint::before, .poster-share-hint::after {
+  content: '';
+  flex: 0 0 30px;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.4;
+}
+
+/* Instagram story phone mockup (self-contained; the cream card shows the
+   actual share-card design, independent of the page palette) */
+.ig-phone {
+  width: 248px; height: 496px;
+  border-radius: 30px;
+  background: #0a0a0a;
+  padding: 6px;
+  box-shadow: 6px 6px 0 var(--ink);
+  position: relative;
+  transform: rotate(-2deg);
+  transition: transform 0.25s;
+}
+.ig-phone:nth-child(2) { transform: rotate(2deg); }
+.ig-phone:hover { transform: rotate(0deg) scale(1.02); }
+.ig-screen {
+  width: 100%; height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.ig-top { position: absolute; top: 0; left: 0; right: 0; z-index: 10; padding: 10px 12px 0; }
+.ig-progress { display: flex; gap: 3px; margin-bottom: 9px; }
+.ig-progress span { flex: 1; height: 2px; background: rgba(255,255,255,.3); border-radius: 1px; }
+.ig-progress span.active { background: #fff; }
+.ig-header { display: flex; align-items: center; gap: 7px; }
+.ig-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); padding: 1.5px; }
+.ig-avatar-inner { width: 100%; height: 100%; border-radius: 50%; background: #000; display: grid; place-items: center; color: #fff; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 800; font-size: 10px; }
+.ig-user { flex: 1; font-size: 11px; color: #fff; font-weight: 600; }
+.ig-user .time { color: rgba(255,255,255,.6); margin-left: 6px; font-weight: 400; }
+.ig-actions { display: flex; gap: 6px; color: #fff; font-size: 13px; }
+.ig-content { flex: 1; padding: 52px 16px 66px; display: flex; flex-direction: column; }
+.ig-card { background: #ffe9d6; color: #1a0a0d; padding: 18px; border-radius: 14px; flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.ig-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 132px; height: 132px; background: #ff3d8e; border-radius: 50%; opacity: .92; }
+.ig-card.aryan-variant::before { background: #e8763d; }
+.ig-card-top { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; }
+.ig-stamp { background: #1a0a0d; color: #ffe9d6; padding: 4px 8px; font-size: 7.5px; letter-spacing: .22em; text-transform: uppercase; font-weight: 800; border-radius: 2px; transform: rotate(-3deg); font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-pg { font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: rgba(26,10,13,.5); }
+.ig-mid { position: relative; z-index: 2; margin-top: 26px; }
+.ig-eyebrow { font-size: 8px; letter-spacing: .3em; text-transform: uppercase; color: #fff; font-weight: 800; margin-bottom: 7px; font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-name { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 800; font-size: 50px; line-height: .88; letter-spacing: -.025em; color: #1a0a0d; margin-bottom: 4px; }
+.ig-from { font-size: 8px; letter-spacing: .26em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; margin-bottom: 16px; font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; line-height: 1.4; color: #1a0a0d; position: relative; z-index: 2; }
+.ig-foot { margin-top: auto; padding-top: 11px; border-top: 1.5px solid #1a0a0d; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
+.ig-foot-what { font-size: 7px; color: #1a0a0d; font-weight: 700; letter-spacing: .03em; line-height: 1.3; font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-foot-what b { font-weight: 800; }
+.ig-foot-url { font-size: 8px; letter-spacing: .24em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-bottom { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 12px 14px; display: flex; align-items: center; gap: 10px; z-index: 10; }
+.ig-message { flex: 1; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 8px 12px; color: rgba(255,255,255,.8); font-size: 11px; }
+.ig-share-ic { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.12); display: grid; place-items: center; color: #fff; font-size: 13px; border: 1px solid rgba(255,255,255,.3); }
+
+@media (max-width: 460px) {
+  .ig-phone { width: 220px; height: 440px; }
+  .poster-share-grid { gap: 16px; }
+}

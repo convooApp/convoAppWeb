@@ -1,27 +1,34 @@
-import { HashRouter, BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import Home from './pages/Home';
-import AnticipationHome from './pages/AnticipationHome';
-import Meter from './pages/Meter';
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import MeterPrivacy from './pages/MeterPrivacy';
-import DeleteAccount from './pages/DeleteAccount';
-import CSAEPolicy from './pages/CSAEPolicy';
-import Support from './pages/Support';
-import Contact from './pages/Contact';
-import Business from './pages/Business';
-import './fonts.css';
-import Events from './pages/Events';
-import DownloadNow from './pages/downloadNow';
-import Links from './pages/Links';
-import ApplyToHost from './pages/ApplyToHost';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { useEffect } from "react";
+import Home from "./pages/Home";
+import AnticipationHome from "./pages/AnticipationHome";
+import Meter from "./pages/Meter";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import MeterPrivacy from "./pages/MeterPrivacy";
+import DeleteAccount from "./pages/DeleteAccount";
+import CSAEPolicy from "./pages/CSAEPolicy";
+import Support from "./pages/Support";
+import Contact from "./pages/Contact";
+import Business from "./pages/Business";
+import "./fonts.css";
+import Events from "./pages/Events";
+import DownloadNow from "./pages/downloadNow";
+import Links from "./pages/Links";
+import ApplyToHost from "./pages/ApplyToHost";
+import In from "./pages/In";
 
 function ScrollToTop() {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location.pathname]);
 
   return null;
@@ -36,7 +43,7 @@ function AppRoutes() {
           <Routes>
             <Route path="/" element={<AnticipationHome />} />
             <Route path="/meter" element={<Meter />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/us" element={<Home />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/meter/privacy" element={<MeterPrivacy />} />
@@ -49,6 +56,7 @@ function AppRoutes() {
             <Route path="/events" element={<Events />} />
             <Route path="/links" element={<Links />} />
             <Route path="/apply-to-host" element={<ApplyToHost />} />
+            <Route path="/in" element={<In />} />
             {/* Any unknown path falls back to Home so visitors never see a
                 blank screen from a stale link. */}
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -60,20 +68,10 @@ function AppRoutes() {
 }
 
 function App() {
-  const isApplyToHost = window.location.pathname === '/apply-to-host';
-
-  if (isApplyToHost) {
-    return (
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    );
-  }
-
   return (
-    <HashRouter>
+    <BrowserRouter>
       <AppRoutes />
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

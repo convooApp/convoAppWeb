@@ -547,3 +547,92 @@
   text-decoration: none;
 }
 .result-footer a.pink:hover { text-decoration: underline; }
+
+/* ============ SHARE-CARD RESULT (3 toggleable templates) ============ */
+.template-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 4px auto 18px;
+  flex-wrap: wrap;
+}
+.template-toggle button {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 8px 14px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s, color 0.12s;
+}
+.template-toggle button:hover { background: var(--gold); }
+.template-toggle button.active { background: var(--ink); color: var(--gold-light); }
+
+.share-card-stage { display: flex; justify-content: center; margin: 0 auto 22px; }
+
+.share-card {
+  width: min(340px, 86vw);
+  aspect-ratio: 320 / 568;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 18px 50px rgba(26, 8, 6, 0.45);
+  color: #1a0a0d;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* ---- Bold Zine ---- */
+.sc-zine { background: #ffe9d6; padding: 24px; }
+.sc-zine::before { content: ''; position: absolute; top: -52px; right: -48px; width: 148px; height: 148px; background: #ff3d8e; border-radius: 50%; opacity: 0.92; }
+.sc-zine .sc-top { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; }
+.sc-stamp { background: #1a0a0d; color: #ffe9d6; padding: 6px 11px; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 800; border-radius: 3px; transform: rotate(-3deg); }
+.sc-pg { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: rgba(26, 10, 13, 0.5); }
+.sc-zine .sc-mid { position: relative; z-index: 2; margin-top: 76px; }
+.sc-eyebrow { font-size: 9.5px; letter-spacing: 0.3em; text-transform: uppercase; color: #b82362; font-weight: 800; margin-bottom: 10px; }
+.sc-zine .sc-name { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 800; font-size: 60px; line-height: 0.86; letter-spacing: -0.025em; color: #1a0a0d; }
+.sc-zine .sc-name.long { font-size: 50px; }
+.sc-zine .sc-name.xlong { font-size: 42px; }
+.sc-zine .sc-from { font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; margin-bottom: 22px; margin-top: 22px;}
+.sc-zine .sc-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; line-height: 1.4; color: #1a0a0d; position: relative; z-index: 2; }
+.sc-zine .sc-foot { margin-top: auto; padding-top: 16px; border-top: 2px solid #1a0a0d; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; position: relative; z-index: 2; }
+.sc-foot-what { font-size: 9px; color: #1a0a0d; font-weight: 700; letter-spacing: 0.04em; line-height: 1.4; }
+.sc-foot-what b { font-weight: 800; }
+.sc-foot-url { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; }
+
+/* ---- Instant Polaroid ---- */
+.sc-polaroid { background: linear-gradient(180deg, #1a1216 0%, #0d0608 100%); color: #fff; padding: 22px 22px 26px; }
+.sc-pol-pre { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: rgba(255, 255, 255, 0.5); text-align: center; margin-bottom: 12px; }
+.sc-polaroid-frame { background: #f4ede2; padding: 13px 13px 48px; border-radius: 4px; box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.6); transform: rotate(-2.2deg); margin: 4px auto 0; width: 76%; position: relative; }
+.sc-photo { aspect-ratio: 1; background: linear-gradient(135deg, #ff4081 0%, #c2185b 55%, #7a1a3d 100%); border-radius: 2px; position: relative; overflow: hidden; display: grid; place-items: center; color: #fff; }
+.sc-photo::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 60%); pointer-events: none; }
+.sc-photo .sc-initial { font-family: 'Playfair Display', serif; font-style: italic; font-size: 116px; line-height: 1; font-weight: 800; opacity: 0.94; position: relative; z-index: 1; }
+.sc-photo .sc-corner { position: absolute; top: 12px; left: 12px; font-size: 8.5px; letter-spacing: 0.25em; color: rgba(255, 255, 255, 0.78); font-weight: 700; z-index: 2; }
+.sc-photo .sc-date { position: absolute; bottom: 12px; right: 12px; font-size: 8.5px; letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.78); font-weight: 700; z-index: 2; }
+.sc-caption { position: absolute; bottom: 11px; left: 0; right: 0; text-align: center; font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; color: #3a1810; font-weight: 800; }
+.sc-caption b { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-style: normal; font-weight: 800; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #c2185b; margin-top: 2px; }
+.sc-pol-tag { font-family: 'Fraunces', serif; font-style: italic; font-size: 14.5px; color: rgba(255, 255, 255, 0.78); text-align: center; margin: 26px 0 0; padding: 0 18px; line-height: 1.5; }
+.sc-pol-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+.sc-pol-foot .sc-url { font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: #ff80b8; font-weight: 800; }
+.sc-pol-foot .sc-sub { font-size: 10.5px; color: rgba(255, 255, 255, 0.42); margin-top: 5px; font-family: 'Fraunces', serif; font-style: italic; }
+
+/* ---- Vintage Film Poster ---- */
+.sc-vintage { background: linear-gradient(180deg, #f5e9d2 0%, #e8d3a5 100%); color: #3a1810; padding: 28px 24px; }
+.sc-vintage::before { content: ''; position: absolute; inset: 14px; border: 1.5px solid rgba(58, 24, 16, 0.3); border-radius: 14px; pointer-events: none; }
+.sc-vintage::after { content: ''; position: absolute; inset: 18px; border: 1px solid rgba(58, 24, 16, 0.13); border-radius: 11px; pointer-events: none; }
+.sc-vin-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; padding: 10px 6px; }
+.sc-presents { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: #3a1810; opacity: 0.72; margin-bottom: 4px; }
+.sc-presents b { color: #c2185b; font-style: normal; font-weight: 700; }
+.sc-stars { font-size: 9.5px; color: #c2185b; letter-spacing: 0.45em; margin: 14px 0 20px; }
+.sc-vintage .sc-name { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 800; font-size: 58px; line-height: 0.92; letter-spacing: -0.02em; color: #3a1810; margin-bottom: 6px; }
+.sc-vin-line { width: 60px; height: 1.5px; background: #c2185b; margin: 4px auto 12px; }
+.sc-vintage .sc-from { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: #7a3a3a; font-weight: 700; margin-bottom: 22px; }
+.sc-vintage .sc-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 15.5px; line-height: 1.5; color: #3a1810; padding: 0 8px; margin-bottom: 18px; }
+.sc-vin-foot { padding-top: 18px; border-top: 1.5px solid rgba(58, 24, 16, 0.25); margin-top: 16px; width: 100%; }
+.sc-vin-foot .sc-who { font-family: 'Fraunces', serif; font-style: italic; font-size: 13.5px; color: #7a3a3a; margin-bottom: 5px; }
+.sc-vin-foot .sc-url { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: #c2185b; font-weight: 800; }

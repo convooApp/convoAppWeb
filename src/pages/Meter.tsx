@@ -62,7 +62,7 @@ function readDevParams() {
   const dev = q.get("dev");
   if (!dev) return null;
   const archetype = (q.get("archetype") as Archetype) ?? "romantic";
-  const gender =
+  const gender: UserGender =
     (q.get("gender") as UserGender) === "female" ? "female" : "male";
   return {
     phase: dev as "reveal" | "loading" | "chatting",

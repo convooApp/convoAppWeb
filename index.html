@@ -1,6 +1,33 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- SPA routing for GitHub Pages (must run before the app mounts) -->
+    <script type="text/javascript">
+      // 1) Decode the "?/path" redirect produced by 404.html
+      //    (rafgraph/spa-github-pages, MIT) so a direct hit or refresh on a
+      //    clean URL like /meter restores that URL instead of bouncing.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&');
+            })
+            .join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+
+      // 2) Migrate legacy HashRouter links (e.g. /#/meter) to clean paths now
+      //    that the app uses BrowserRouter. Only "#/" hashes are old router
+      //    paths; in-page anchors such as "#faq" are deliberately left alone.
+      (function (l) {
+        if (l.hash.indexOf('#/') === 0) {
+          window.history.replaceState(null, null, l.hash.slice(1));
+        }
+      })(window.location);
+    </script>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MESE0YRMV"></script>
 <script>
@@ -41,7 +68,7 @@
     <!-- Fonts for Apply-to-Host page -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,600;10..48,700;10..48,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Bebas+Neue&family=Bungee&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Anton&family=Noto+Serif+Devanagari:wght@500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,600;10..48,700;10..48,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Bebas+Neue&family=Bungee&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Anton&family=Noto+Serif+Devanagari:wght@500;700;900&family=Playfair+Display:ital,wght@0,800;1,800&family=Fraunces:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&display=swap" rel="stylesheet"/>
 
     <!-- TODO: Add Social Media Images -->
     <!-- Social Media Images 

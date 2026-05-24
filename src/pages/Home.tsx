@@ -1186,9 +1186,8 @@ const Home = () => {
                   ENTER EVENT CODE
                 </div>
 
-                <a
-                  href="#/apply-to-host"
-                  rel="noreferrer"
+                <Link
+                  to="/apply-to-host"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -1220,7 +1219,7 @@ const Home = () => {
                   }}
                 >
                   Create your own community →
-                </a>
+                </Link>
 
                 <div
                   style={{

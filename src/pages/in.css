@@ -1,0 +1,545 @@
+/* /in — "Pehli Mulaqaat" pre-launch campaign page.
+   All rules are scoped under .in-page so the dark theme + reset never
+   leaks into the rest of the site. CSS variables live on the wrapper so
+   every descendant inherits them. */
+
+.in-page {
+  --bg: #0c0608;
+  --bg-warm: #180a0d;
+  --cream: #fef7f0;
+  --cream-mid: rgba(254, 247, 240, 0.72);
+  --cream-soft: rgba(254, 247, 240, 0.48);
+  --cream-faint: rgba(254, 247, 240, 0.28);
+  --pink: #ff3d8e;
+  --pink-bright: #ff80b8;
+  --pink-deep: #b82362;
+  --amber: #ff9b5e;
+  --gold: #ffd194;
+  --hair: rgba(254, 247, 240, 0.08);
+
+  background: var(--bg);
+  font-family: "Bricolage Grotesque", sans-serif;
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.in-page *,
+.in-page *::before,
+.in-page *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* atmospheric base */
+.in-page .ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.in-page .ambient::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(255, 155, 94, 0.1), transparent 65%);
+  filter: blur(30px);
+}
+.in-page .ambient::after {
+  content: "";
+  position: absolute;
+  bottom: -15%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 61, 142, 0.1), transparent 70%);
+  filter: blur(50px);
+}
+
+.in-page .wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============ TOP BAR ============ */
+.in-page .topbar {
+  padding: 24px 0 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  font-weight: 600;
+}
+.in-page .topbar .brand {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--cream);
+}
+.in-page .topbar .brand span {
+  color: var(--pink);
+}
+.in-page .topbar .geo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.in-page .topbar .geo .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink-bright);
+  box-shadow: 0 0 8px var(--pink-bright);
+  animation: in-pulse 2s infinite;
+}
+@keyframes in-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ============ HERO — PEHLI MULAQAAT (compressed) ============ */
+.in-page .hero {
+  padding: 40px 0 24px;
+  text-align: center;
+}
+.in-page .hero-pre {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--cream-soft);
+  margin-bottom: 18px;
+}
+.in-page .hero-pre::before,
+.in-page .hero-pre::after {
+  content: "·";
+  margin: 0 10px;
+  color: var(--cream-faint);
+}
+.in-page .hero-title {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(56px, 13vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.in-page .hero-en {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cream-soft);
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+.in-page .hero-line {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(18px, 4.2vw, 22px);
+  color: var(--cream-mid);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+.in-page .hero-line em {
+  color: var(--amber);
+  font-style: italic;
+}
+
+/* ============ THE METER — HERO ZONE ============ */
+.in-page .meter-block {
+  margin: 48px 0 0;
+  padding: 36px 26px 32px;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 61, 142, 0.18) 0%,
+    rgba(255, 155, 94, 0.1) 60%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 61, 142, 0.35);
+  border-radius: 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.in-page .meter-block::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(255, 61, 142, 0.35), transparent 70%);
+  pointer-events: none;
+}
+.in-page .meter-block::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(255, 155, 94, 0.25), transparent 70%);
+  pointer-events: none;
+}
+.in-page .m-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 61, 142, 0.18);
+  border: 1px solid rgba(255, 61, 142, 0.35);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+}
+.in-page .m-eyebrow .ic {
+  font-size: 11px;
+}
+.in-page .m-title {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 7vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+.in-page .m-title .italic {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+}
+.in-page .m-sub {
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--cream-mid);
+  max-width: 380px;
+  margin: 0 auto 26px;
+  position: relative;
+  z-index: 1;
+}
+.in-page .m-sub b {
+  color: var(--cream);
+  font-weight: 500;
+}
+.in-page .m-meta {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--cream-soft);
+  position: relative;
+  z-index: 1;
+}
+.in-page .m-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.in-page .m-meta-item .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* character tease — bridges visually to meter page */
+.in-page .m-tease {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: center;
+}
+.in-page .tease-names {
+  font-size: 12.5px;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.in-page .tease-line {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--cream-mid);
+}
+.in-page .m-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  color: #1a0a0d;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 28px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 14px 40px rgba(255, 61, 142, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s;
+  letter-spacing: -0.01em;
+}
+.in-page .m-btn:hover {
+  transform: translateY(-1px);
+}
+.in-page .m-btn .arrow {
+  font-size: 18px;
+}
+.in-page .m-trust {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--cream-faint);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ ONE-LINE PULL between meter and waitlist ============ */
+.in-page .divider-line {
+  text-align: center;
+  padding: 38px 0 8px;
+}
+.in-page .divider-line p {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--cream-soft);
+  line-height: 1.45;
+}
+
+/* ============ WAITLIST ============ */
+.in-page .waitlist {
+  margin: 24px 0 0;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--hair);
+  border-radius: 22px;
+  padding: 28px 24px;
+  text-align: center;
+}
+.in-page .w-cap {
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.in-page .w-title {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.in-page .w-sub {
+  font-size: 13.5px;
+  color: var(--cream-soft);
+  margin-bottom: 20px;
+}
+.in-page .w-form {
+  display: flex;
+  gap: 8px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+.in-page .w-form input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 14px;
+}
+.in-page .w-form input::placeholder {
+  color: var(--cream-faint);
+}
+.in-page .w-form input:focus {
+  outline: none;
+  border-color: rgba(255, 61, 142, 0.5);
+}
+.in-page .w-form button {
+  background: var(--cream);
+  color: #1a0a0d;
+  border: none;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.in-page .w-form button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.in-page .w-trust {
+  font-size: 11px;
+  color: var(--cream-faint);
+  margin-top: 12px;
+}
+.in-page .w-error {
+  font-size: 12px;
+  color: var(--pink-bright);
+  margin-bottom: 12px;
+}
+.in-page .w-success {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--cream);
+}
+
+/* ============ THE STORY (for the scrollers) ============ */
+.in-page .scroll-cue {
+  text-align: center;
+  padding: 40px 0 14px;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.in-page .scroll-cue::before,
+.in-page .scroll-cue::after {
+  content: "";
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: var(--hair);
+}
+.in-page .story {
+  padding: 14px 0 50px;
+}
+.in-page .story p {
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: var(--cream-mid);
+  margin-bottom: 16px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.in-page .story p.lead {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--cream);
+  margin-bottom: 18px;
+}
+.in-page .story p b {
+  color: var(--cream);
+  font-weight: 500;
+}
+.in-page .story p.sig {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  color: var(--cream-soft);
+  margin-top: 18px;
+}
+
+/* ============ FOOTER ============ */
+.in-page footer {
+  padding: 30px 0 50px;
+  border-top: 1px solid var(--hair);
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  font-weight: 600;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.in-page footer .links {
+  display: flex;
+  gap: 18px;
+}
+.in-page footer a {
+  color: inherit;
+  text-decoration: none;
+}
+.in-page footer a:hover {
+  color: var(--cream);
+}
+
+/* mobile tighter */
+@media (max-width: 540px) {
+  .in-page .wrap {
+    padding: 0 18px;
+  }
+  .in-page .hero {
+    padding: 28px 0 18px;
+  }
+  .in-page .meter-block {
+    padding: 30px 20px 28px;
+    border-radius: 24px;
+  }
+  .in-page .m-btn {
+    padding: 16px 22px;
+    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+  .in-page .w-form {
+    flex-direction: column;
+  }
+  .in-page .w-form button {
+    padding: 14px;
+  }
+  .in-page footer {
+    flex-direction: column;
+    text-align: center;
+  }
+}
