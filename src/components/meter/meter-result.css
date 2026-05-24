@@ -449,7 +449,10 @@
 }
 .wa-form {
   display: grid;
-  grid-template-columns: 110px 1fr auto;
+  /* country selector sizes to content, the number field takes the rest, and
+     the submit button drops to its own full-width row below — robust from
+     ~260px up to desktop. */
+  grid-template-columns: minmax(92px, auto) 1fr;
   gap: 8px;
   margin-bottom: 10px;
 }
@@ -464,13 +467,14 @@
 }
 .wa-form input { min-width: 0; }
 .wa-form .wa-submit {
+  grid-column: 1 / -1;
   background: var(--pink);
   color: var(--paper);
   border: 2px solid var(--ink);
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 2px;
-  padding: 0 16px;
+  padding: 12px 16px;
   cursor: pointer;
   box-shadow: 3px 3px 0 var(--ink);
   transition: transform 0.12s, box-shadow 0.12s;
@@ -505,11 +509,6 @@
   text-decoration: underline;
   cursor: pointer;
   padding: 4px 0;
-}
-@media (max-width: 480px) {
-  .wa-form {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ============ CLOSING LINE ============ */

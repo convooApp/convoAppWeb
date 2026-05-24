@@ -108,6 +108,22 @@ export function submitLead(
   });
 }
 
+/**
+ * Sessionless WhatsApp capture (the /in campaign page and the homepage).
+ * Lands in the same meter_leads table as meter results, tagged by `source`.
+ */
+export function submitWaitlistLead(
+  countryCode: string,
+  phone: string,
+  source: "in" | "home",
+): Promise<{ ok: true }> {
+  return postJson<{ ok: true }>("waitlist-lead", {
+    country_code: countryCode,
+    phone,
+    source,
+  });
+}
+
 export interface StreamHandlers {
   onTyping?: () => void;
   onChunk?: (text: string) => void;

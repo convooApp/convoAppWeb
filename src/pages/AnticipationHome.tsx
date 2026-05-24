@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { submitWaitlistLead } from "../lib/meterApi";
 import "../landing.css"; // .animate-fade-in
 import "./anticipation-home.css";
 
@@ -18,8 +18,9 @@ import "./anticipation-home.css";
  *   4. Voice first · Faces last (positioning subline)
  *   5. MADE IN PUNE · COMING SOON (status footer)
  *
- * Submissions go to `public.waitlist_phones` (country_code + phone).
- * Same shape as meter_leads so a single nurture worker can drain both.
+ * Submissions go to the shared `public.meter_leads` table (source = "home")
+ * via the waitlist-lead edge function, so every WhatsApp capture lives in
+ * one place.
  */
 
 const COUNTRY_CODES: Array<{ code: string; label: string }> = [
@@ -68,23 +69,8 @@ const AnticipationHome: React.FC = () => {
     }
     setSubmitting(true);
     try {
-      const { error: dbError } = await supabase.from("waitlist_phones").insert([
-        {
-          country_code: countryCode,
-          phone: digits,
-        },
-      ]);
-      if (dbError) {
-        if (dbError.code === "23505") {
-          // Unique violation on (country_code, phone) — treat as "already in"
-          // and show the success state. No reason to scold them.
-          setSubmitted(true);
-        } else {
-          setError("Something went wrong. Please try again.");
-        }
-      } else {
-        setSubmitted(true);
-      }
+      await submitWaitlistLead(countryCode, digits, "home");
+      setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

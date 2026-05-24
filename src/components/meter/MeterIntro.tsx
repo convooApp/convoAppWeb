@@ -180,7 +180,7 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
                 <div className="ig-content">
                   <div className="ig-card">
                     <div className="ig-card-top">
-                      <div className="ig-stamp">★ confirmed ★</div>
+                      <div></div>
                       <div className="ig-pg">no. 04</div>
                     </div>
                     <div className="ig-mid">
@@ -231,16 +231,16 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
                 <div className="ig-content">
                   <div className="ig-card aryan-variant">
                     <div className="ig-card-top">
-                      <div className="ig-stamp">★ confirmed ★</div>
+                      <div></div>
                       <div className="ig-pg">no. 09</div>
                     </div>
                     <div className="ig-mid">
-                      <div className="ig-name">Srikant.</div>
+                      <div className="ig-name">Bunny.</div>
                       <div className="ig-from">From The Family Man</div>
                       <div className="ig-quote">
-                        "You see what people aren't saying. Patient, observant,
-                        three steps ahead but won't tell you. The one your
-                        friends call when something's actually wrong."
+                        "Curious, restless, full of plans. You made the
+                        conversation feel like an adventure already in motion.
+                        Hard to keep up with, in the best way."
                       </div>
                     </div>
                     <div className="ig-foot">

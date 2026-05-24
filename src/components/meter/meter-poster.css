@@ -625,7 +625,7 @@
 .ig-mid { position: relative; z-index: 2; margin-top: 26px; }
 .ig-eyebrow { font-size: 8px; letter-spacing: .3em; text-transform: uppercase; color: #fff; font-weight: 800; margin-bottom: 7px; font-family: 'Bricolage Grotesque', sans-serif; }
 .ig-name { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 800; font-size: 50px; line-height: .88; letter-spacing: -.025em; color: #1a0a0d; margin-bottom: 4px; }
-.ig-from { font-size: 8px; letter-spacing: .26em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; margin-bottom: 16px; font-family: 'Bricolage Grotesque', sans-serif; }
+.ig-from { font-size: 8px; letter-spacing: .26em; text-transform: uppercase; color: #1a0a0d; font-weight: 800; margin-top:20px  ;margin-bottom: 16px; font-family: 'Bricolage Grotesque', sans-serif; }
 .ig-quote { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; line-height: 1.4; color: #1a0a0d; position: relative; z-index: 2; }
 .ig-foot { margin-top: auto; padding-top: 11px; border-top: 1.5px solid #1a0a0d; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
 .ig-foot-what { font-size: 7px; color: #1a0a0d; font-weight: 700; letter-spacing: .03em; line-height: 1.3; font-family: 'Bricolage Grotesque', sans-serif; }

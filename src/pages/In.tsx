@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { submitWaitlistLead } from "../lib/meterApi";
 import "./in.css";
 
 /**
@@ -8,8 +8,8 @@ import "./in.css";
  *
  * The Convooersation Meter is the hero: a free thing to do right now, with
  * the waitlist underneath and a short story for the curious. Targets an
- * Indian audience, so the WhatsApp field defaults to +91 and submits to the
- * same `public.waitlist_phones` table the homepage uses.
+ * Indian audience, so the WhatsApp field defaults to +91 and the number is
+ * saved to the shared `meter_leads` table (source = "in").
  */
 
 const COUNTRY_CODE = "+91";
@@ -41,19 +41,8 @@ const In: React.FC = () => {
     }
     setSubmitting(true);
     try {
-      const { error: dbError } = await supabase
-        .from("waitlist_phones")
-        .insert([{ country_code: COUNTRY_CODE, phone: digits }]);
-      if (dbError) {
-        if (dbError.code === "23505") {
-          // Already on the list — treat as success, no reason to scold them.
-          setSubmitted(true);
-        } else {
-          setError("Something went wrong. Please try again.");
-        }
-      } else {
-        setSubmitted(true);
-      }
+      await submitWaitlistLead(COUNTRY_CODE, digits, "in");
+      setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -68,23 +57,14 @@ const In: React.FC = () => {
       <div className="wrap">
         {/* top bar */}
         <div className="topbar">
-          <span className="brand">
-            Convoo<span>.</span>
-          </span>
-          <span className="geo">
-            <span className="dot" />
-            Pune · Mumbai
-          </span>
+          <span className="brand">Convoo</span>
         </div>
 
         {/* HERO: Pehli Mulaqaat */}
         <section className="hero">
-          <div className="hero-pre">aa rahe ho na</div>
           <h1 className="hero-title">Pehli Mulaqaat</h1>
-          <div className="hero-en">A new way to meet · Summer 2026</div>
-          <p className="hero-line">
-            do kulhad, ek baarish — <em>ek mulaqaat ka wait.</em>
-          </p>
+          <div className="hero-en">2026</div>
+          <p className="hero-line">aa rahe ho na?</p>
         </section>
 
         {/* METER: the hero zone */}
@@ -160,7 +140,7 @@ const In: React.FC = () => {
           <p className="lead">We're building something different.</p>
           <p>
             Dating apps gave us infinite faces and almost no connection.{" "}
-            <b>So we built somewhere you talk first. See later.</b>
+            <b>So we built a place where conversation matters</b>
           </p>
           <p>
             Pune and Mumbai first. The rest, you'll see when we open the door.
@@ -172,6 +152,13 @@ const In: React.FC = () => {
         <footer>
           <span>Convoo · Date differently</span>
           <div className="links">
+            <a
+              href="https://www.instagram.com/convooapp/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Follow us on Instagram
+            </a>
             <Link to="/privacy">Privacy</Link>
           </div>
         </footer>

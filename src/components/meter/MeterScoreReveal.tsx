@@ -12,7 +12,7 @@ interface MeterScoreRevealProps {
 
 type TemplateId = "zine" | "vintage";
 
-const SHARE_URL = "https://convoo.app";
+const SHARE_URL = "https://convoo.app/in";
 const INSTAGRAM_URL = "https://www.instagram.com/convooapp/";
 
 const COUNTRY_CODES: Array<{ code: string; label: string }> = [
@@ -109,7 +109,11 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
       // picks Instagram → Add to Story.
       if (navigator.canShare?.({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], title: "My Convoo result", text });
+          await navigator.share({
+            files: [file],
+            title: "My Convoo result",
+            text,
+          });
         } catch {
           /* user cancelled the share sheet */
         }
