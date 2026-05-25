@@ -54,6 +54,7 @@ function AppRoutes() {
             <Route path="/business" element={<Business />} />
             <Route path="/download-now" element={<DownloadNow />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/download" element={<Events />} />
             <Route path="/links" element={<Links />} />
             <Route path="/apply-to-host" element={<ApplyToHost />} />
             <Route path="/in" element={<In />} />
