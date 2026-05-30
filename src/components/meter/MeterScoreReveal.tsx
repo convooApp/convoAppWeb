@@ -258,20 +258,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
           <button className="share-btn" onClick={shareResult}>
             ↗ SHARE TO STORY
           </button>
-          <button className="share-btn" onClick={() => setScreenshotHint(true)}>
-            📸 SCREENSHOT
-          </button>
         </div>
-
-        {screenshotHint ? (
-          <div className="ig-hint">
-            screenshot the card above and tag{" "}
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-              @convooapp
-            </a>{" "}
-            on your story.
-          </div>
-        ) : null}
 
         <div className="ig-follow-row">
           <a
@@ -293,7 +280,13 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
             >
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
               <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              <circle
+                cx="17.5"
+                cy="6.5"
+                r="1"
+                fill="currentColor"
+                stroke="none"
+              />
             </svg>
             Follow @convooapp
           </a>
