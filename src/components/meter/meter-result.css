@@ -377,6 +377,43 @@
   margin-bottom: 16px;
 }
 
+/* ============ INSTAGRAM FOLLOW ROW ============ */
+.ig-follow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.ig-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--pink);
+  color: var(--paper);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.ig-follow-btn:hover {
+  background: var(--pink-deep);
+}
+
+.ig-tag-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
 /* ============ CTA ROW ============ */
 .cta-row {
   display: flex;
