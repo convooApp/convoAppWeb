@@ -312,7 +312,15 @@ const CharacterCardButton: React.FC<CharacterCardButtonProps> = ({
       ) : null}
       <div className="poster-char-num">{character.number}</div>
       <div className="poster-avatar">
-        <span className="initial">{loading ? "…" : character.name[0]}</span>
+        {loading ? (
+          <span className="initial">…</span>
+        ) : (
+          <img
+            src={character.image}
+            alt={character.name}
+            className="poster-avatar-img"
+          />
+        )}
       </div>
       <h3 className="poster-char-name">{character.name.toUpperCase()}</h3>
 

@@ -10,6 +10,7 @@ export interface CharacterCard {
   vibe: string;
   color: CharacterColor;
   number: string;
+  image: string;
 }
 
 export const CHARACTERS: CharacterCard[] = [
@@ -21,6 +22,7 @@ export const CHARACTERS: CharacterCard[] = [
     vibe: "puneri, dry wit, will test you",
     color: "pink",
     number: "Soft Hearted",
+    image: "/assets/images/ved.svg",
   },
   {
     id: "kaira",
@@ -30,6 +32,7 @@ export const CHARACTERS: CharacterCard[] = [
     vibe: "will roast you back. fairly.",
     color: "amber",
     number: "BADDIE",
+    image: "/assets/images/kaira.png",
   },
   {
     id: "ameya",
@@ -39,6 +42,7 @@ export const CHARACTERS: CharacterCard[] = [
     vibe: "5am, protein shake, Naval",
     color: "lime",
     number: "GYM FREAK",
+    image: "/assets/images/Ameya.png",
   },
   {
     id: "aryan",
@@ -48,6 +52,7 @@ export const CHARACTERS: CharacterCard[] = [
     vibe: "asks better than he answers",
     color: "violet",
     number: "COOL NERD",
+    image: "/assets/images/Aryan.png",
   },
 ];
 
