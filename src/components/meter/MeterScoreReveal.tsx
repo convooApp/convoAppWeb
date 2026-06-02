@@ -288,7 +288,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
                 stroke="none"
               />
             </svg>
-            Follow @convooapp
+            Follow @convooindia
           </a>
           <span className="ig-tag-hint">tag us in your story ↗</span>
         </div>
