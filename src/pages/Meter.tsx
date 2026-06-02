@@ -3,6 +3,7 @@ import { MeterIntro } from "../components/meter/MeterIntro";
 import { MeterChat } from "../components/meter/MeterChat";
 import { MeterLoading } from "../components/meter/MeterLoading";
 import { MeterScoreReveal } from "../components/meter/MeterScoreReveal";
+import { MeterPhoneGate } from "../components/meter/MeterPhoneGate";
 import { CharacterId, getCharacterCard } from "../components/meter/characters";
 import {
   Archetype,
@@ -13,7 +14,7 @@ import {
   UserGender,
 } from "../lib/meterApi";
 
-type Phase = "intro" | "chatting" | "loading" | "reveal";
+type Phase = "intro" | "chatting" | "loading" | "phone" | "reveal";
 
 interface SessionState {
   id: string;
@@ -92,7 +93,9 @@ const Meter: React.FC = () => {
       ? "reveal"
       : devParams?.phase === "loading"
         ? "loading"
-        : "intro",
+        : devParams?.phase === "phone"
+          ? "phone"
+          : "intro",
   );
   const [devCycleIndex, setDevCycleIndex] = useState(() => {
     if (!devParams) return 0;
@@ -178,7 +181,7 @@ const Meter: React.FC = () => {
     try {
       const r = await finalizeSession(session.id);
       setResult(r);
-      setPhase("reveal");
+      setPhase("phone");
     } catch {
       const card = getCharacterCard(session.characterId);
       // Fallback if scoring fails: default to Romantic + opposite-gender of
@@ -192,7 +195,7 @@ const Meter: React.FC = () => {
         best_line: "",
         character: { id: card.id, name: card.name, city: card.city },
       });
-      setPhase("reveal");
+      setPhase("phone");
     }
   };
 
@@ -243,6 +246,15 @@ const Meter: React.FC = () => {
   }
   if (phase === "loading") {
     return <MeterLoading />;
+  }
+  if (phase === "phone") {
+    return (
+      <MeterPhoneGate
+        sessionId={session?.id ?? "dev-session-0000"}
+        onContinue={() => setPhase("reveal")}
+        onSkip={() => setPhase("reveal")}
+      />
+    );
   }
   if (phase === "reveal" && result && session) {
     // Soft WhatsApp capture now lives inline on the reveal page — no
