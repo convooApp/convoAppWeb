@@ -13,7 +13,7 @@ interface MeterScoreRevealProps {
 type TemplateId = "zine" | "vintage";
 
 const SHARE_URL = "https://convoo.app/in";
-const INSTAGRAM_URL = "https://www.instagram.com/convooapp/";
+const INSTAGRAM_URL = "https://www.instagram.com/convooindia/";
 
 const COUNTRY_CODES: Array<{ code: string; label: string }> = [
   { code: "+91", label: "🇮🇳 +91" },
