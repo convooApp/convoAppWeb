@@ -377,6 +377,72 @@
   margin-bottom: 16px;
 }
 
+/* ============ SHARE SUB TEXT ============ */
+.share-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: -8px 0 16px;
+  line-height: 1.6;
+}
+
+/* ============ PRIMARY SHARE BUTTON ============ */
+.share-btn-primary {
+  width: 100%;
+  background: var(--pink);
+  color: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 15px 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.share-btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+  background: var(--maroon);
+}
+
+/* ============ INSTAGRAM PROMPT (post-screenshot) ============ */
+.ig-prompt {
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.ig-prompt-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+.ig-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  padding: 9px 16px;
+  border: 2px solid var(--ink);
+  transition: background 0.15s;
+}
+.ig-open-btn:hover {
+  background: var(--pink);
+  border-color: var(--pink);
+}
+
 /* ============ INSTAGRAM FOLLOW ROW ============ */
 .ig-follow-row {
   display: flex;

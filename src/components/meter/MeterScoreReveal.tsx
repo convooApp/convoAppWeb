@@ -253,45 +253,39 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
 
         <div className="share-card-stage">{renderCard()}</div>
 
-        <span className="share-label">SCREENING ROOM</span>
-        <div className="share-row">
-          <button className="share-btn" onClick={shareResult}>
-            ↗ SHARE TO STORY
-          </button>
-        </div>
+        <span className="share-label">DO YOUR FRIENDS MATCH YOUR VIBE?</span>
 
-        <div className="ig-follow-row">
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ig-follow-btn"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
+        <p className="share-sub">
+          Share your result — see if your friends get the same character or a totally different one.
+        </p>
+
+        {/* Primary: Share */}
+        <button className="share-btn-primary" onClick={shareResult}>
+          ↗ SHARE WITH FRIENDS
+        </button>
+
+        {screenshotHint && (
+          <div className="ig-prompt">
+            <p className="ig-prompt-text">
+              Send it on WhatsApp, post it on Instagram — just make sure they take the meter too.
+            </p>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ig-open-btn"
             >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle
-                cx="17.5"
-                cy="6.5"
-                r="1"
-                fill="currentColor"
-                stroke="none"
-              />
-            </svg>
-            Follow @convooindia
-          </a>
-          <span className="ig-tag-hint">tag us in your story ↗</span>
-        </div>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                strokeLinejoin="round" aria-hidden>
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+              Tag @convooindia on Instagram
+            </a>
+          </div>
+        )}
 
         <div className="cta-row">
           {waState === "success" || waState === "skipped" ? (
