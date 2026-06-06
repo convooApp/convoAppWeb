@@ -22,7 +22,7 @@ export const CHARACTERS: CharacterCard[] = [
     city: "Pune",
     vibe: "puneri, dry wit, will test you",
     color: "pink",
-    number: "Soft Hearted",
+    number: "SOFT HEARTED",
     image: "/assets/images/ved.svg",
   },
   {
@@ -73,11 +73,15 @@ export const CHARACTERS: CharacterCard[] = [
     city: "Mumbai",
     vibe: "charming, warm, makes you feel seen",
     color: "teal",
-    number: "THE CHARMER",
+    number: "CHARMER",
     image: "/assets/images/Veer.svg",
     isNew: true,
   },
 ];
+
+// Featured 4 shown on the intro — newest characters always included.
+// Swap this list when new characters drop to rotate the grid.
+export const FEATURED_CHARACTER_IDS: CharacterId[] = ["kaira", "ameya", "zoya", "veer"];
 
 export function getCharacterCard(id: CharacterId): CharacterCard {
   return CHARACTERS.find((c) => c.id === id) ?? CHARACTERS[0];

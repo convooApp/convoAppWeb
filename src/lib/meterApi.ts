@@ -113,6 +113,44 @@ export function submitLead(
  * Sessionless WhatsApp capture (the /in campaign page and the homepage).
  * Lands in the same meter_leads table as meter results, tagged by `source`.
  */
+// ── City Atlas ──────────────────────────────────────────────────────────────
+
+export interface ArchetypeShare {
+  name: string;
+  pct: number;
+}
+
+export interface CityAtlasCity {
+  name: string;
+  total_takes: number;
+  is_low_sample: boolean;
+  top_archetypes: ArchetypeShare[];
+}
+
+export interface CityAtlasData {
+  totals: {
+    all_time_takes: number;
+    total_cities: number;
+    today_takes: number;
+  };
+  cities: CityAtlasCity[];
+}
+
+export async function fetchCityAtlas(): Promise<CityAtlasData> {
+  const res = await fetch(`${BASE}/meter-city-atlas`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: "{}",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new MeterApiError(res.status, data?.error ?? "unknown_error");
+  return data as CityAtlasData;
+}
+
 export function submitWaitlistLead(
   countryCode: string,
   phone: string,

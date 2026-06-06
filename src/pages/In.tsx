@@ -92,7 +92,7 @@ const In: React.FC = () => {
             Take the meter <span className="arrow">→</span>
           </Link>
           <div className="m-trust">
-            Already taken by 2,300+ people in Pune &amp; Mumbai
+            Already taken by 1,500+ people in Pune &amp; Mumbai
           </div>
         </section>
 
