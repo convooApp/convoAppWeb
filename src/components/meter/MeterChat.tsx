@@ -32,6 +32,8 @@ const CHARACTER_AS: Record<CharacterId, string> = {
   kaira: "the bandra baddie",
   ameya: "the founder type",
   aryan: "the gym romantic",
+  zoya: "the adventurer",
+  veer: "the charmer",
 };
 
 function formatTimer(ms: number): string {
@@ -131,8 +133,7 @@ export const MeterChat: React.FC<MeterChatProps> = ({
     };
   }, []);
 
-  // Timer state — replicates MeterTimer behavior inline so the display
-  // matches the scene-strip style.
+  // Timer state
   const [remaining, setRemaining] = useState(() =>
     Math.max(0, durationMs - (Date.now() - startedAt)),
   );

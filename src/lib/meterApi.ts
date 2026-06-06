@@ -96,6 +96,7 @@ export function finalizeSession(sessionId: string): Promise<ScoreResult> {
   return postJson<ScoreResult>("meter-finalize", { session_id: sessionId });
 }
 
+
 export function submitLead(
   sessionId: string,
   countryCode: string,

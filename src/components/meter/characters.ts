@@ -1,6 +1,6 @@
-export type CharacterId = "vedika" | "kaira" | "ameya" | "aryan";
+export type CharacterId = "vedika" | "kaira" | "ameya" | "aryan" | "zoya" | "veer";
 
-export type CharacterColor = "pink" | "amber" | "lime" | "violet";
+export type CharacterColor = "pink" | "amber" | "lime" | "violet" | "rose" | "teal";
 
 export interface CharacterCard {
   id: CharacterId;
@@ -11,6 +11,7 @@ export interface CharacterCard {
   color: CharacterColor;
   number: string;
   image: string;
+  isNew?: boolean;
 }
 
 export const CHARACTERS: CharacterCard[] = [
@@ -53,6 +54,28 @@ export const CHARACTERS: CharacterCard[] = [
     color: "violet",
     number: "COOL NERD",
     image: "/assets/images/Aryan.png",
+  },
+  {
+    id: "zoya",
+    name: "Zoya",
+    age: 26,
+    city: "Goa / Mumbai",
+    vibe: "surfs, treks, always says yes",
+    color: "rose",
+    number: "ADVENTURER",
+    image: "/assets/images/Zoya.svg",
+    isNew: true,
+  },
+  {
+    id: "veer",
+    name: "Veer",
+    age: 27,
+    city: "Mumbai",
+    vibe: "charming, warm, makes you feel seen",
+    color: "teal",
+    number: "THE CHARMER",
+    image: "/assets/images/Veer.svg",
+    isNew: true,
   },
 ];
 

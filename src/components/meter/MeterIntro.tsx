@@ -307,6 +307,9 @@ const CharacterCardButton: React.FC<CharacterCardButtonProps> = ({
       className={classes}
       disabled={disabled}
     >
+      {character.isNew && (
+        <div className="poster-char-new-badge">★ NEW</div>
+      )}
       {featured ? (
         <div className="poster-char-badge">★ Founder Pick</div>
       ) : null}

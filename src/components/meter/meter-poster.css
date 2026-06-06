@@ -285,6 +285,8 @@
 .poster-char[data-color='amber']  { --accent: var(--red); --tint: rgba(196,30,58,0.12); }
 .poster-char[data-color='lime']   { --accent: var(--gold); --tint: rgba(212,160,42,0.12); }
 .poster-char[data-color='violet'] { --accent: var(--orange); --tint: rgba(232,116,42,0.12); }
+.poster-char[data-color='rose']   { --accent: #c0485a; --tint: rgba(192,72,90,0.12); }
+.poster-char[data-color='teal']   { --accent: #2a7f7f; --tint: rgba(42,127,127,0.12); }
 .poster-char::before {
   content: '';
   position: absolute;
@@ -529,6 +531,23 @@
 /* "Founder pick" featured character card */
 .poster-char.featured { border-color: var(--pink); box-shadow: 5px 5px 0 var(--pink); }
 .poster-char.featured:hover:not(:disabled) { box-shadow: 7px 7px 0 var(--pink); }
+.poster-char-new-badge {
+  position: absolute;
+  top: -13px;
+  right: 10px;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border: 2px solid var(--ink);
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: 2px 2px 0 var(--ink);
+  transform: rotate(2deg);
+}
+
 .poster-char-badge {
   position: absolute;
   top: -13px;
