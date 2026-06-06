@@ -6,6 +6,7 @@ import {
   CharacterId,
 } from "./characters";
 import { CityAtlas } from "./CityAtlas";
+import { HowItWorks } from "./HowItWorks";
 import "./meter-poster.css";
 
 interface MeterIntroProps {
@@ -91,6 +92,8 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
           </div>
         </div>
 
+        <HowItWorks />
+
         <div className="poster-starring-label">
           Pick One. Chat for 3 Minutes.
         </div>
@@ -119,6 +122,7 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
           COMING SOON TO A <span className="gold">HEART</span> NEAR YOU
         </div>
       </main>
+
     </div>
   );
 };

@@ -16,10 +16,13 @@
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
+  /* Ensure the warm background extends to fill all content — prevents the dark
+     app-shell background showing through when the page is taller than the viewport. */
+  height: auto;
   line-height: 1.5;
   font-size: 15px;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip instead of hidden — avoids creating a scroll container */
 }
 .poster-root *, .poster-root *::before, .poster-root *::after { box-sizing: border-box; }
 
