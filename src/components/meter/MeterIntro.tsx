@@ -5,7 +5,6 @@ import {
   CharacterCard,
   CharacterId,
 } from "./characters";
-import { CityAtlas } from "./CityAtlas";
 import { HowItWorks } from "./HowItWorks";
 import "./meter-poster.css";
 
@@ -114,9 +113,6 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
         </div>
 
         {error ? <div className="poster-error">{error}</div> : null}
-
-        {/* City Atlas — live city × archetype data */}
-        <CityAtlas />
 
         <div className="poster-coming-soon">
           COMING SOON TO A <span className="gold">HEART</span> NEAR YOU
