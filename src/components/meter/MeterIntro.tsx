@@ -43,7 +43,6 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
       <div className="poster-bg-warm" aria-hidden />
       <div className="poster-bg-noise" aria-hidden />
 
-
       {/* <nav className="poster-nav">
         <div className="poster-logo">
           CONV<span className="pink">OO</span>
@@ -87,7 +86,7 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
               <span className="dot">A</span>
               <span className="dot">A</span>
             </div>
-            <span>1,500+ in Pune &amp; Mumbai found their character</span>
+            <span>1,500+ people found their character</span>
           </div>
         </div>
 
@@ -118,7 +117,6 @@ export const MeterIntro: React.FC<MeterIntroProps> = ({
           COMING SOON TO A <span className="gold">HEART</span> NEAR YOU
         </div>
       </main>
-
     </div>
   );
 };
