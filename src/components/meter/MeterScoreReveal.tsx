@@ -226,7 +226,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
         <div className="nav-meta" lang="hi">
           ★ आपकी फिल्म ★
         </div>
-        <a href="/" className="nav-cta">
+        <a href="https://convoo.app/meter" className="nav-cta">
           ★ HOME
         </a>
       </nav>
@@ -256,7 +256,8 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
         <span className="share-label">DO YOUR FRIENDS MATCH YOUR VIBE?</span>
 
         <p className="share-sub">
-          Share your result — see if your friends get the same character or a totally different one.
+          Share your result — see if your friends get the same character or a
+          totally different one.
         </p>
 
         {/* Primary: Share */}
@@ -267,7 +268,8 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
         {screenshotHint && (
           <div className="ig-prompt">
             <p className="ig-prompt-text">
-              Send it on WhatsApp, post it on Instagram — just make sure they take the meter too.
+              Send it on WhatsApp, post it on Instagram — just make sure they
+              take the meter too.
             </p>
             <a
               href={INSTAGRAM_URL}
@@ -275,12 +277,26 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
               rel="noopener noreferrer"
               className="ig-open-btn"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                strokeLinejoin="round" aria-hidden>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
               </svg>
               Tag @convooindia on Instagram
             </a>
