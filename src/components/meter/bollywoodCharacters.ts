@@ -20,6 +20,8 @@ export interface BollywoodCharacter {
   archetypeLabel: string;
   /** Verbatim celebration line shown as the ticket blurb. */
   blurb: string;
+  /** Short punchy one-liner shown on the result reveal ("You play the long game."). */
+  headline: string;
 }
 
 type ArchetypeEntry = Record<UserGender, BollywoodCharacter>;
@@ -33,6 +35,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE ROMANTIC",
       blurb:
         "You didn't rush. You waited for the moment, said the right thing, and let the feeling do the work. The classic.",
+      headline: "You play the long game.",
     },
     female: {
       name: "SIMRAN",
@@ -41,6 +44,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE ROMANTIC",
       blurb:
         "Not easy to win over, and that's the point. You made every reply count and made them work for it. The classic heroine.",
+      headline: "You make them earn it.",
     },
   },
   showstopper: {
@@ -51,6 +55,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE SHOWSTOPPER",
       blurb:
         "You walked in loud and stayed there. Big heart, bigger personality. The energy in the room shifts when you're in it.",
+      headline: "You're the main event.",
     },
     female: {
       name: "POO",
@@ -59,6 +64,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE SHOWSTOPPER",
       blurb:
         "You know what you're worth and you said it out loud. Main character, no apologies. Effortlessly extra, deliberately iconic.",
+      headline: "You don't do subtle.",
     },
   },
   poet: {
@@ -69,6 +75,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE POET",
       blurb:
         "You don't waste words. Every line you sent felt written down somewhere first. The underdog who turned out to be the writer.",
+      headline: "Every word lands.",
     },
     female: {
       name: "SAFEENA",
@@ -77,6 +84,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE POET",
       blurb:
         "Still water, deep current. You said less and meant more. Soft on the surface, sharp where it counts.",
+      headline: "You say less, mean more.",
     },
   },
   free_spirit: {
@@ -87,6 +95,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE FREE SPIRIT",
       blurb:
         "Curious, restless, full of plans. You made the conversation feel like an adventure already in motion. Hard to keep up with, in the best way.",
+      headline: "You're already in motion.",
     },
     female: {
       name: "GEET",
@@ -95,6 +104,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE FREE SPIRIT",
       blurb:
         "Apni favourite ho tum. Talkative, fearless, impossible to fake. You brought the whole vibe and no one was going to slow you down.",
+      headline: "You're apni favourite.",
     },
   },
   cool: {
@@ -105,6 +115,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE COOL",
       blurb:
         "Unbothered. Unhurried. Slightly dangerous. You didn't chase the conversation. It chased you.",
+      headline: "You don't chase.",
     },
     female: {
       name: "VERONICA",
@@ -113,6 +124,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE COOL",
       blurb:
         "You don't explain yourself. You don't have to. The room re-arranges itself when you walk in.",
+      headline: "You don't explain yourself.",
     },
   },
   wise: {
@@ -123,6 +135,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE WISE ONE",
       blurb:
         "You see what people aren't saying. Patient, observant, three steps ahead but won't tell you. The one your friends call when something's actually wrong.",
+      headline: "You see everything.",
     },
     female: {
       name: "NAINA",
@@ -131,6 +144,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE WISE ONE",
       blurb:
         "You watch first, speak after. Thoughtful in a world that mistakes loud for confident. The one who actually remembers what people said.",
+      headline: "You watch first.",
     },
   },
   loyal: {
@@ -141,6 +155,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE LOYAL",
       blurb:
         "You don't perform loyalty, you live it. The friend who'll drive twelve hours and not make it a thing. Steady, soulful, in your corner without asking.",
+      headline: "You always show up.",
     },
     female: {
       name: "ANJALI",
@@ -149,6 +164,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE LOYAL",
       blurb:
         "Soft hands, steady heart. You don't perform, you show up. The kind of love that's quiet and lasts.",
+      headline: "You're the steady one.",
     },
   },
   strategist: {
@@ -159,6 +175,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE STRATEGIST",
       blurb:
         "You don't just answer, you ask better than you're asked. Always one move ahead. The kind of conversation that turns into a chess game, in the best way.",
+      headline: "You're always ahead.",
     },
     female: {
       name: "RANI",
@@ -167,6 +184,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE STRATEGIST",
       blurb:
         "Sharp, curious, never just nodding along. You made the conversation a debate worth winning. The one with the questions everyone wishes they'd thought of.",
+      headline: "You ask the better question.",
     },
   },
   cliffhanger: {
@@ -177,6 +195,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE CLIFFHANGER",
       blurb:
         "You said almost nothing. And somehow, it was the loudest thing in the room.",
+      headline: "Your silence is loud.",
     },
     female: {
       name: "TARA",
@@ -184,6 +203,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       tagline: "the deep end · from Gehraiyaan",
       archetypeLabel: "THE CLIFFHANGER",
       blurb: "You let the silence do the talking. And it said plenty.",
+      headline: "You're the slow burn.",
     },
   },
   comedian: {
@@ -194,6 +214,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE COMEDIAN",
       blurb:
         "Timing like a punchline. You made them laugh, actually laugh, and that's the rarest thing of all.",
+      headline: "Your timing's perfect.",
     },
     female: {
       name: "BITTI",
@@ -202,6 +223,7 @@ export const BOLLYWOOD_CHARACTERS: Record<Archetype, ArchetypeEntry> = {
       archetypeLabel: "THE COMEDIAN",
       blurb:
         "Quick, dry, unbothered. You'd roast and flirt in the same sentence and somehow make it work.",
+      headline: "You roast and flirt at once.",
     },
   },
 };

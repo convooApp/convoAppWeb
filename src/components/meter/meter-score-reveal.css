@@ -1,0 +1,248 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Meter Score Reveal — Bollywood result card (v2)
+   Matches Convoo Result Screen Final HTML
+   ═══════════════════════════════════════════════════════════════════ */
+
+.msr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 30px 16px 40px;
+  background: radial-gradient(120% 55% at 50% 0%, #f6ead0 0%, #efdcb0 60%, #e6c79b 100%);
+  font-family: 'Archivo', sans-serif;
+  color: #3a1712;
+  box-sizing: border-box;
+}
+
+/* ── Eyebrow pill ── */
+.msr-eyebrow {
+  display: inline-block;
+  background: #2a0a0f;
+  color: #e8c24a;
+  border-radius: 3px;
+  padding: 7px 18px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ── Card ── */
+.msr-card {
+  width: 100%;
+  max-width: 430px;
+  background: #f3e7c4;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(70,30,20,.24);
+  position: relative;
+  padding: 34px 30px 30px;
+  text-align: center;
+}
+
+.msr-frame1 {
+  position: absolute;
+  inset: 9px;
+  border: 1.5px solid rgba(110,31,42,.38);
+  border-radius: 11px;
+  pointer-events: none;
+}
+.msr-frame2 {
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(110,31,42,.20);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.msr-card-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.msr-stars {
+  color: #c41e63;
+  letter-spacing: .28em;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.msr-name {
+  font-family: 'Abril Fatface', serif;
+  font-size: clamp(52px, 15vw, 68px);
+  line-height: .92;
+  color: #4a1018;
+  margin: 0;
+}
+
+.msr-rule {
+  width: 40px;
+  height: 2px;
+  background: #c41e63;
+  margin: 14px auto;
+  border: none;
+}
+
+.msr-tagline {
+  font-weight: 600;
+  letter-spacing: .22em;
+  font-size: 11px;
+  color: #6e1f2a;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.msr-headline {
+  margin: 22px 0 0;
+  font-family: 'Abril Fatface', serif;
+  font-size: 23px;
+  line-height: 1.2;
+  color: #c41e63;
+}
+
+.msr-blurb {
+  margin: 8px 0 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #3a1712;
+}
+
+.msr-divider {
+  height: 1px;
+  background: rgba(110,31,42,.25);
+  border: none;
+  margin: 24px 0 14px;
+}
+
+.msr-ask {
+  margin: 0 0 7px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #8a3a2a;
+}
+
+.msr-url {
+  font-weight: 700;
+  letter-spacing: .16em;
+  font-size: 11px;
+  color: #c41e63;
+  text-transform: uppercase;
+}
+
+/* ── Actions ── */
+.msr-actions {
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  margin-top: 26px;
+}
+
+.msr-prompt {
+  font-weight: 600;
+  letter-spacing: .16em;
+  font-size: 12px;
+  color: #8a5a3a;
+  margin-bottom: 0;
+}
+
+.msr-sub {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: #5a2c20;
+  margin: 9px 0 18px;
+  line-height: 1.5;
+}
+
+.msr-btn-primary {
+  width: 100%;
+  height: 56px;
+  background: #c41e63;
+  color: #fff;
+  border: 1.5px solid #4a1018;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0 #2a0a0f;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  letter-spacing: .12em;
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.msr-btn-primary:hover:not(:disabled) {
+  background: #a01852;
+  transform: translateY(-2px);
+}
+
+.msr-btn-secondary {
+  width: 100%;
+  height: 48px;
+  margin-top: 12px;
+  background: transparent;
+  color: #6e1f2a;
+  border: 1.5px solid #6e1f2a;
+  border-radius: 8px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  letter-spacing: .1em;
+  font-size: 13px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.msr-btn-secondary:hover {
+  background: rgba(110,31,42,.08);
+}
+
+/* ── Screenshot hint ── */
+.msr-ig-prompt {
+  background: #fbf3d9;
+  border: 1.5px solid #6e1f2a;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  text-align: center;
+}
+.msr-ig-prompt-text {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #5a2c20;
+  margin: 0 0 10px;
+}
+.msr-ig-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #6e1f2a;
+  color: #f6ead0;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+/* ── Footnote ── */
+.msr-footnote {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #5a2c20;
+  margin-top: 22px;
+  text-align: center;
+}
+.msr-footnote-accent {
+  color: #c41e63;
+  font-weight: 500;
+  font-style: normal;
+}
