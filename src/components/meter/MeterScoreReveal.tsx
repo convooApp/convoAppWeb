@@ -28,7 +28,10 @@ function downloadBlob(blob: Blob, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
-async function captureCardBlob(el: HTMLElement, filename: string): Promise<File> {
+async function captureCardBlob(
+  el: HTMLElement,
+  filename: string,
+): Promise<File> {
   const canvas = await html2canvas(el, {
     scale: 3,
     useCORS: true,
@@ -37,7 +40,10 @@ async function captureCardBlob(el: HTMLElement, filename: string): Promise<File>
   });
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      if (!blob) { reject(new Error("canvas_empty")); return; }
+      if (!blob) {
+        reject(new Error("canvas_empty"));
+        return;
+      }
       resolve(new File([blob], filename, { type: "image/png" }));
     }, "image/png");
   });
@@ -77,7 +83,11 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
 
       if (file && navigator.canShare?.({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], title: `I'm ${name} on the Convoo Meter`, text });
+          await navigator.share({
+            files: [file],
+            title: `I'm ${name} on the Convoo Meter`,
+            text,
+          });
         } catch {
           /* user cancelled share sheet */
         }
@@ -93,7 +103,11 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
       // Canvas capture failed — fall back to text+link share
       if (typeof navigator !== "undefined" && navigator.share) {
         try {
-          await navigator.share({ title: `I'm ${name} on the Convoo Meter`, text, url: `${SHARE_URL}/meter` });
+          await navigator.share({
+            title: `I'm ${name} on the Convoo Meter`,
+            text,
+            url: `${SHARE_URL}/meter`,
+          });
           return;
         } catch {
           /* cancelled */
@@ -120,7 +134,7 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
         <div className="msr-card-inner">
           <div className="msr-stars">★ ★ ★ ★ ★</div>
           <p className="msr-name">{name}</p>
-          <hr className="msr-rule" />
+          {/* <hr className="msr-rule" /> */}
           <p className="msr-tagline">From · {film}</p>
           <p className="msr-headline">{bolly.headline}</p>
           <p className="msr-blurb">{bolly.blurb}</p>
@@ -132,12 +146,18 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
 
       {/* Actions */}
       <div className="msr-actions">
-        <p className="msr-prompt">★&nbsp; DO YOUR FRIENDS MATCH YOUR VIBE? &nbsp;★</p>
+        <p className="msr-prompt">
+          ★&nbsp; DO YOUR FRIENDS MATCH YOUR VIBE? &nbsp;★
+        </p>
         <p className="msr-sub">
           Share your card — see who gets the same character.
         </p>
 
-        <button className="msr-btn-primary" onClick={shareResult} disabled={sharing}>
+        <button
+          className="msr-btn-primary"
+          onClick={shareResult}
+          disabled={sharing}
+        >
           {sharing ? "Preparing…" : "↗  Share my card"}
         </button>
 
@@ -153,12 +173,26 @@ export const MeterScoreReveal: React.FC<MeterScoreRevealProps> = ({
               rel="noopener noreferrer"
               className="msr-ig-open-btn"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                strokeLinejoin="round" aria-hidden>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
               </svg>
               Tag @convooindia on Instagram
             </a>
