@@ -17,9 +17,8 @@ interface MeterChatProps {
   startedAt: number;
   durationMs: number;
   characterId: CharacterId;
-  /** When the character texts first (Kaira / Ameya), this is their opening
-   *  line — pre-rendered as the first assistant message before the user types. */
-  opener: string | null;
+  /** The opener the user typed on the barrier screen — auto-sent on mount. */
+  initialMessage: string;
   onEnd: () => void;
 }
 
@@ -48,22 +47,12 @@ export const MeterChat: React.FC<MeterChatProps> = ({
   startedAt,
   durationMs,
   characterId,
-  opener,
+  initialMessage,
   onEnd,
 }) => {
   const card = useMemo(() => getCharacterCard(characterId), [characterId]);
 
-  const [messages, setMessages] = useState<ChatMessage[]>(() =>
-    opener
-      ? [
-          {
-            id: `assistant-opener-${characterId}`,
-            role: "assistant" as const,
-            content: opener,
-          },
-        ]
-      : [],
-  );
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -166,13 +155,19 @@ export const MeterChat: React.FC<MeterChatProps> = ({
   };
   useEffect(scrollToBottom, [messages, typing]);
 
-  const send = async () => {
-    const text = draft.trim();
+  const hasSentInitial = useRef(false);
+  useEffect(() => {
+    if (!hasSentInitial.current && initialMessage) {
+      hasSentInitial.current = true;
+      void send(initialMessage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const send = async (text: string = draft.trim()) => {
     if (!text || sending || endedRef.current) return;
     if (containsProfanity(text)) {
-      setError(
-        "let's keep it clean — pick different words and try again.",
-      );
+      setError("let's keep it clean — pick different words and try again.");
       return;
     }
     setError(null);
@@ -252,117 +247,118 @@ export const MeterChat: React.FC<MeterChatProps> = ({
         <div className="chat-bg-warm" aria-hidden />
         <div className="chat-bg-noise" aria-hidden />
 
-      <div className="scene-strip">
-        <div className="scene-strip-left">
-          <span className="pill">SCENE 01</span>
-          <span>TAKE 01 / DIALOGUE</span>
-        </div>
-        <div className="scene-strip-right">
-          <span>
-            <span className="live-dot" />
-            REC
-          </span>
-          <span className={`timer-display${timerWarning ? " warning" : ""}`}>
-            {formatTimer(remaining)}
-          </span>
-          <button type="button" className="cut-btn" onClick={triggerEnd}>
-            ★ CUT
-          </button>
-        </div>
-      </div>
-
-      <div className="char-billing">
-        <div className="char-avatar">
-          <span className="initial">{card.name[0]}</span>
-        </div>
-        <div className="char-info">
-          <div className="starring">STARRING</div>
-          <div className="name">
-            {card.name.toUpperCase()}
-            <span className="accent"> · </span>
-            {card.age}
-            <span className="accent"> · </span>
-            {card.city.toUpperCase()}
+        <div className="scene-strip">
+          <div className="scene-strip-left">
+            <span className="pill">SCENE 01</span>
+            <span>TAKE 01 / DIALOGUE</span>
           </div>
-          <div className="meta">
-            as <span className="red">{CHARACTER_AS[card.id]}</span> —{" "}
-            {card.vibe}
+          <div className="scene-strip-right">
+            <span>
+              <span className="live-dot" />
+              REC
+            </span>
+            <span className={`timer-display${timerWarning ? " warning" : ""}`}>
+              {formatTimer(remaining)}
+            </span>
+            <button type="button" className="cut-btn" onClick={triggerEnd}>
+              ★ CUT
+            </button>
           </div>
         </div>
-        <div className="scene-num">
-          READING NO.
-          <span className="num">{sessionId.slice(0, 3).toUpperCase()}</span>
-        </div>
-      </div>
 
-      <main className="chat-main">
-        <section className="chat-wrap" ref={scrollRef}>
-          {messages.length === 0 ? (
-            <div className="chat-opener">
-              <div className="label">SCENE BEGINS</div>
-              <div className="title">
-                say something <span className="accent">specific.</span>{" "}
-                {card.name} is listening.
-              </div>
+        <div className="char-billing">
+          <div className="char-avatar">
+            <span className="initial">{card.name[0]}</span>
+          </div>
+          <div className="char-info">
+            <div className="starring">STARRING</div>
+            <div className="name">
+              {card.name.toUpperCase()}
+              <span className="accent"> · </span>
+              {card.age}
+              <span className="accent"> · </span>
+              {card.city.toUpperCase()}
             </div>
-          ) : null}
-
-          {messages.map((m) => (
-            <MessageBubble
-              key={m.id}
-              message={m}
-              characterName={card.name.toUpperCase()}
-            />
-          ))}
-
-          {typing ? (
-            <div className="typing">
-              <div className="msg-attribution">{card.name.toUpperCase()}</div>
-              <div className="typing-bubble">
-                <span className="dot" />
-                <span className="dot" />
-                <span className="dot" />
-              </div>
+            <div className="meta">
+              as <span className="red">{CHARACTER_AS[card.id]}</span> —{" "}
+              {card.vibe}
             </div>
-          ) : null}
-        </section>
-
-      </main>
-
-      <form
-        className="input-bar"
-        onSubmit={(e) => {
-          e.preventDefault();
-          void send();
-        }}
-      >
-        {error ? <div className="chat-error">{error}</div> : null}
-        <div className="input-wrap">
-          <textarea
-            ref={inputRef}
-            className="chat-input"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value.slice(0, MAX_CHARS))}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                void send();
-              }
-            }}
-            placeholder="type your line..."
-            rows={1}
-            disabled={sending || endedRef.current}
-            autoFocus
-          />
+          </div>
+          <div className="scene-num">
+            READING NO.
+            <span className="num">{sessionId.slice(0, 3).toUpperCase()}</span>
+          </div>
         </div>
-        <button
-          type="submit"
-          className="send-btn"
-          disabled={!draft.trim() || sending || endedRef.current}
+
+        <main className="chat-main">
+          <section className="chat-wrap" ref={scrollRef}>
+            {messages.length === 0 ? (
+              <div className="chat-opener">
+                <div className="label">YOUR MOVE</div>
+                <div className="title">
+                  don't say hey. you can literally see how your openers can go.
+                </div>
+              </div>
+            ) : null}
+
+            {messages.map((m) => (
+              <MessageBubble
+                key={m.id}
+                message={m}
+                characterName={card.name.toUpperCase()}
+              />
+            ))}
+
+            {typing ? (
+              <div className="typing">
+                <div className="msg-attribution">{card.name.toUpperCase()}</div>
+                <div className="typing-bubble">
+                  <span className="dot" />
+                  <span className="dot" />
+                  <span className="dot" />
+                </div>
+              </div>
+            ) : null}
+          </section>
+        </main>
+
+        <form
+          className="input-bar"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void send(draft.trim());
+          }}
         >
-          ROLL<span className="arrow">→</span>
-        </button>
-      </form>
+          {error ? <div className="chat-error">{error}</div> : null}
+          <div
+            className="input-wrap"
+            data-empty={messages.length === 0 ? "" : undefined}
+          >
+            <textarea
+              ref={inputRef}
+              className="chat-input"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value.slice(0, MAX_CHARS))}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  void send(draft.trim());
+                }
+              }}
+              placeholder="type your line..."
+              rows={1}
+              disabled={sending || endedRef.current}
+              autoFocus
+            />
+          </div>
+          <button
+            type="submit"
+            className="send-btn"
+            disabled={!draft.trim() || sending || endedRef.current}
+          >
+            ROLL<span className="arrow">→</span>
+          </button>
+        </form>
       </div>
     </RemoveScroll>
   );

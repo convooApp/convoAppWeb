@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MeterIntro } from "../components/meter/MeterIntro";
+import { MeterOpenerBarrier } from "../components/meter/MeterOpenerBarrier";
 import { MeterChat } from "../components/meter/MeterChat";
 import { MeterLoading } from "../components/meter/MeterLoading";
 import { MeterScoreReveal } from "../components/meter/MeterScoreReveal";
@@ -14,16 +15,14 @@ import {
   UserGender,
 } from "../lib/meterApi";
 
-type Phase = "intro" | "chatting" | "loading" | "phone" | "reveal";
+type Phase = "intro" | "opener" | "chatting" | "loading" | "phone" | "reveal";
 
 interface SessionState {
   id: string;
   startedAt: number;
   durationMs: number;
   characterId: CharacterId;
-  /** First message from the character (Kaira / Ameya open the chat). `null`
-   *  when the user is expected to open. */
-  opener: string | null;
+  initialMessage: string;
 }
 
 /*
@@ -112,7 +111,7 @@ const Meter: React.FC = () => {
           startedAt: Date.now(),
           durationMs: 180_000,
           characterId: devParams.char,
-          opener: null,
+          initialMessage: "",
         }
       : null,
   );
@@ -132,6 +131,8 @@ const Meter: React.FC = () => {
   );
   const [introError, setIntroError] = useState<string | null>(null);
   const [startingId, setStartingId] = useState<CharacterId | null>(null);
+  const [pendingCharacterId, setPendingCharacterId] = useState<CharacterId | null>(null);
+  const [openerStarting, setOpenerStarting] = useState(false);
 
   // In dev mode (?dev=reveal), "NEW SCENE" advances to the next archetype × gender
   // combo and rewrites the URL so a refresh keeps you on the current card.
@@ -151,27 +152,35 @@ const Meter: React.FC = () => {
     updateDevUrl(entry.archetype, entry.gender);
   };
 
-  const pickCharacter = async (id: CharacterId) => {
-    setStartingId(id);
+  const pickCharacter = (id: CharacterId) => {
     setIntroError(null);
+    setPendingCharacterId(id);
+    setPhase("opener");
+  };
+
+  const startWithOpener = async (opener: string) => {
+    if (!pendingCharacterId) return;
+    setOpenerStarting(true);
     try {
-      const r = await startSession(id);
+      const r = await startSession(pendingCharacterId);
       setSession({
         id: r.session_id,
         startedAt: new Date(r.started_at).getTime(),
         durationMs: r.duration_ms,
-        characterId: id,
-        opener: r.opener ?? null,
+        characterId: pendingCharacterId,
+        initialMessage: opener,
       });
       setPhase("chatting");
     } catch (err) {
       if (err instanceof MeterApiError && err.status === 429) {
         setIntroError("You've hit today's limit. Come back tomorrow.");
+        setPhase("intro");
       } else {
         setIntroError("Could not start the session. Try again in a moment.");
+        setPhase("intro");
       }
     } finally {
-      setStartingId(null);
+      setOpenerStarting(false);
     }
   };
 
@@ -203,6 +212,7 @@ const Meter: React.FC = () => {
     setSession(null);
     setResult(null);
     setIntroError(null);
+    setPendingCharacterId(null);
     setPhase("intro");
   };
 
@@ -232,6 +242,15 @@ const Meter: React.FC = () => {
       />
     );
   }
+  if (phase === "opener" && pendingCharacterId) {
+    return (
+      <MeterOpenerBarrier
+        characterId={pendingCharacterId}
+        onRoll={startWithOpener}
+        starting={openerStarting}
+      />
+    );
+  }
   if (phase === "chatting" && session) {
     return (
       <MeterChat
@@ -239,7 +258,7 @@ const Meter: React.FC = () => {
         startedAt={session.startedAt}
         durationMs={session.durationMs}
         characterId={session.characterId}
-        opener={session.opener}
+        initialMessage={session.initialMessage}
         onEnd={finalize}
       />
     );

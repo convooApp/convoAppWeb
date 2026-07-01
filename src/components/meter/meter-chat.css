@@ -450,6 +450,15 @@
 .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .send-btn .arrow { margin-left: 4px; }
 
+/* Pulse the input border until the user sends their first message */
+@keyframes input-pulse {
+  0%, 100% { border-color: var(--ink); box-shadow: none; }
+  50% { border-color: var(--char-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--char-accent) 25%, transparent); }
+}
+.input-wrap[data-empty] {
+  animation: input-pulse 1.8s ease-in-out infinite;
+}
+
 .chat-error {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
