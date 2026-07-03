@@ -268,7 +268,7 @@ export const MeterChat: React.FC<MeterChatProps> = ({
 
         <div className="char-billing">
           <div className="char-avatar">
-            <span className="initial">{card.name[0]}</span>
+            <img src={card.image} alt={card.name} className="char-avatar__img" />
           </div>
           <div className="char-info">
             <div className="starring">STARRING</div>
@@ -280,8 +280,7 @@ export const MeterChat: React.FC<MeterChatProps> = ({
               {card.city.toUpperCase()}
             </div>
             <div className="meta">
-              as <span className="red">{CHARACTER_AS[card.id]}</span> —{" "}
-              {card.vibe}
+              as <span className="red">{CHARACTER_AS[card.id]}</span>
             </div>
           </div>
           <div className="scene-num">

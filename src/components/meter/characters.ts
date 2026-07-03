@@ -1,6 +1,18 @@
-export type CharacterId = "vedika" | "kaira" | "ameya" | "aryan" | "zoya" | "veer";
+export type CharacterId =
+  | "vedika"
+  | "kaira"
+  | "ameya"
+  | "aryan"
+  | "zoya"
+  | "veer";
 
-export type CharacterColor = "pink" | "amber" | "lime" | "violet" | "rose" | "teal";
+export type CharacterColor =
+  | "pink"
+  | "amber"
+  | "lime"
+  | "violet"
+  | "rose"
+  | "teal";
 
 export interface CharacterCard {
   id: CharacterId;
@@ -30,7 +42,7 @@ export const CHARACTERS: CharacterCard[] = [
     name: "Kaira",
     age: 25,
     city: "Mumbai",
-    vibe: "will roast you back. fairly.",
+    vibe: "i'll roast you a little. keep up.",
     color: "amber",
     number: "BADDIE",
     image: "/assets/images/kaira.png",
@@ -40,7 +52,7 @@ export const CHARACTERS: CharacterCard[] = [
     name: "Ameya",
     age: 28,
     city: "Pune",
-    vibe: "5am, protein shake, Naval",
+    vibe: "skip the small talk. surprise me.",
     color: "lime",
     number: "GYM FREAK",
     image: "/assets/images/Ameya.png",
@@ -60,28 +72,33 @@ export const CHARACTERS: CharacterCard[] = [
     name: "Zoya",
     age: 26,
     city: "Goa / Mumbai",
-    vibe: "surfs, treks, always says yes",
+    vibe: "say yes to something. clock's running.",
     color: "rose",
     number: "ADVENTURER",
     image: "/assets/images/Zoya.svg",
-    isNew: true,
+    isNew: false,
   },
   {
     id: "veer",
     name: "Veer",
     age: 27,
     city: "Mumbai",
-    vibe: "charming, warm, makes you feel seen",
+    vibe: "one good line and i'm yours for three.",
     color: "teal",
     number: "CHARMER",
     image: "/assets/images/Veer.svg",
-    isNew: true,
+    isNew: false,
   },
 ];
 
 // Featured 4 shown on the intro — newest characters always included.
 // Swap this list when new characters drop to rotate the grid.
-export const FEATURED_CHARACTER_IDS: CharacterId[] = ["kaira", "ameya", "zoya", "veer"];
+export const FEATURED_CHARACTER_IDS: CharacterId[] = [
+  "kaira",
+  "ameya",
+  "zoya",
+  "veer",
+];
 
 export function getCharacterCard(id: CharacterId): CharacterCard {
   return CHARACTERS.find((c) => c.id === id) ?? CHARACTERS[0];

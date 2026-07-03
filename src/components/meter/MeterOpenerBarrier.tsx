@@ -14,6 +14,93 @@ const CHARACTER_AS: Record<CharacterId, string> = {
   veer: "the charmer",
 };
 
+const CHARACTER_TRAITS: Record<CharacterId, string> = {
+  vedika: "dry wit · soft but sharp · pune energy",
+  kaira: "roaster · quick · zero patience for boring",
+  ameya: "no-nonsense · direct · gym brain, sharp wit",
+  aryan: "curious · nerdy · reads between every line",
+  zoya: "high energy · spontaneous · bored by safe",
+  veer: "smooth · self-aware · secretly tests you",
+};
+
+const CHARACTER_VIBE: Record<
+  CharacterId,
+  { dos: string[][]; donts: string[][] }
+> = {
+  vedika: {
+    dos: [
+      ["banter.", "she'll give it back double."],
+      ["be specific.", "generic openers bore her instantly."],
+      ["self-aware humour.", "don't take yourself too seriously."],
+    ],
+    donts: [
+      ['"hey"', "— she'll reply with a period."],
+      ["over-explaining.", "she finishes your sentences before you do."],
+      ["trying to impress.", "she can smell it."],
+    ],
+  },
+  kaira: {
+    dos: [
+      ["banter.", "roast her back, she's in."],
+      ["weird specific takes.", "hills you'd die on."],
+      ["self-aware humour.", "don't take yourself seriously."],
+    ],
+    donts: [
+      ['"hey"', "— she'll reply with a period."],
+      ["recycled pickup lines.", "she'll quote them back."],
+      ["flirting before you've earned it.", ""],
+    ],
+  },
+  ameya: {
+    dos: [
+      ["be direct.", "skip the warmup, get to the point."],
+      ["gym takes.", "done right — not try-hard."],
+      ["genuine curiosity.", "ask something real."],
+    ],
+    donts: [
+      ["small talk.", "he's already zoned out."],
+      ['"how\'s your day"', "— instant skip."],
+      ["being soft.", "he respects people who show up."],
+    ],
+  },
+  aryan: {
+    dos: [
+      ["ask something unusual.", "he lights up for it."],
+      ["show you actually think.", "depth gets his attention."],
+      ["light sarcasm.", "he catches everything."],
+    ],
+    donts: [
+      ["surface-level openers.", "he's already three steps ahead."],
+      ["one-word replies.", "he'll stop trying."],
+      ["faking interest.", "he'll notice immediately."],
+    ],
+  },
+  zoya: {
+    dos: [
+      ["spontaneous energy.", "match her pace."],
+      ["travel or food takes.", "she has opinions."],
+      ["say yes to something.", "literally anything."],
+    ],
+    donts: [
+      ['"netflix and chill"', "— she's already in Goa."],
+      ["playing it too safe.", "she gets bored fast."],
+      ["overthinking your opener.", "she can tell."],
+    ],
+  },
+  veer: {
+    dos: [
+      ["playful confidence.", "not arrogance — there's a difference."],
+      ["an unexpected take.", "he respects originality."],
+      ["match his energy.", "he notices when you do."],
+    ],
+    donts: [
+      ["being boring.", "he'll charm his way out of the chat."],
+      ["one-word answers.", "he needs someone to talk to, not at."],
+      ["trying to out-charm him.", "you won't. work with it."],
+    ],
+  },
+};
+
 // Openers list — add entries here
 const BORROWED_OPENERS: string[] = [
   "So… are we telling people we met here, or making up a cooler story?",
@@ -29,12 +116,14 @@ const BORROWED_OPENERS: string[] = [
 interface MeterOpenerBarrierProps {
   characterId: CharacterId;
   onRoll: (opener: string) => void;
+  onBack: () => void;
   starting: boolean;
 }
 
 export const MeterOpenerBarrier: React.FC<MeterOpenerBarrierProps> = ({
   characterId,
   onRoll,
+  onBack,
   starting,
 }) => {
   const card = getCharacterCard(characterId);
@@ -94,7 +183,14 @@ export const MeterOpenerBarrier: React.FC<MeterOpenerBarrierProps> = ({
 
         <div className="scene-strip">
           <div className="scene-strip-left">
-            <span className="pill">SCENE 01</span>
+            <button
+              type="button"
+              className="pill pill--back"
+              onClick={onBack}
+              disabled={starting}
+            >
+              ← BACK
+            </button>
             <span>TAKE 01 / DIALOGUE</span>
           </div>
           <div className="scene-strip-right">
@@ -105,7 +201,11 @@ export const MeterOpenerBarrier: React.FC<MeterOpenerBarrierProps> = ({
 
         <div className="char-billing">
           <div className="char-avatar">
-            <span className="initial">{card.name[0]}</span>
+            <img
+              src={card.image}
+              alt={card.name}
+              className="char-avatar__img"
+            />
           </div>
           <div className="char-info">
             <div className="starring">STARRING</div>
@@ -117,52 +217,52 @@ export const MeterOpenerBarrier: React.FC<MeterOpenerBarrierProps> = ({
               {card.city.toUpperCase()}
             </div>
             <div className="meta">
-              as <span className="red">{CHARACTER_AS[card.id]}</span> —{" "}
-              {card.vibe}
+              <span className="red">{CHARACTER_AS[card.id]}</span>
             </div>
           </div>
         </div>
 
         <main className="opener-main">
-          <div className="hiw-card">
-            <div className="hiw-label">HOW THIS WORKS</div>
-            <div className="hiw-headline">
-              You're about to have a conversation with{" "}
-              <span className="hiw-name">{card.name}.</span>
+          <div className="briefing-card">
+            <div className="briefing-label">★ &nbsp;THE BRIEFING&nbsp; ★</div>
+
+            <p className="briefing-headline">
+              you're about to slide into{" "}
+              <span className="briefing-name">{card.name}'s</span> chat.
+              <br />
+            </p>
+
+            {/* 3 horizontal steps */}
+            <div className="briefing-steps">
+              {[
+                {
+                  n: "1",
+                  title: "DROP YOUR OPENER",
+                  sub: "starts the 3-min clock",
+                },
+                {
+                  n: "2",
+                  title: "HOLD THE VIBE",
+                  sub: "your opener sets the tone",
+                },
+                {
+                  n: "3",
+                  title: "GET READ",
+                  sub: "persona card at the buzzer",
+                },
+              ].map((s) => (
+                <div key={s.n} className="briefing-step">
+                  <span className="briefing-step-num">{s.n}</span>
+                  <div className="briefing-step-title">{s.title}</div>
+                  <div className="briefing-step-sub">{s.sub}</div>
+                </div>
+              ))}
             </div>
-            <div className="hiw-steps">
-              <div className="hiw-step">
-                <span className="hiw-num">1</span>
-                <div>
-                  <div className="hiw-step-title">Enter your opener</div>
-                  <div className="hiw-sub">
-                    it starts a 3-minute conversation
-                  </div>
-                </div>
-              </div>
-              <div className="hiw-step">
-                <span className="hiw-num">2</span>
-                <div>
-                  <div className="hiw-step-title">Keep it going</div>
-                  <div className="hiw-sub">
-                    your opener sets the tone &amp; drives the chat
-                  </div>
-                </div>
-              </div>
-              <div className="hiw-step">
-                <span className="hiw-num">3</span>
-                <div>
-                  <div className="hiw-step-title">Get your card</div>
-                  <div className="hiw-sub">
-                    at the buzzer get your conversation persona
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="hiw-footer">
-              Your opener matters most —{" "}
-              <em className="hiw-footer-accent">
-                it drives the whole conversation.
+
+            <div className="briefing-footer">
+              your opener matters most.{" "}
+              <em className="briefing-footer-accent">
+                It drives the whole reading.
               </em>
             </div>
           </div>

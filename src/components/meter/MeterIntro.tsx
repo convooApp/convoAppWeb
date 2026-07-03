@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CHARACTERS,
   FEATURED_CHARACTER_IDS,
@@ -16,133 +16,263 @@ interface MeterIntroProps {
   onSkip?: () => void;
 }
 
-// Maps a character's `as` ("the bandra baddie", etc.) — keeps the
-// poster-style copy in one place instead of scattered across the JSX.
-const CHARACTER_AS: Record<CharacterId, string> = {
-  vedika: "the puneri",
-  kaira: "the bandra baddie",
-  ameya: "the founder type",
-  aryan: "the gym romantic",
-  zoya: "the adventurer",
-  veer: "the charmer",
-};
-
 export const MeterIntro: React.FC<MeterIntroProps> = ({
   onPick,
   starting,
   startingId,
   error,
-  onSkip,
 }) => {
-  const pickDefault = () => {
-    if (!starting) onPick("vedika");
-  };
+  const heroRef = useRef<HTMLElement>(null);
+  const [stickyOn, setStickyOn] = useState(false);
+
+  // Ticker duplication + scroll reveal + sticky CTA
+  useEffect(() => {
+    const tick = document.getElementById("meter-tick");
+    if (tick) tick.innerHTML += tick.innerHTML;
+
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("rv-in");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.12 },
+    );
+    document
+      .querySelectorAll(".meter-root .rv")
+      .forEach((el) => io.observe(el));
+
+    const hero = heroRef.current;
+    if (hero) {
+      const stickyObs = new IntersectionObserver(
+        ([e]) => setStickyOn(!e.isIntersecting),
+        { threshold: 0 },
+      );
+      stickyObs.observe(hero);
+      return () => {
+        io.disconnect();
+        stickyObs.disconnect();
+      };
+    }
+    return () => io.disconnect();
+  }, []);
+
+  const scrollToCast = () =>
+    document
+      .getElementById("meter-cast")
+      ?.scrollIntoView({ behavior: "smooth" });
+
+  const featured = CHARACTERS.filter((c) =>
+    FEATURED_CHARACTER_IDS.includes(c.id),
+  );
 
   return (
-    <div className="poster-root">
-      <div className="poster-bg-warm" aria-hidden />
-      <div className="poster-bg-noise" aria-hidden />
-
-      {/* <nav className="poster-nav">
-        <div className="poster-logo">
-          CONV<span className="pink">OO</span>
+    <div className="meter-root">
+      {/* ── TICKER ───────────────────────────────────────────────── */}
+      {/* <div className="meter-ticker" aria-hidden="true">
+        <div className="meter-ticker__track" id="meter-tick">
+          ★ FREE IN 3 MINUTES <span className="r">●</span> NO ACCOUNT NEEDED <span className="r">●</span> 2,000+ READINGS DONE <span className="r">●</span> YOUR OPENER REVEALS EVERYTHING <span className="r">●</span> FIND OUT IF YOU HAVE RIZZ <span className="r">●</span>&nbsp;
         </div>
-        <div className="poster-nav-meta">
-          VOL. <span className="red">01</span> · ISSUE 04
-        </div>
-        {onSkip ? (
-          <button type="button" className="poster-nav-cta" onClick={onSkip}>
-            ★ SKIP
-          </button>
-        ) : (
-          <a href="#take-the-meter" className="poster-nav-cta">
-            ★ JOIN LIST
-          </a>
-        )}
-      </nav> */}
+      </div> */}
 
-      <main className="poster-main">
-        <p className="poster-presents">
-          Convoo Labs proudly <span className="pink">presents</span>...
+      {/* ── HERO ─────────────────────────────────────────────────── */}
+      <header className="meter-hero" ref={heroRef}>
+        <p className="meter-hero__pres">
+          Convoo Labs proudly <b>presents…</b>
         </p>
-
-        <h1 className="poster-wordmark">
-          <span className="row-1">
-            CONV<span className="pink">OO</span>ERSATION
+        <h1>
+          <span className="meter-hero__title">
+            CONV<span className="oo">OO</span>ERSATION
           </span>
-          <span className="row-2">METER.</span>
+          <span className="meter-hero__title2">METER.</span>
         </h1>
-
-        <p className="poster-subline">
-          "get your <em>CONVERSATION STYLE</em> in just three minutes."
+        <p className="meter-hero__tag">
+          find out if you actually have rizz
+          <b>3 MINUTES. FREE. NO SIGNUP.</b>
         </p>
 
-        {/* Social proof — directly above the grid where it matters */}
-        <div className="poster-social">
-          <div className="inner">
-            <div className="dots">
-              <span className="dot">V</span>
-              <span className="dot">K</span>
-              <span className="dot">A</span>
-              <span className="dot">A</span>
-            </div>
-            <span>1,500+ people found their character</span>
+        <button
+          className="meter-cta"
+          onClick={scrollToCast}
+          disabled={starting}
+        >
+          TEST MY CONVERSATION GAME
+        </button>
+
+        <div className="meter-hero__proof">
+          <span className="meter-hero__dots">
+            <span style={{ background: "#a8123c" }}>K</span>
+            <span style={{ background: "#8a6a1a" }}>A</span>
+            <span style={{ background: "#c85a3a" }}>Z</span>
+            <span style={{ background: "#2c6e6a" }}>V</span>
+          </span>
+          2,000+ PEOPLE ALREADY KNOW THEIR STYLE
+        </div>
+
+        <p className="meter-hero__makers">
+          from the makers of <b>Convoo</b> — the app that prioritizes
+          conversations.
+        </p>
+
+        <div className="meter-hero__cards" aria-label="Sample result cards">
+          <div className="meter-rcard meter-rcard--l">
+            <div className="meter-rcard__stars">★★★★★</div>
+            <div className="meter-rcard__name">Geet</div>
+            <div className="meter-rcard__from">FROM · JAB WE MET</div>
+            <div className="meter-rcard__q">"you brought the whole vibe"</div>
+          </div>
+          <div className="meter-rcard meter-rcard--r">
+            <div className="meter-rcard__stars">★★★★★</div>
+            <div className="meter-rcard__name">Jordan</div>
+            <div className="meter-rcard__from">FROM · ROCKSTAR</div>
+            <div className="meter-rcard__q">"it chased you."</div>
           </div>
         </div>
+        <span className="meter-hero__which">which one are you? ↓</span>
+      </header>
 
-        <HowItWorks />
+      {/* ── CAST ─────────────────────────────────────────────────── */}
+      <section className="meter-cast" id="meter-cast">
+        <p className="meter-kick rv">★ SCENE ONE · THE CAST ★</p>
+        <h2 className="meter-sechead rv">
+          YOU HAVE <span className="em">4 UNREAD MESSAGES.</span>
+        </h2>
+        <p className="meter-secsub rv">
+          pick one to reply. your first line starts the reading
+        </p>
 
-        <div className="poster-starring-label">
-          Pick One. Chat for 3 Minutes.
-        </div>
-
-        <div className="poster-cast-grid">
-          {CHARACTERS.filter((c) => FEATURED_CHARACTER_IDS.includes(c.id)).map(
-            (c) => (
-              <CharacterCardButton
+        <div className="meter-inbox rv">
+          <div className="meter-inbox__header">
+            <span>★ CONVOO METER · INBOX</span>
+            <span className="meter-inbox__count">
+              {featured.length} waiting
+            </span>
+          </div>
+          <div className="meter-inbox__list">
+            {featured.map((c, i) => (
+              <InboxRow
                 key={c.id}
                 character={c}
                 dimmed={starting && startingId !== c.id}
                 loading={starting && startingId === c.id}
                 disabled={starting}
                 onClick={() => !starting && onPick(c.id)}
+                isLast={i === featured.length - 1}
               />
-            ),
-          )}
+            ))}
+          </div>
         </div>
+      </section>
 
-        {error ? <div className="poster-error">{error}</div> : null}
+      {/* ── HOW IT WORKS ─────────────────────────────────────────── */}
+      <HowItWorks />
 
-        <div className="poster-coming-soon">
-          COMING SOON TO A <span className="gold">HEART</span> NEAR YOU
+      {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
+      <section className="meter-testi">
+        <p className="meter-kick rv">★ WHAT PEOPLE ARE SAYING ★</p>
+        <h2 className="meter-sechead rv">
+          REAL <span className="em">REACTIONS.</span>
+        </h2>
+        <div className="meter-testi__row rv">
+          <div className="meter-testi__card">
+            <p className="meter-testi__q">
+              "sent it to my situationship and they said 'okay this is literally
+              you 😭' — the accuracy was painful"
+            </p>
+            <p className="meter-testi__who">— @priyanka_reads · Mumbai</p>
+          </div>
+          <div className="meter-testi__card">
+            <p className="meter-testi__q">
+              "i got jordan and my friends lost their minds. screenshotted
+              immediately and it's now my instagram story"
+            </p>
+            <p className="meter-testi__who">— @arjun.exe · Pune</p>
+          </div>
+          <div className="meter-testi__card">
+            <p className="meter-testi__q">
+              "did this at 1am, made my whole friend group do it. we now know
+              exactly who has rizz and who does not"
+            </p>
+            <p className="meter-testi__who">— @neha_vibes ·Pune</p>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* ── BANNER ───────────────────────────────────────────────── */}
+      <div className="meter-banner rv">
+        ★ &nbsp;COMING SOON TO A <span className="h">HEART</span> NEAR YOU&nbsp;
+        ★
+      </div>
+
+      {/* ── CLOSER ───────────────────────────────────────────────── */}
+      <section className="meter-closer">
+        <h2 className="meter-closer__big rv">
+          THINK YOU{" "}
+          <span className="em">
+            HAVE
+            <br />
+            RIZZ?
+          </span>
+        </h2>
+        <p className="meter-closer__sub rv">
+          2,000+ people already know their style. yours takes 3 minutes —
+          completely free.
+        </p>
+        <button
+          className="meter-cta rv"
+          onClick={scrollToCast}
+          disabled={starting}
+        >
+          PROVE IT IN 3 MINUTES →
+        </button>
+      </section>
+
+      {error && <div className="meter-error">{error}</div>}
+
+      {/* ── STICKY MOBILE CTA ────────────────────────────────────── */}
+      <div className={`meter-sticky${stickyOn ? " on" : ""}`}>
+        <div className="meter-sticky__txt">
+          DO YOU HAVE RIZZ?
+          <br />3 MIN · FREE · NO SIGNUP ★
+        </div>
+        <button
+          className="meter-sticky__btn"
+          onClick={scrollToCast}
+          disabled={starting}
+        >
+          FIND OUT NOW →
+        </button>
+      </div>
     </div>
   );
 };
 
-interface CharacterCardButtonProps {
+/* ── Inbox row ───────────────────────────────────────────────────── */
+
+interface InboxRowProps {
   character: CharacterCard;
-  featured?: boolean;
   dimmed: boolean;
   loading: boolean;
   disabled: boolean;
   onClick: () => void;
+  isLast: boolean;
 }
 
-const CharacterCardButton: React.FC<CharacterCardButtonProps> = ({
+const InboxRow: React.FC<InboxRowProps> = ({
   character,
-  featured,
   dimmed,
   loading,
   disabled,
   onClick,
+  isLast,
 }) => {
-  const classes = [
-    "poster-char",
-    featured ? "featured" : "",
+  const cls = [
+    "meter-inbox__row",
     dimmed ? "is-dimmed" : "",
     loading ? "is-loading" : "",
+    isLast ? "is-last" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -150,36 +280,37 @@ const CharacterCardButton: React.FC<CharacterCardButtonProps> = ({
   return (
     <button
       type="button"
-      onClick={onClick}
+      className={cls}
       data-color={character.color}
-      className={classes}
+      onClick={onClick}
       disabled={disabled}
     >
-      {character.isNew && <div className="poster-char-new-badge">★ NEW</div>}
-      {featured ? (
-        <div className="poster-char-badge">★ Founder Pick</div>
-      ) : null}
-      <div className="poster-char-num">{character.number}</div>
-      <div className="poster-avatar">
+      <div className="meter-inbox__avatar">
         {loading ? (
-          <span className="initial">…</span>
+          <span className="meter-inbox__avatar-initial">…</span>
         ) : (
-          <img
-            src={character.image}
-            alt={character.name}
-            className="poster-avatar-img"
-          />
+          <img src={character.image} alt={character.name} loading="lazy" />
         )}
+        {character.isNew && <span className="meter-inbox__new">NEW</span>}
       </div>
-      <h3 className="poster-char-name">{character.name.toUpperCase()}</h3>
 
-      <div className="poster-char-meta">
-        {character.age}
-        <span className="accent"> ★ </span>
-        {character.city.toUpperCase()}
+      <div className="meter-inbox__body">
+        <div className="meter-inbox__name-row">
+          <span className="meter-inbox__name">
+            {character.name.toUpperCase()}
+          </span>
+          <span className="meter-inbox__meta">
+            THE {character.number} · {character.age} ·{" "}
+            {character.city.toUpperCase()}
+          </span>
+        </div>
+        <p className="meter-inbox__quote">"{character.vibe}"</p>
       </div>
-      <p className="poster-char-quote">{character.vibe}</p>
-      <div className="poster-char-cta">CHAT →</div>
+
+      <div className="meter-inbox__right">
+        <span className="meter-inbox__time">now</span>
+        <span className="meter-inbox__dot">1</span>
+      </div>
     </button>
   );
 };

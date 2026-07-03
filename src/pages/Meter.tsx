@@ -247,6 +247,7 @@ const Meter: React.FC = () => {
       <MeterOpenerBarrier
         characterId={pendingCharacterId}
         onRoll={startWithOpener}
+        onBack={() => { setPendingCharacterId(null); setPhase("intro"); }}
         starting={openerStarting}
       />
     );
