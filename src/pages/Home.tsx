@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../lib/supabase";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import {
   CalendarDays,
   MessageCircle,
@@ -18,44 +15,94 @@ import {
 } from "lucide-react";
 import "../landing.css";
 
-dayjs.extend(utc);
-
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  start_time: string;
-  duration: string;
-}
+const HERO_TRUST = ["Free to join", "Face verified", "Talk before you see"];
 
 const NAV_DOTS = [
   { id: "top", label: "Home" },
+  { id: "ways", label: "Two ways" },
   { id: "how", label: "How it works" },
   { id: "pov", label: "Vision" },
-  { id: "live", label: "Community" },
-  { id: "events", label: "Passes" },
+  { id: "rooms", label: "Rooms" },
+  { id: "events", label: "Intros" },
   { id: "about", label: "Our Story" },
 ];
 
-const TICKER = [
-  "Conversation first",
-  "No swiping",
-  "Atlanta, GA",
-  "Live at 7 PM",
-  "Date Differently",
-  "Real connections",
-  "City-only matching",
-  "Talk before you see",
-  "No ghosting games",
-  "You'll actually like them",
-  "7 PM every night",
+const NAV_LINKS = [
+  { id: "ways", label: "Two ways" },
+  { id: "how", label: "How it works" },
+  { id: "pov", label: "Why Convoo" },
+  { id: "rooms", label: "Rooms" },
+  { id: "events", label: "Intros" },
+  { id: "about", label: "Our Story" },
+];
+
+/* The two ways to meet on Convoo — equal weight, different doors. */
+const PATHS = [
+  {
+    key: "event",
+    kicker: "Open to your city",
+    title: "Join a live event",
+    blurb:
+      "A live event opens inside the app every night. Show up while it's on and we pair you with people near you — nothing to plan, nobody to invite.",
+    points: [
+      "Matched with people in your city",
+      "One tap to join — no code needed",
+      "30 minutes of back-to-back conversations",
+      "Come alone. Everyone else did too.",
+    ],
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 6.5 12 12 15.5 14" />
+      </svg>
+    ),
+  },
+  {
+    key: "room",
+    kicker: "Invite only",
+    title: "Host a room",
+    blurb:
+      "You're the matchmaker. Pick a night, share a code with your single friends, and everyone meets each other one-on-one while you host.",
+    points: [
+      "Share a 6-character code or an invite link",
+      "Up to 20 people — distance doesn't matter",
+      "You decide who's in the room",
+      "You see every match your room makes",
+    ],
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M17 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20" />
+        <circle cx="9.5" cy="7" r="3.2" />
+        <path d="M22 20v-1.5a4 4 0 0 0-3-3.87" />
+        <path d="M16.5 4.1a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
 ];
 
 const HOW_STEPS = [
   {
-    title: "Join the event",
+    title: "Get in",
     subtitle:
-      "Every night at 7 PM — or via a private event code — a live matching room opens inside the app.",
+      "Join the live event in your city, or drop into a private room with the code your host shared.",
     pinkBg: true,
     icon: (
       <svg
@@ -65,16 +112,19 @@ const HOW_STEPS = [
         stroke="white"
         strokeWidth="1.5"
         fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="9" />
-        <polyline points="12 6 12 12 16 14" />
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+        <polyline points="10 17 15 12 10 7" />
+        <line x1="15" y1="12" x2="3" y2="12" />
       </svg>
     ),
   },
   {
-    title: "Start a conversation",
+    title: "Talk first",
     subtitle:
-      "You're matched 1-on-1. No photos yet — just a real text conversation to see if there's a spark.",
+      "You're paired one-on-one for three minutes. No photos, no profile to skim — just a real conversation.",
     pinkBg: false,
     icon: (
       <svg
@@ -90,9 +140,9 @@ const HOW_STEPS = [
     ),
   },
   {
-    title: "Profiles reveal",
+    title: "Then decide",
     subtitle:
-      "After the chat, photos unlock. If you're both interested, it's a match. Mutual opt-in only. No pressure, ever.",
+      "Photos unlock when the timer ends. You match only if you both say yes — and nobody is ever told who passed.",
     pinkBg: false,
     icon: (
       <svg
@@ -123,8 +173,8 @@ const PILLARS = [
   },
   {
     num: "03",
-    title: "City-only",
-    sub: "Every match is within your city. Hyper-local by design.",
+    title: "Your city or your circle",
+    sub: "Live events match you locally. Rooms ignore distance entirely — your host decides who belongs.",
   },
 ];
 
@@ -156,69 +206,19 @@ const USE_CASES = [
 ];
 
 const EARN_ROWS = [
-  { action: "Show up at 7 PM daily", reward: "+2 Passes" },
-  { action: "Invite a friend", reward: "+1 Pass each" },
-  { action: "Rate on App Store", reward: "+2 Passes" },
+  { action: "Sign up", reward: "+5 Intros" },
+  { action: "Join a live event or room", reward: "+3 Intros daily" },
+  { action: "Invite a friend", reward: "+3 Intros each" },
+  { action: "Rate on the App Store", reward: "+2 Intros" },
 ];
 
 /* ═══════════════════════════════════════════════════════ */
 
 const Home = () => {
   const [showEventDetails, setShowEventDetails] = useState(false);
-  const [todayEvent, setTodayEvent] = useState<Event | null>(null);
-  const [loadingEvent, setLoadingEvent] = useState(true);
   const [activeSection, setActiveSection] = useState("top");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [countdown, setCountdown] = useState("");
   const spyRef = useRef<IntersectionObserver | null>(null);
-
-  /* countdown to 7 PM local */
-  useEffect(() => {
-    const calc = () => {
-      const now = new Date();
-      const target = new Date();
-      target.setHours(19, 0, 0, 0);
-      if (now >= target) {
-        setCountdown("Live now");
-        return;
-      }
-      const diff = target.getTime() - now.getTime();
-      const h = Math.floor(diff / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      setCountdown(`Opens in ${h}h ${m}m`);
-    };
-    calc();
-    const id = setInterval(calc, 60000);
-    return () => clearInterval(id);
-  }, []);
-
-  const isToday = (dateString: string) => {
-    const eventDate = dayjs.utc(dateString).format("YYYY-MM-DD");
-    const todayInUTC = dayjs().utc().format("YYYY-MM-DD");
-    return eventDate === todayInUTC;
-  };
-
-  /* fetch today's event */
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingEvent(true);
-        const now = dayjs();
-        const { data, error } = await supabase
-          .from("events")
-          .select("*")
-          .gte("start_time", now.format("YYYY-MM-DD"))
-          .order("start_time", { ascending: true });
-        if (!error) {
-          const events = (data as Event[]) || [];
-          const found = events.find((e) => isToday(e.start_time));
-          if (found) setTodayEvent(found);
-        }
-      } finally {
-        setLoadingEvent(false);
-      }
-    })();
-  }, []);
 
   /* escape key for modal */
   useEffect(() => {
@@ -264,7 +264,8 @@ const Home = () => {
     const el = document.getElementById(id);
     if (!el) return;
     const navHeight =
-      document.querySelector<HTMLElement>("nav[data-site-nav]")?.offsetHeight ?? 0;
+      document.querySelector<HTMLElement>("nav[data-site-nav]")?.offsetHeight ??
+      0;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8;
     window.scrollTo({ top, behavior: "smooth" });
   };
@@ -296,13 +297,7 @@ const Home = () => {
             </a>
 
             <div className="hidden md:flex gap-1 items-center">
-              {[
-                { id: "how", label: "How it works" },
-                { id: "pov", label: "Why Convoo" },
-                { id: "live", label: "Community" },
-                { id: "events", label: "Passes" },
-                { id: "about", label: "Our Story" },
-              ].map(({ id, label }) => (
+              {NAV_LINKS.map(({ id, label }) => (
                 <a
                   key={id}
                   href={`#${id}`}
@@ -336,13 +331,7 @@ const Home = () => {
             }`}
           >
             <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-col">
-              {[
-                { id: "how", label: "How it works" },
-                { id: "pov", label: "Why Convoo" },
-                { id: "live", label: "Community" },
-                { id: "events", label: "Passes" },
-                { id: "about", label: "Our Story" },
-              ].map(({ id, label }) => (
+              {NAV_LINKS.map(({ id, label }) => (
                 <a
                   key={id}
                   href={`#${id}`}
@@ -429,23 +418,27 @@ const Home = () => {
               inset: 0,
               pointerEvents: "none",
               background:
-                "radial-gradient(ellipse 70% 60% at 75% 45%, rgba(184,50,128,0.18) 0%, transparent 60%)",
+                "radial-gradient(ellipse 60% 55% at 50% 42%, rgba(184,50,128,0.20) 0%, transparent 65%)",
             }}
           />
 
-          {/* Concentric rings */}
+          {/* Concentric rings — centered behind the headline */}
           <div
             className="lp-ring lp-ring-1"
-            style={{ left: "75%", top: "50%" }}
+            style={{ left: "50%", top: "46%" }}
           />
           <div
             className="lp-ring lp-ring-2"
-            style={{ left: "75%", top: "50%" }}
+            style={{ left: "50%", top: "46%" }}
           />
           <div
             className="lp-ring lp-ring-3"
-            style={{ left: "75%", top: "50%" }}
+            style={{ left: "50%", top: "46%" }}
           />
+
+          {/* Fine grid + top/bottom fade for depth */}
+          <div className="lp-hero-grid" />
+          <div className="lp-hero-fade" />
 
           {/* Main content — vertically centered */}
           <div
@@ -457,61 +450,59 @@ const Home = () => {
               alignItems: "center",
             }}
           >
-            <div className="max-w-[1200px] mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-12 items-center">
-              {/* Left */}
-              <div data-reveal="">
+            <div className="max-w-[1040px] mx-auto w-full px-6 text-center">
+              <div>
+                {/* Eyebrow — the two-ways promise */}
+
                 {/* Headline */}
                 <h1
+                  data-reveal=""
                   style={{
                     margin: 0,
+                    marginTop: "1.5rem",
                     marginBottom: "1.25rem",
-                    fontSize: "clamp(2.6rem, 5.5vw, 4.5rem)",
-                    lineHeight: 1.06,
+                    fontSize: "clamp(2.4rem, 5.2vw, 4.25rem)",
+                    lineHeight: 1.05,
                     fontWeight: 800,
-                    letterSpacing: "-0.02em",
+                    letterSpacing: "-0.03em",
+                    transitionDelay: "0.12s",
                   }}
                 >
-                  Stop <span style={{ color: "#B83280" }}>swiping.</span>
+                  Stop <span className="lp-gradient-text">swiping.</span>
                   <br />
                   Start a real conversation.
                 </h1>
 
                 {/* Subtext */}
                 <p
+                  data-reveal=""
                   style={{
-                    margin: 0,
-                    marginBottom: "1.75rem",
-                    color: "rgba(255,255,255,0.6)",
-                    fontSize: "1rem",
+                    margin: "0 auto",
+                    marginBottom: "2.25rem",
+                    color: "rgba(255,255,255,0.62)",
+                    fontSize: "1.0625rem",
                     lineHeight: 1.75,
-                    maxWidth: "480px",
+                    maxWidth: "560px",
+                    transitionDelay: "0.2s",
                   }}
                 >
-                  No swiping. No algorithms. Every night at 7 PM, Convoo matches
-                  you live with someone real — and you talk before you ever see
-                  their face.
+                  No swiping. No algorithms. Join a live event in your city, or
+                  host a private room for your own people — either way you talk
+                  first and see photos later.
                 </p>
 
                 {/* CTAs — App Store + Play Store */}
                 <div
-                  style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}
+                  data-reveal=""
+                  className="lp-store-row"
+                  style={{ transitionDelay: "0.28s" }}
                 >
                   {/* App Store */}
                   <a
                     href="https://apps.apple.com/us/app/convoo/id6746660683"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.625rem",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                      background: "rgba(255,255,255,0.08)",
-                      color: "white",
-                      padding: "0.75rem 1.25rem",
-                      borderRadius: "12px",
-                      textDecoration: "none",
-                    }}
+                    className="lp-store-btn lp-store-btn--primary"
                   >
                     <svg
                       width="22"
@@ -548,17 +539,7 @@ const Home = () => {
                     href="https://play.google.com/store/apps/details?id=com.convooapp.convoo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.625rem",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                      background: "rgba(255,255,255,0.08)",
-                      color: "white",
-                      padding: "0.75rem 1.25rem",
-                      borderRadius: "12px",
-                      textDecoration: "none",
-                    }}
+                    className="lp-store-btn"
                   >
                     <svg
                       width="22"
@@ -603,165 +584,38 @@ const Home = () => {
                     </div>
                   </a>
                 </div>
-              </div>
 
-              {/* Right — Today's Event card (desktop only) */}
-              <aside
-                data-reveal=""
-                className="hidden lg:block"
-                style={{
-                  transitionDelay: "0.15s",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderLeft: "3px solid #B83280",
-                  borderRadius: "16px",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-                  padding: "1.5rem",
-                  backdropFilter: "blur(8px)",
-                  animation:
-                    countdown === "Live now"
-                      ? "pulse-border 1.5s ease-in-out infinite"
-                      : undefined,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginBottom: "1.25rem",
-                  }}
+                {/* Trust row */}
+                <ul
+                  data-reveal=""
+                  className="lp-trust"
+                  style={{ transitionDelay: "0.36s" }}
                 >
-                  <span
-                    style={{
-                      fontSize: "0.65rem",
-                      fontWeight: 800,
-                      letterSpacing: "0.16em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,255,255,0.45)",
-                    }}
-                  >
-                    Next event
-                  </span>
-                  {countdown && (
-                    <span
-                      style={{
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        color: countdown === "Live now" ? "#ff4fb3" : "#B83280",
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      {countdown}
-                    </span>
-                  )}
-                </div>
-
-                {loadingEvent ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#B83280]" />
-                  </div>
-                ) : todayEvent ? (
-                  <div className="space-y-4">
-                    <div>
-                      <div className="text-xs font-semibold text-[rgba(245,242,248,.4)] uppercase tracking-wider mb-1">
-                        Name
-                      </div>
-                      <div className="text-base font-bold text-white">
-                        {todayEvent.title}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-[rgba(245,242,248,.4)] uppercase tracking-wider mb-1">
-                        Description
-                      </div>
-                      <div className="text-sm text-[rgba(245,242,248,.7)]">
-                        {todayEvent.description}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-[rgba(245,242,248,.4)] uppercase tracking-wider mb-1">
-                        Where
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <a
-                          href="https://apps.apple.com/us/app/convoo/id6746660683"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sm text-[#ff4fb3] hover:text-[#B83280] transition-colors font-semibold no-underline flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            viewBox="0 0 24 24"
-                            fill="white"
-                          >
-                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                          </svg>
-                          Open in iOS App
-                        </a>
-                        <a
-                          href="https://play.google.com/store/apps/details?id=com.convooapp.convoo"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sm text-[#ff4fb3] hover:text-[#B83280] transition-colors font-semibold no-underline flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            viewBox="0 0 512 512"
-                            fill="currentColor"
-                          >
-                            <path
-                              d="M48 432 L48 80 L304 256 Z"
-                              fill="#34A853"
-                            />
-                            <path
-                              d="M48 80 L304 256 L384 176 L96 16 Q64 0 48 80Z"
-                              fill="#4285F4"
-                            />
-                            <path
-                              d="M48 432 L304 256 L384 336 L96 496 Q64 512 48 432Z"
-                              fill="#EA4335"
-                            />
-                            <path
-                              d="M304 256 L384 176 L448 216 Q480 240 448 296 L384 336 Z"
-                              fill="#FBBC05"
-                            />
-                          </svg>
-                          Open in Android App
-                        </a>
-                      </div>
-                      <div
-                        style={{
-                          marginTop: "0.6rem",
-                          fontSize: "0.75rem",
-                          color: "rgba(255,255,255,0.4)",
-                        }}
-                      >
-                        Tonight at 7 PM · Live inside the app
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      fontSize: "0.875rem",
-                      color: "rgba(255,255,255,0.45)",
-                    }}
-                  >
-                    No events today
-                  </div>
-                )}
-              </aside>
+                  {HERO_TRUST.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
+
+          {/* Scroll cue */}
+          <button
+            type="button"
+            onClick={() => scrollTo("ways")}
+            className="lp-scroll-cue"
+            aria-label="Scroll to the two ways to meet"
+          >
+            <span>Pick your way in</span>
+            <span className="lp-scroll-cue__line" />
+          </button>
         </section>
         {/* ══════════════════════════════════════════════════
-            SECTION 2 — HOW IT WORKS
+            SECTION 2 — TWO WAYS TO MEET
         ══════════════════════════════════════════════════ */}
-        <section id="how" className="py-20 px-8">
+        <section id="ways" className="py-24 px-8">
           <div className="max-w-[1100px] mx-auto">
-            <div data-reveal="" className="text-center mb-16">
+            <div data-reveal="" className="text-center mb-14">
               <h2
                 style={{
                   margin: 0,
@@ -771,7 +625,98 @@ const Home = () => {
                   letterSpacing: "-0.02em",
                 }}
               >
-                How it works
+                Two ways to meet
+              </h2>
+              <p
+                style={{
+                  margin: "0 auto",
+                  color: "rgba(255,255,255,0.5)",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.8,
+                  maxWidth: "560px",
+                }}
+              >
+                Walk into an open event with your city, or put your own people
+                in a room. Same conversations, same reveal — you just choose
+                who's on the other side.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {PATHS.map((path, i) => (
+                <div
+                  key={path.key}
+                  data-reveal=""
+                  className="lp-path-card"
+                  style={{ transitionDelay: `${i * 0.12}s` }}
+                >
+                  <div className="lp-path-card__head">
+                    <span className="lp-path-card__icon">{path.icon}</span>
+                    <span className="lp-path-card__kicker">{path.kicker}</span>
+                  </div>
+
+                  <h3 className="lp-path-card__title">{path.title}</h3>
+                  <p className="lp-path-card__blurb">{path.blurb}</p>
+
+                  <ul className="lp-path-card__list">
+                    {path.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+
+                  <div className="lp-path-card__foot">
+                    {path.key === "room" ? (
+                      <button
+                        type="button"
+                        onClick={() => scrollTo("rooms")}
+                        className="lp-path-card__link"
+                      >
+                        How rooms work →
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => scrollTo("how")}
+                        className="lp-path-card__link"
+                      >
+                        What a conversation looks like →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p
+              data-reveal=""
+              className="text-center mt-10 text-sm text-[rgba(255,255,255,0.4)]"
+              style={{ transitionDelay: "0.24s" }}
+            >
+              Both live inside the same app. Nothing to set up, nothing to pay
+              for.
+            </p>
+          </div>
+        </section>
+        {/* ══════════════════════════════════════════════════
+            SECTION 3 — HOW IT WORKS
+        ══════════════════════════════════════════════════ */}
+        <section
+          id="how"
+          className="py-24 px-8"
+          style={{ background: "rgba(255,255,255,0.015)" }}
+        >
+          <div className="max-w-[1100px] mx-auto">
+            <div data-reveal="" className="text-center mb-14">
+              <h2
+                style={{
+                  margin: 0,
+                  marginBottom: "1rem",
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Same flow, either way
               </h2>
               <p
                 style={{
@@ -784,9 +729,23 @@ const Home = () => {
                   marginRight: "auto",
                 }}
               >
-                Convoo is designed for presence and intent. A short flow that
-                gets you into real conversations fast.
+                Event or room, the conversation works exactly the same. Thirty
+                minutes live, three minutes per person, photos last.
               </p>
+
+              {/* Spec strip */}
+              <div className="lp-spec-strip">
+                {[
+                  { value: "30 min", label: "Live window" },
+                  { value: "3 min", label: "Per conversation" },
+                  { value: "30 sec", label: "To decide" },
+                ].map((spec) => (
+                  <div key={spec.label}>
+                    <span className="lp-spec-strip__value">{spec.value}</span>
+                    <span className="lp-spec-strip__label">{spec.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* 3-step flow */}
@@ -899,11 +858,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════════
             SECTION 3 — VISION (why convoo)
         ══════════════════════════════════════════════════ */}
-        <section
-          id="pov"
-          className="py-24 px-8"
-          style={{ background: "rgba(255,255,255,0.015)" }}
-        >
+        <section id="pov" className="py-24 px-8">
           <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-20 items-start">
             {/* Left */}
             <div data-reveal="">
@@ -1010,16 +965,17 @@ const Home = () => {
           </div>
         </section>
         {/* ══════════════════════════════════════════════════
-            SECTION 4 — COMMUNITY / EVENTS
+            SECTION 5 — ROOMS (host your own)
         ══════════════════════════════════════════════════ */}
         <section
-          id="live"
+          id="rooms"
           className="py-24 px-8"
           style={{ background: "#0f0f1a" }}
         >
           <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-20 items-start">
             {/* Left */}
             <div data-reveal="">
+              <div className="lp-section-tag">Way two</div>
               <h2
                 style={{
                   margin: 0,
@@ -1029,10 +985,10 @@ const Home = () => {
                   lineHeight: 1.15,
                 }}
               >
-                Host your own
+                Put your single friends
                 <br />
                 <em style={{ color: "#B83280", fontStyle: "italic" }}>
-                  dating event.
+                  in a room.
                 </em>
               </h2>
               <p
@@ -1044,8 +1000,10 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Your community. Your vibe. One code and your guests are inside a
-                live matching room — no venue, no fees, no friction.
+                You're the matchmaker. Pick a night, share a code, and up to 20
+                people meet each other one-on-one — no venue, no fees, no
+                awkward mixer. Rooms work best when your guests come from
+                different corners of your life.
               </p>
 
               {/* Use case list */}
@@ -1097,191 +1055,170 @@ const Home = () => {
               </ul>
             </div>
 
-            {/* Right — Terminal card */}
-            <div
-              data-reveal=""
-              style={{
-                transitionDelay: "0.2s",
-                border: "1px solid rgba(184,50,128,0.25)",
-                background: "#0f0f1e",
-                boxShadow:
-                  "0 0 60px rgba(184,50,128,0.15), 0 0 120px rgba(184,50,128,0.06)",
-                borderRadius: "16px",
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              {/* Radial overlay */}
+            {/* Right — Room code card + host flow */}
+            <div data-reveal="" style={{ transitionDelay: "0.2s" }}>
               <div
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "radial-gradient(ellipse at 50% 0%, rgba(184,50,128,0.12) 0%, transparent 60%)",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-              />
-
-              {/* macOS bar */}
-              <div
-                style={{
-                  padding: "0.75rem 1.2rem",
-                  background: "rgba(255,255,255,0.03)",
-                  borderBottom: "1px solid rgba(255,255,255,0.05)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
+                  border: "1px solid rgba(184,50,128,0.25)",
+                  background: "#0f0f1e",
+                  boxShadow:
+                    "0 0 60px rgba(184,50,128,0.15), 0 0 120px rgba(184,50,128,0.06)",
+                  borderRadius: "16px",
+                  overflow: "hidden",
                   position: "relative",
-                  zIndex: 1,
                 }}
               >
-                <span
+                {/* Radial overlay */}
+                <div
                   style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: "#e05252",
-                    display: "inline-block",
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "radial-gradient(ellipse at 50% 0%, rgba(184,50,128,0.12) 0%, transparent 60%)",
+                    pointerEvents: "none",
+                    zIndex: 0,
                   }}
                 />
-                <span
+
+                {/* Room status bar */}
+                <div className="lp-room-bar">
+                  <span className="lp-room-bar__left">
+                    <span className="lp-live-dot" />
+                    Goes live tonight
+                  </span>
+                  <span className="lp-room-bar__right">8 of 12 in</span>
+                </div>
+
+                {/* Card body */}
+                <div
+                  className="px-6 py-10 md:px-10 md:py-12"
                   style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: "#e0b852",
-                    display: "inline-block",
+                    textAlign: "center",
+                    position: "relative",
+                    zIndex: 1,
                   }}
-                />
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: "#52c57a",
-                    display: "inline-block",
-                  }}
-                />
+                >
+                  <div
+                    style={{
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.22em",
+                      color: "rgba(255,255,255,0.35)",
+                      textTransform: "uppercase",
+                      marginBottom: "1.25rem",
+                    }}
+                  >
+                    YOUR ROOM CODE
+                  </div>
+
+                  <div
+                    style={{
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: "clamp(1.8rem, 6vw, 2.8rem)",
+                      fontWeight: 700,
+                      letterSpacing: "0.18em",
+                      color: "#B83280",
+                      textShadow: "0 0 30px rgba(184,50,128,0.4)",
+                      marginBottom: "0.5rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    K7WQ2M
+                    <span className="lp-cursor" />
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "rgba(255,255,255,0.45)",
+                      marginBottom: "1.5rem",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    Share the code. They join. It goes live for 30 minutes.
+                  </div>
+
+                  <Link to="/apply-to-host" className="lp-room-card__cta">
+                    Hosting more than 20 people? →
+                  </Link>
+
+                  <div
+                    className="grid grid-cols-3 gap-3"
+                    style={{
+                      borderTop: "1px solid rgba(255,255,255,0.05)",
+                      paddingTop: "1.5rem",
+                      marginTop: "1.5rem",
+                    }}
+                  >
+                    {[
+                      { value: "6–20", label: "SEATS PER ROOM" },
+                      { value: "30 min", label: "LIVE WINDOW" },
+                      { value: "Any city", label: "NO DISTANCE LIMIT" },
+                    ].map(({ value, label }) => (
+                      <div key={label} style={{ textAlign: "center" }}>
+                        <span
+                          style={{
+                            display: "block",
+                            fontSize: "clamp(1rem, 3.5vw, 1.5rem)",
+                            fontWeight: 700,
+                            color: "white",
+                          }}
+                        >
+                          {value}
+                        </span>
+                        <span
+                          style={{
+                            display: "block",
+                            fontSize: "0.55rem",
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            color: "rgba(255,255,255,0.35)",
+                            marginTop: "0.2rem",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Card body */}
-              <div
-                className="px-6 py-10 md:px-10 md:py-12"
-                style={{
-                  textAlign: "center",
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "0.65rem",
-                    letterSpacing: "0.22em",
-                    color: "rgba(255,255,255,0.35)",
-                    textTransform: "uppercase",
-                    marginBottom: "1.25rem",
-                  }}
-                >
-                  ENTER EVENT CODE
-                </div>
-
-                <Link
-                  to="/apply-to-host"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.4rem",
-                    marginBottom: "1.25rem",
-                    border: "1px solid rgba(184,50,128,0.45)",
-                    background: "rgba(184,50,128,0.1)",
-                    color: "#ff4fb3",
-                    padding: "0.55rem 1.1rem",
-                    borderRadius: "8px",
-                    textDecoration: "none",
-                    fontWeight: 700,
-                    fontSize: "0.75rem",
-                    letterSpacing: "0.02em",
-                    transition: "background 0.2s, border-color 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background =
-                      "rgba(184,50,128,0.22)";
-                    (e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(184,50,128,0.8)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background =
-                      "rgba(184,50,128,0.1)";
-                    (e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(184,50,128,0.45)";
-                  }}
-                >
-                  Create your own community →
-                </Link>
-
-                <div
-                  style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: "clamp(1.8rem, 6vw, 2.8rem)",
-                    fontWeight: 700,
-                    letterSpacing: "0.18em",
-                    color: "#B83280",
-                    textShadow: "0 0 30px rgba(184,50,128,0.4)",
-                    marginBottom: "0.5rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  CONVOO26
-                  <span className="lp-cursor" />
-                </div>
-                <div
-                  className="grid grid-cols-3 gap-3"
-                  style={{
-                    borderTop: "1px solid rgba(255,255,255,0.05)",
-                    paddingTop: "1.5rem",
-                  }}
-                >
-                  {[
-                    { value: "Private", label: "ACCESS CONTROLLED" },
-                    { value: "Live", label: "REAL-TIME" },
-                    { value: "Hybrid", label: "DATING FOCUSED" },
-                  ].map(({ value, label }) => (
-                    <div key={label} style={{ textAlign: "center" }}>
-                      <span
-                        style={{
-                          display: "block",
-                          fontSize: "clamp(1rem, 3.5vw, 1.5rem)",
-                          fontWeight: 700,
-                          color: "white",
-                        }}
-                      >
-                        {value}
-                      </span>
-                      <span
-                        style={{
-                          display: "block",
-                          fontSize: "0.55rem",
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.35)",
-                          marginTop: "0.2rem",
-                        }}
-                      >
-                        {label}
-                      </span>
+              {/* Host flow */}
+              <ol className="lp-host-flow">
+                {[
+                  {
+                    title: "Set up your room",
+                    desc: "Pick a night and a size — 6, 12 or 20 seats. Takes about a minute.",
+                  },
+                  {
+                    title: "Invite from different circles",
+                    desc: "Work, college, wherever. Rooms work best when your guests don't already know each other.",
+                  },
+                  {
+                    title: "They meet, you host",
+                    desc: "Everyone joins at the same time and talks one-on-one. Sit in or just host.",
+                  },
+                  {
+                    title: "Watch the matches happen",
+                    desc: "They match only if both say yes — and you see every match your room makes.",
+                  },
+                ].map((step, i) => (
+                  <li key={step.title}>
+                    <span className="lp-host-flow__num">{i + 1}</span>
+                    <div>
+                      <div className="lp-host-flow__title">{step.title}</div>
+                      <div className="lp-host-flow__desc">{step.desc}</div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         </section>
         {/* ══════════════════════════════════════════════════
-            SECTION 5 — CONVOO PASSES
+            SECTION 6 — CONVOO INTROS
         ══════════════════════════════════════════════════ */}
         <section id="events" className="py-24 px-8">
           <div className="max-w-[1100px] mx-auto">
@@ -1295,7 +1232,7 @@ const Home = () => {
                   lineHeight: 1.15,
                 }}
               >
-                One Pass.
+                One Intro.
                 <br />
                 <em style={{ color: "#B83280", fontStyle: "italic" }}>
                   One real conversation.
@@ -1310,9 +1247,10 @@ const Home = () => {
                   lineHeight: 1.85,
                 }}
               >
-                Passes are Convoo's in-app currency. Use 1 Pass to join an extra
-                live event and have one more conversation. No Pass used until a
-                conversation actually starts.
+                Intros are what you spend to talk to someone — in an event or in
+                a room, it's the same currency. You start with five, you earn
+                more for showing up, and nothing is deducted until a
+                conversation actually begins.
               </p>
             </div>
 
@@ -1432,7 +1370,7 @@ const Home = () => {
                         marginBottom: "0.5rem",
                       }}
                     >
-                      Convoo Passes
+                      Convoo Intros
                     </div>
                     <div
                       style={{
@@ -1451,7 +1389,7 @@ const Home = () => {
                         marginTop: "0.15rem",
                       }}
                     >
-                      passes available
+                      intros available
                     </div>
                   </div>
                   {/* Token icon */}
@@ -1502,9 +1440,10 @@ const Home = () => {
                   }}
                 >
                   {[
-                    "1 Pass = 1 extra live conversation",
-                    "Only used when a conversation starts",
-                    "Passes don't expire — use them anytime",
+                    "1 Intro = 1 live conversation",
+                    "Works in live events and in rooms",
+                    "Only spent when a conversation starts",
+                    "Intros never expire",
                   ].map((line) => (
                     <div
                       key={line}
@@ -1626,7 +1565,7 @@ const Home = () => {
                   num: "02",
                   tag: "The idea",
                   title: "What if you talked first?",
-                  body: "We flipped the model. No photo-based swiping. No endless feed. Instead, every night at 7 PM, a live event opens inside the app. You get matched with someone real-time and have a real conversation — before you ever see their photo.",
+                  body: "We flipped the model. No photo-based swiping. No endless feed. Instead, a live event opens inside the app every night. You get matched in real time and have a real conversation — before you ever see their photo.",
                   extra: (
                     <div className="mt-6 p-6 rounded-2xl bg-[radial-gradient(600px_200px_at_0%_50%,rgba(184,50,128,.15),transparent_70%)] border border-[rgba(245,242,248,.1)]">
                       <p className="m-0 text-[rgba(245,242,248,.9)] text-lg font-semibold leading-snug">
@@ -1639,8 +1578,8 @@ const Home = () => {
                 {
                   num: "03",
                   tag: "How it works",
-                  title: "Live events. Real-time matching. Inside the app.",
-                  body: "Every night at 7 PM, a live event opens inside Convoo. You join, get matched with someone in real-time, and have a real conversation before you ever see their photo. No algorithms. No swiping. Just presence.",
+                  title: "Live events. Private rooms. Same conversation.",
+                  body: "Then people started asking to run their own. So rooms became the second way in: you host, you invite, and the app does the matching. Open event or private room, the conversation is identical — talk first, photos after.",
                   extra: (
                     <div className="grid sm:grid-cols-3 gap-4 mt-6">
                       {[
@@ -1648,8 +1587,8 @@ const Home = () => {
                           icon: (
                             <CalendarDays className="w-5 h-5" strokeWidth={2} />
                           ),
-                          label: "Join the event",
-                          desc: "Every night at 7 PM inside the app.",
+                          label: "Pick your way in",
+                          desc: "An open event, or a room you host.",
                         },
                         {
                           icon: (
@@ -1768,7 +1707,7 @@ const Home = () => {
                   Want to be part of it?
                 </div>
                 <div className="text-[rgba(245,242,248,.55)] text-sm">
-                  Join a live event inside the app or create one with a code.
+                  Join tonight's live event, or host a room for your own people.
                 </div>
               </div>
               <div className="flex flex-wrap justify-center gap-3">
@@ -1954,15 +1893,15 @@ const Home = () => {
               {[
                 {
                   step: "1) Open the Convoo app",
-                  desc: "Download Convoo on iOS and open it at 7 PM when the live event goes active.",
+                  desc: "Download Convoo and open it when tonight's live event goes active.",
                 },
                 {
-                  step: "2) Enter an event code (optional)",
-                  desc: "For private or community events, enter a code to unlock a specific matching room.",
+                  step: "2) Or enter a room code",
+                  desc: "Hosting or invited to a private room? Enter the 6-character code your host shared.",
                 },
                 {
                   step: "3) Get matched live, in real time",
-                  desc: "You're matched with someone instantly. Talk first. Photos unlock after the conversation.",
+                  desc: "You're paired one-on-one for three minutes. Talk first. Photos unlock after the conversation.",
                 },
               ].map(({ step, desc }) => (
                 <div key={step}>

@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "./pages/Home";
-import AnticipationHome from "./pages/AnticipationHome";
 import Meter from "./pages/Meter";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -41,9 +40,10 @@ function AppRoutes() {
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<AnticipationHome />} />
+            <Route path="/" element={<Home />} />
             <Route path="/meter" element={<Meter />} />
-            <Route path="/us" element={<Home />} />
+            {/* Old regional path — keep the link alive, serve the homepage. */}
+            <Route path="/us" element={<Navigate to="/" replace />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/meter/privacy" element={<MeterPrivacy />} />
