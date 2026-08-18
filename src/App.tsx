@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useEffect } from "react";
+import StoryHome from "./pages/StoryHome";
 import Home from "./pages/Home";
 import Meter from "./pages/Meter";
 import Terms from "./pages/Terms";
@@ -40,7 +41,10 @@ function AppRoutes() {
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<StoryHome />} />
+            {/* Previous scrolling landing page, kept reachable while the
+                storytelling homepage settles in. */}
+            <Route path="/classic" element={<Home />} />
             <Route path="/meter" element={<Meter />} />
             {/* Old regional path — keep the link alive, serve the homepage. */}
             <Route path="/us" element={<Navigate to="/" replace />} />

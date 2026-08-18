@@ -1,0 +1,1063 @@
+/* ------------------------------------------------------------------
+   Convoo storytelling homepage — an interactive book.
+   Ported from the "Convoo Site v8" design.
+   ------------------------------------------------------------------ */
+
+/* The book takes over the viewport, so the page itself must not scroll.
+   The class is added to <body> by the StoryHome component and removed on
+   unmount so every other route keeps its normal scrolling. */
+body.story-book-lock {
+  margin: 0;
+  background: #0c0308;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Short or narrow viewports can't fit the whole spread — let them scroll. */
+@media (max-height: 800px), (max-width: 520px) {
+  body.story-book-lock {
+    overflow: auto;
+  }
+}
+
+.story-book {
+  /* One width drives the header, the book and the page hint so they stay
+     optically aligned as the viewport changes. */
+  --book-w: min(620px, 94vw, max((100vh - 150px) * 0.74, 460px));
+  --ink: #241018;
+  --pink: #e0559b;
+  --pink-deep: #a8386e;
+  --pink-mid: #c2447f;
+  --gold: #b07c20;
+
+  position: relative;
+  background: radial-gradient(130% 90% at 50% 0%, #2a081a 0%, #14040c 55%, #0c0308 100%);
+  color: #fdf4f8;
+  font-family: Archivo, system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: clamp(12px, 2vh, 24px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Links carry their own colour per component — a blanket colour here would
+   out-specify the button rules below. */
+.story-book a {
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.book-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--book-w);
+}
+
+.book-brand {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fdf4f8;
+}
+
+.book-brand:hover {
+  opacity: 0.75;
+}
+
+.brand-dot {
+  color: var(--pink);
+}
+
+.book-cta {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  padding: 9px 20px;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(224, 85, 155, 0.3);
+  white-space: nowrap;
+}
+
+.book-cta:hover {
+  color: #fff;
+  filter: brightness(1.08);
+}
+
+.book-hint {
+  font-size: 13px;
+  color: rgba(253, 244, 248, 0.45);
+  text-align: center;
+}
+
+/* Right-click has no touch equivalent, so each pointer type gets its own
+   instructions. */
+.hint-touch {
+  display: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hint-mouse {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+}
+
+/* ------------------------------------------------------------ the object */
+
+.bookwrap {
+  perspective: 2400px;
+}
+
+.book {
+  position: relative;
+  width: var(--book-w);
+  aspect-ratio: 3 / 4.05;
+  transform-style: preserve-3d;
+}
+
+/* Paper block under everything, plus the ruffled page edges that make the
+   right-hand block read as a stack rather than a single card. */
+.book-base {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 14px 14px 6px;
+  background: #fbf5ea;
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6);
+}
+
+.book-edge-side {
+  position: absolute;
+  inset: 6px -12px 0 auto;
+  width: 12px;
+  border-radius: 0 6px 6px 0;
+  background: repeating-linear-gradient(180deg, #f3e9d8 0 3px, #d9cbb4 3px 4px);
+}
+
+.book-edge-bottom {
+  position: absolute;
+  left: 10px;
+  right: -10px;
+  bottom: -10px;
+  height: 10px;
+  border-radius: 0 0 8px 6px;
+  background: repeating-linear-gradient(90deg, #f3e9d8 0 3px, #d9cbb4 3px 4px);
+}
+
+/* Shadow falling into the spine. */
+.book-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 22px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(36, 16, 24, 0.22), rgba(36, 16, 24, 0));
+  border-radius: 6px 0 0 6px;
+}
+
+.book-folio {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(36, 16, 24, 0.5);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------- spreads */
+
+@keyframes spreadin {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.spread {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 14px 14px 6px;
+  animation: spreadin 0.3s ease both;
+}
+
+.spread--paper {
+  color: var(--ink);
+  padding: clamp(22px, 4vw, 40px) clamp(24px, 4.5vw, 44px) 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: clamp(9px, 1.5vh, 14px);
+  overflow: auto;
+}
+
+.spread--paper.is-roomy {
+  padding: clamp(24px, 4.5vw, 44px) clamp(24px, 4.5vw, 44px) 40px;
+  gap: clamp(8px, 1.4vh, 14px);
+}
+
+.spread--paper.is-generous {
+  gap: clamp(10px, 1.6vh, 15px);
+}
+
+.spread--paper.is-prose {
+  padding: clamp(24px, 4.5vw, 44px) clamp(26px, 5vw, 52px) 42px;
+  gap: clamp(10px, 1.6vh, 15px);
+}
+
+.kicker {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--pink-deep);
+}
+
+.kicker--gold {
+  color: var(--gold);
+}
+
+.spread--paper h1,
+.spread--paper h2 {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.spread--paper h2.is-tight {
+  font-size: clamp(23px, 3.2vw, 34px);
+  line-height: 1;
+}
+
+/* The serif italic accent used inside every headline. */
+.em {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--pink-mid);
+  letter-spacing: 0;
+}
+
+.em--gold {
+  color: var(--gold);
+}
+
+.em--pink {
+  color: var(--pink);
+}
+
+.lede {
+  font-size: clamp(13px, 1.5vw, 14.5px);
+  line-height: 1.55;
+  color: rgba(36, 16, 24, 0.6);
+}
+
+.lede--strong {
+  color: rgba(36, 16, 24, 0.65);
+}
+
+.prose {
+  margin: 0;
+  font-size: clamp(13.5px, 1.6vw, 15.5px);
+  line-height: 1.6;
+  color: rgba(36, 16, 24, 0.65);
+}
+
+.prose--airy {
+  line-height: 1.7;
+  color: rgba(36, 16, 24, 0.7);
+  text-wrap: pretty;
+}
+
+.aside {
+  margin: 0;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.7vw, 17px);
+  color: rgba(36, 16, 24, 0.55);
+}
+
+/* ----------------------------------------------------------------- cover */
+
+@keyframes arrowpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 85, 155, 0.55);
+  }
+  60% {
+    box-shadow: 0 0 0 16px rgba(224, 85, 155, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 85, 155, 0);
+  }
+}
+
+.spread--cover {
+  overflow: hidden;
+  background: var(--cover-art) center 18% / cover no-repeat #1a0512;
+  border: 1px solid rgba(253, 244, 248, 0.12);
+  box-shadow: inset -26px 0 70px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.cover-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 3, 8, 0.3) 0%,
+    rgba(12, 3, 8, 0) 30%,
+    rgba(12, 3, 8, 0.15) 55%,
+    rgba(12, 3, 8, 0.9) 100%
+  );
+}
+
+.cover-inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(22px, 4vw, 40px);
+  box-sizing: border-box;
+}
+
+.cover-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cover-mark {
+  font-size: clamp(15px, 1.8vw, 18px);
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: rgba(253, 244, 248, 0.95);
+}
+
+.cover-tagline {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: #f2a9cc;
+}
+
+.cover-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.cover-title {
+  font-size: clamp(34px, 8vw, 54px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: #fdf4f8;
+}
+
+.cover-sub {
+  font-size: clamp(13.5px, 1.6vw, 16px);
+  line-height: 1.55;
+  color: rgba(253, 244, 248, 0.75);
+  /* Keep the line clear of the turn arrow parked in the corner. */
+  padding-right: 72px;
+}
+
+.cover-next {
+  position: absolute;
+  right: clamp(16px, 2.8vw, 28px);
+  bottom: clamp(14px, 2.4vw, 24px);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  animation: arrowpulse 2s ease-out infinite;
+}
+
+/* ----------------------------------------------------------------- index */
+
+.index-row {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(36, 16, 24, 0.15);
+}
+
+.index-row:last-of-type {
+  border-bottom: 1px solid rgba(36, 16, 24, 0.15);
+}
+
+.index-row:hover {
+  opacity: 0.7;
+}
+
+.index-chapter {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.7vw, 16px);
+  color: var(--pink-deep);
+  flex-shrink: 0;
+  width: 110px;
+}
+
+.index-chapter--gold {
+  color: var(--gold);
+}
+
+.index-title {
+  font-size: clamp(19px, 2.5vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.index-dots {
+  flex: 1;
+  border-bottom: 2px dotted rgba(36, 16, 24, 0.3);
+  transform: translateY(-5px);
+}
+
+.index-folio {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: rgba(36, 16, 24, 0.55);
+  flex-shrink: 0;
+}
+
+/* On a narrow page the chapter column and a long title together push the
+   page number off the edge — let the title wrap instead. */
+@media (max-width: 560px) {
+  .index-chapter {
+    width: 78px;
+  }
+
+  .index-title {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+}
+
+/* ----------------------------------------------------------- role cards */
+
+.role-card {
+  all: unset;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid rgba(194, 68, 127, 0.25);
+  border-radius: 16px;
+  padding: clamp(14px, 2vw, 20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.role-card:hover {
+  border-color: rgba(194, 68, 127, 0.6);
+}
+
+.role-card--gold {
+  border-color: rgba(176, 124, 32, 0.3);
+}
+
+.role-card--gold:hover {
+  border-color: rgba(176, 124, 32, 0.65);
+}
+
+.role-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.role-name {
+  font-size: clamp(16px, 2vw, 19px);
+  font-weight: 800;
+}
+
+.role-desc {
+  font-size: clamp(13px, 1.5vw, 14.5px);
+  line-height: 1.5;
+  color: rgba(36, 16, 24, 0.6);
+}
+
+.role-dot {
+  color: var(--pink-mid);
+}
+
+.role-dot--gold {
+  color: var(--gold);
+}
+
+.role-jump {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--pink-deep);
+  flex-shrink: 0;
+}
+
+.role-jump--gold {
+  color: var(--gold);
+}
+
+/* ----------------------------------------------------------------- steps */
+
+.steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+}
+
+.step-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(194, 68, 127, 0.09);
+  border: 1.5px solid var(--pink-mid);
+  color: var(--pink-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  font-weight: 800;
+}
+
+.step-line {
+  width: 2px;
+  flex: 1;
+  background: rgba(194, 68, 127, 0.27);
+  margin-top: 2px;
+  min-height: 10px;
+}
+
+.step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-bottom: 11px;
+}
+
+.step:last-child .step-body {
+  padding-bottom: 0;
+}
+
+.step-title {
+  font-size: clamp(14px, 1.7vw, 16.5px);
+  font-weight: 800;
+}
+
+.step-desc {
+  font-size: clamp(12.5px, 1.5vw, 14px);
+  line-height: 1.5;
+  color: rgba(36, 16, 24, 0.6);
+}
+
+.step--gold .step-num {
+  background: rgba(176, 124, 32, 0.09);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.step--gold .step-line {
+  background: rgba(176, 124, 32, 0.27);
+}
+
+/* ------------------------------------------------------------------ team */
+
+.team-grid {
+  display: flex;
+  gap: clamp(10px, 1.8vw, 16px);
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+
+.team-card {
+  flex: 1;
+  min-width: 45%;
+  background: #fff;
+  border: 1px solid rgba(194, 68, 127, 0.22);
+  border-radius: 18px;
+  padding: clamp(14px, 2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.team-card--gold {
+  border-color: rgba(176, 124, 32, 0.28);
+}
+
+.team-photo {
+  width: clamp(72px, 9vw, 92px);
+  height: clamp(72px, 9vw, 92px);
+  border-radius: 50%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: linear-gradient(150deg, rgba(224, 85, 155, 0.18), rgba(176, 124, 32, 0.16));
+  border: 1px solid rgba(36, 16, 24, 0.1);
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 30px;
+  color: rgba(36, 16, 24, 0.45);
+}
+
+.team-id {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.team-name {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.team-role {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--pink-deep);
+}
+
+.team-role--gold {
+  color: var(--gold);
+}
+
+.team-quote {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(12.5px, 1.5vw, 14px);
+  line-height: 1.5;
+  color: rgba(36, 16, 24, 0.65);
+}
+
+/* --------------------------------------------------------------- closing */
+
+.closing-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.btn-primary {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  padding: 13px 26px;
+  border-radius: 999px;
+  box-shadow: 0 14px 38px rgba(224, 85, 155, 0.3);
+}
+
+.btn-primary:hover {
+  color: #fff;
+  filter: brightness(1.08);
+}
+
+.btn-ghost {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  border: 1.5px solid rgba(36, 16, 24, 0.3);
+  padding: 12px 24px;
+  border-radius: 999px;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(36, 16, 24, 0.6);
+}
+
+.closing-meta {
+  font-size: 12px;
+  color: rgba(36, 16, 24, 0.45);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.closing-meta a {
+  color: rgba(36, 16, 24, 0.6);
+}
+
+.closing-meta a:hover {
+  color: var(--pink-mid);
+}
+
+/* -------------------------------------------------- left page + turning */
+
+/* The verso is the same sheet flipped 178° around the spine, so it sits to
+   the left of the book and keeps a believable page thickness behind it. */
+.leftpage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+/* Deeper into the book there are more turned pages behind the verso. It sits
+   parallel to the sheet and a few pixels further from the reader — sorting it
+   by angle instead would float it in front and hide the page. The negative
+   insets let it peek past the three outer edges, never past the spine. */
+.leftpage-stack {
+  position: absolute;
+  inset: -5px -5px -5px 0;
+  border-radius: 14px 6px 6px 14px;
+  background: linear-gradient(270deg, #decfb2 0%, #ecdfc8 16%, #f0e5d0 100%);
+  transform-origin: left center;
+  transform: rotateY(-178deg) translateZ(4px);
+}
+
+@keyframes leafland {
+  from {
+    box-shadow: -6px 6px 18px rgba(0, 0, 0, 0.18);
+  }
+  to {
+    box-shadow: -14px 16px 44px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.leftpage-sheet {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px 6px 6px 14px;
+  background: linear-gradient(270deg, #e7d9c0 0%, #f2e8d5 16%, #f6eddd 100%);
+  box-shadow: -14px 16px 44px rgba(0, 0, 0, 0.45);
+  animation: leafland 0.28s ease-out both;
+  transform-origin: left center;
+  transform: rotateY(-178deg);
+  transform-style: preserve-3d;
+}
+
+.leftpage-face {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  border-radius: 6px 14px 14px 6px;
+  overflow: hidden;
+}
+
+.verso {
+  position: absolute;
+  inset: 0;
+  padding: clamp(18px, 3vw, 30px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 18px);
+  justify-content: center;
+}
+
+/* The photo is printed on the page, not resting on it: no lift shadow, a
+   plate edge instead of a card radius, and the colour pulled back the way ink
+   on warm stock behaves. */
+.verso-plate {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.verso-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+  filter: saturate(0.93) contrast(1.03);
+}
+
+.verso-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 244, 226, 0.14) 0%,
+    rgba(60, 26, 40, 0.1) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(36, 16, 24, 0.1),
+    0 1px 2px rgba(36, 16, 24, 0.2);
+}
+
+/* Paper curving down into the spine. Applies wherever a verso is drawn, so
+   the page looks the same in flight as it does at rest. */
+.verso::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(36, 16, 24, 0) 76%,
+    rgba(36, 16, 24, 0.17) 100%
+  );
+}
+
+.verso-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.verso-mark {
+  font-family: "Instrument Serif", serif;
+  font-size: 44px;
+  line-height: 0.5;
+  color: rgba(194, 68, 127, 0.6);
+}
+
+.verso-text {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(17px, 2.1vw, 23px);
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------ the sheet in flight */
+
+/* No perspective of its own: the flying sheet and the resting verso must be
+   projected from exactly the same point, or the handover at the end of the
+   turn shows as a jump. Both inherit the book wrapper's perspective. */
+.turn-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* A chain, not a stack: each strip hinges on the outer edge of the one
+   before it, so the rotations compound into a curve. */
+.strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(100% / var(--n));
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--a, 0deg));
+  will-change: transform;
+}
+
+.strip .strip {
+  left: 100%;
+  width: 100%;
+}
+
+/* Faces overrun their strip by a hair on both sides so no hairline shows
+   where two strips meet. They are absolutely positioned, so widening them
+   does not move the hinge the next strip swings from — but the slice offset
+   has to be measured from the true strip width, not the padded face. */
+.strip-face {
+  --seam: 0.6px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--seam));
+  right: calc(-1 * var(--seam));
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.strip-face--verso {
+  transform: rotateY(180deg);
+}
+
+.strip-face--recto.is-spine {
+  border-radius: 6px 0 0 6px;
+}
+
+.strip-face--recto.is-edge {
+  border-radius: 0 14px 14px 0;
+}
+
+.strip-face--verso.is-spine {
+  border-radius: 0 6px 6px 0;
+}
+
+.strip-face--verso.is-edge {
+  border-radius: 14px 0 0 14px;
+}
+
+/* Every strip holds a full-width copy of the page and shows only its own
+   slice, so a picture printed across the page stays in register while the
+   paper bends. The verso is measured from the other edge because its face is
+   flipped. */
+.face-slide {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: calc((100% - 2 * var(--seam)) * var(--n));
+}
+
+.strip-face--recto .face-slide {
+  left: calc(var(--seam) - (100% - 2 * var(--seam)) * var(--i));
+}
+
+.strip-face--verso .face-slide {
+  right: calc(var(--seam) - (100% - 2 * var(--seam)) * var(--i));
+}
+
+/* Bare stock behind whatever page is printed on the front of the sheet. */
+.sheet-stock {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0e5d0 0%, #fbf5ea 12%, #fbf5ea 100%);
+}
+
+/* The page riding on the sheet is a still: it has already been read, it must
+   not re-run its entrance, and it must never grow a scrollbar mid-flight. */
+.face-slide .spread {
+  animation: none;
+  overflow: hidden;
+}
+
+/* Lighting. Each strip sits at its own angle to the light, so the shading
+   varies across the page — that gradient is what reads as a bend rather than
+   a flat plate swinging. */
+.strip-dark,
+.strip-spec {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Each overlay ramps from the shading of the strip before it to the shading
+   of the strip after, so seven flat facets read as one curved surface
+   instead of seven bands. */
+.strip-dark {
+  background: linear-gradient(
+    90deg,
+    rgb(22 7 17 / var(--dkA, 0)) 0%,
+    rgb(22 7 17 / var(--dkB, 0)) 100%
+  );
+}
+
+.strip-spec {
+  background: linear-gradient(
+    90deg,
+    rgb(255 246 236 / var(--spA, 0)) 0%,
+    rgb(255 246 236 / var(--spB, 0)) 100%
+  );
+}
+
+.strip-face--verso .strip-dark {
+  background: linear-gradient(
+    270deg,
+    rgb(22 7 17 / var(--dkA, 0)) 0%,
+    rgb(22 7 17 / var(--dkB, 0)) 100%
+  );
+}
+
+.strip-face--verso .strip-spec {
+  background: linear-gradient(
+    270deg,
+    rgb(255 246 236 / var(--spA, 0)) 0%,
+    rgb(255 246 236 / var(--spB, 0)) 100%
+  );
+}
+
+/* Shadows the raised page throws on what is underneath it. */
+.cast-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--cast, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(18, 5, 12, 0.85) 0%,
+    rgba(18, 5, 12, 0) var(--reach, 40%)
+  );
+}
+
+.recto-shadow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 6px 14px 14px 6px;
+  opacity: var(--rk, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(18, 5, 12, 0.8) 0%,
+    rgba(18, 5, 12, 0) 62%
+  );
+}
+
+/* Below this the verso has nowhere to go, so the book stays a single page
+   and only the front of the turning sheet is ever seen. */
+@media (max-width: 560px) {
+  .leftpage,
+  .strip-face--verso {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spread,
+  .cover-next {
+    animation: none;
+  }
+}
