@@ -17,14 +17,18 @@
     handing over from the animated sheet to the resting one is invisible. */
 export const REST_ANGLE = -178;
 
-export const TURN_SECONDS = 1;
+export const TURN_SECONDS = 2.5;
+
+/** The cover is board, not paper — opening and closing it carries more
+    weight, so it gets a little longer to do it. */
+export const COVER_TURN_SECONDS = 1.85;
 
 /** Strips across the page. One means a flat sheet (small screens, or when
     the reader has asked for reduced motion). */
 export const STRIPS = 7;
 
 /** Degrees of bow at the peak of the turn. Higher reads as flimsier paper. */
-const CURL = 42;
+const CURL = 22;
 
 /* The light sits in front of the book and slightly to the left. A page only
    ever rotates about its spine, so its normal stays in the x/z plane and the
@@ -86,7 +90,7 @@ function shade(angleDeg: number, back: boolean) {
 export function turnFrame(
   turned: number,
   strips: number,
-  end: number = REST_ANGLE
+  end: number = REST_ANGLE,
 ): StripState[] {
   const lead = end * turned;
   /* Zero at both ends, widest when the page is upright: it is flat when it

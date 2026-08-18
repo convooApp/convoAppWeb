@@ -11,6 +11,7 @@ import gsap from "gsap";
 import BookSheet from "./BookSheet";
 import Spread from "./BookSpreads";
 import {
+  COVER_TURN_SECONDS,
   STRIPS,
   TURN_SECONDS,
   castShadow,
@@ -154,11 +155,16 @@ export default function StoryHome() {
     const cast = book?.querySelector<HTMLElement>(".cast-shadow") ?? null;
     const under = book?.querySelector<HTMLElement>(".recto-shadow") ?? null;
 
+    /* `glide` runs 0 → 1 from the lower-numbered page to the higher one
+       regardless of which way the reader is going, so the book's position has
+       to be keyed the same way. Keying it on from/to instead makes a close
+       interpolate backwards: the book snaps shut and then slides open again
+       under the returning cover. */
     const shift = openShift(window.innerWidth);
     const closed = { x: 0, scale: 1 };
     const opens = (turn.from === 0) !== (turn.to === 0);
-    const from = turn.from > 0 ? shift : closed;
-    const to = turn.to > 0 ? shift : closed;
+    const atLow = closed;
+    const atHigh = shift;
 
     /* The tween runs linearly; all the shaping lives in sweep(), so the page,
        the shadows and the book's slide are driven off one motion curve. */
@@ -207,8 +213,8 @@ export default function StoryHome() {
          own tween, so the book can never drift out of step with the sheet. */
       if (opens && wrapRef.current) {
         gsap.set(wrapRef.current, {
-          xPercent: from.x + (to.x - from.x) * glide,
-          scale: from.scale + (to.scale - from.scale) * glide,
+          xPercent: atLow.x + (atHigh.x - atLow.x) * glide,
+          scale: atLow.scale + (atHigh.scale - atLow.scale) * glide,
         });
       }
     };
@@ -227,7 +233,7 @@ export default function StoryHome() {
       state,
       {
         p: reverse ? 0 : 1,
-        duration: TURN_SECONDS,
+        duration: opens ? COVER_TURN_SECONDS : TURN_SECONDS,
         ease: "none",
         onUpdate: () => draw(state.p),
       },

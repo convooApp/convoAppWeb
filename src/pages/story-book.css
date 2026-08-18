@@ -774,7 +774,7 @@ body.story-book-lock {
   border-radius: 14px 6px 6px 14px;
   background: linear-gradient(270deg, #e7d9c0 0%, #f2e8d5 16%, #f6eddd 100%);
   box-shadow: -14px 16px 44px rgba(0, 0, 0, 0.45);
-  animation: leafland 0.28s ease-out both;
+  animation: leafland 0.4s ease-out both;
   transform-origin: left center;
   transform: rotateY(-178deg);
   transform-style: preserve-3d;
