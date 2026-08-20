@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { GraduationCap, Instagram } from "lucide-react";
 
 /* ------------------------------------------------------------------
    The right-hand pages.
@@ -12,6 +13,7 @@ import { Link } from "react-router-dom";
    ------------------------------------------------------------------ */
 
 const INSTAGRAM_URL = "https://www.instagram.com/convooindia/";
+const AMBASSADOR_URL = "https://forms.gle/pwpZ5nQ8xFRs1qDf9";
 
 type TeamPhotoProps = { name: string; src?: string };
 
@@ -46,6 +48,31 @@ function Step({ n, title, desc, gold, last }: StepProps) {
         <span className="step-desc">{desc}</span>
       </span>
     </div>
+  );
+}
+
+/** The closing prologue. Drawn on the verso of the last spread, and inline on
+    phones where there is no verso to draw it on. */
+export function PrologueText() {
+  return (
+    <>
+      <span className="kicker">chapter five &middot; prologue, at the end</span>
+      <h2>
+        because your story hasn't <em className="em">started yet.</em>
+      </h2>
+      <p className="prose prose--airy">
+        a prologue belongs at the beginning, but you needed to read the rest
+        first to believe this part. somewhere out there is a person who would
+        pick you out of a hundred conversations, and keeps not finding you
+        because your third photo isn't your best angle.
+      </p>
+      <p className="prose prose--airy">
+        convoo is three minutes of talking to a stranger who signed up for the
+        same leap. no swiping, no profiles, no audience. photos at the end, a
+        match only if you both say yes, and nobody's night ruined if you don't.
+      </p>
+      <span className="aside">somewhere, someone is about to show up.</span>
+    </>
   );
 }
 
@@ -304,47 +331,65 @@ export default function Spread({
   /* --- 6 · prologue --- */
   if (n === 6)
     return (
-      <div className="spread spread--paper is-prose">
-        <span className="kicker">
-          chapter five &middot; prologue, at the end
-        </span>
-        <h2>
-          because your story hasn't <em className="em">started yet.</em>
-        </h2>
+      <div className="spread spread--paper is-prose is-closing">
+        {/* The prologue lives on the verso, opposite this page. Phones never
+            draw a verso, so it is repeated here for them and hidden on any
+            screen wide enough to show the real one. */}
+        <div className="only-narrow">
+          <PrologueText />
+        </div>
+
+        <span className="kicker">the last page</span>
+        <h2>See you tonight !</h2>
         <p className="prose prose--airy">
-          a prologue belongs at the beginning, but you needed to read the rest
-          first to believe this part. somewhere out there is a person who would
-          pick you out of a hundred conversations, and keeps not finding you
-          because your third photo isn't your best angle.
-        </p>
-        <p className="prose prose--airy">
-          convoo is three minutes of talking to a stranger who signed up for the
-          same leap. no swiping, no profiles, no audience. photos at the end, a
-          match only if you both say yes, and nobody's night ruined if you
-          don't.
-        </p>
-        <p className="prose prose--airy">
-          join tonight's event or room, someone in there is hoping you show up,
-          and neither of you knows it yet.
+          someone in there is hoping you show up, and neither of you knows it
+          yet.
         </p>
 
         <div className="closing-actions">
           <Link className="btn-primary" to="/download-now">
             get the app
           </Link>
-          <Link className="btn-ghost" to="/apply-to-host">
-            host your first room
-          </Link>
+          <a
+            className="icon-link"
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="convoo on instagram"
+          >
+            <Instagram size={19} strokeWidth={2.2} aria-hidden="true" />
+          </a>
         </div>
 
-        <span className="closing-meta">
-          free &middot;
-          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-            instagram
-          </a>{" "}
-          &middot; <Link to="/contact">contact</Link> &middot;{" "}
-          <Link to="/terms">terms</Link> &middot;{" "}
+        <a
+          className="link-feature"
+          href={AMBASSADOR_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="link-feature-icon" aria-hidden="true">
+            <GraduationCap size={19} strokeWidth={2.2} />
+          </span>
+          <span className="link-feature-copy">
+            <span className="link-feature-name">be a campus ambassador</span>
+            <span className="link-feature-note">
+              run convoo at your college. applications are open.
+            </span>
+          </span>
+          <span className="link-feature-go" aria-hidden="true">
+            &#8599;
+          </span>
+        </a>
+
+        <nav className="link-row" aria-label="more from convoo">
+          <Link to="/contact">contact</Link>
+          <Link to="/support">support</Link>
+          <Link to="/terms">terms</Link>
           <Link to="/privacy">privacy</Link>
+        </nav>
+
+        <span className="closing-note">
+          free to join &middot; face verified
         </span>
       </div>
     );

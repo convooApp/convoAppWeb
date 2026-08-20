@@ -14,7 +14,7 @@ body.story-book-lock {
 }
 
 /* Short or narrow viewports can't fit the whole spread — let them scroll. */
-@media (max-height: 800px), (max-width: 520px) {
+@media (max-height: 800px), (max-width: 560px) {
   body.story-book-lock {
     overflow: auto;
   }
@@ -23,7 +23,10 @@ body.story-book-lock {
 .story-book {
   /* One width drives the header, the book and the page hint so they stay
      optically aligned as the viewport changes. */
-  --book-w: min(620px, 94vw, max((100vh - 150px) * 0.74, 460px));
+  /* The reserve covers the masthead above the book and the hint below it.
+     The masthead is out of flow, so it does not shrink the book on its own —
+     this is what keeps the two off each other on a short viewport. */
+  --book-w: min(620px, 94vw, max((100vh - 196px) * 0.74, 460px));
   --ink: #241018;
   --pink: #e0559b;
   --pink-deep: #a8386e;
@@ -53,11 +56,33 @@ body.story-book-lock {
 
 /* ---------------------------------------------------------------- header */
 
+/* Pinned to the spread rather than the viewport. `left` runs from 0 (closed,
+   so it spans the cover) to -100% (open, so it spans both pages), driven off
+   the same curve as the turn. It lives inside the wrapper, so it inherits the
+   book's slide and scale for free — and counter-scales its own contents so the
+   type stays readable when the book shrinks to fit. */
 .book-topbar {
+  position: absolute;
+  left: var(--hdr-left, 0%);
+  right: 0;
+  bottom: 100%;
+  margin-bottom: clamp(12px, 1.8vh, 20px);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: var(--book-w);
+  align-items: flex-end;
+}
+
+.book-brand,
+.book-cta {
+  transform: scale(var(--hdr-inv, 1));
+}
+
+.book-brand {
+  transform-origin: left bottom;
+}
+
+.book-cta {
+  transform-origin: right bottom;
 }
 
 .book-brand {
@@ -116,7 +141,12 @@ body.story-book-lock {
 /* ------------------------------------------------------------ the object */
 
 .bookwrap {
+  position: relative;
   perspective: 2400px;
+  /* Room for the masthead, which is out of flow above the book. The bottom
+     margin clears the page-edge decoration, which hangs 10px past the box. */
+  margin-top: clamp(46px, 7vh, 62px);
+  margin-bottom: 16px;
 }
 
 .book {
@@ -236,7 +266,9 @@ body.story-book-lock {
 }
 
 .spread--paper h1,
-.spread--paper h2 {
+.spread--paper h2,
+.verso--prose h1,
+.verso--prose h2 {
   margin: 0;
   font-size: clamp(24px, 3.4vw, 36px);
   font-weight: 800;
@@ -717,21 +749,133 @@ body.story-book-lock {
   border-color: rgba(36, 16, 24, 0.6);
 }
 
-.closing-meta {
+/* The closing page is a call to action, so it sits low and firm rather than
+   floating in the middle of the page like the chapters do. */
+.spread--paper.is-closing {
+  justify-content: safe center;
+}
+
+.closing-note {
   font-size: 12px;
   color: rgba(36, 16, 24, 0.45);
+}
+
+/* Instagram is where the nightly line-up actually gets posted, so it gets a
+   row of its own rather than being buried in a list of legal links. */
+/* Social sits with the primary action rather than in the link row — it is a
+   destination, not a footer link. Sized to match the button beside it. */
+.icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1.5px solid rgba(194, 68, 127, 0.4);
+  color: var(--pink-mid);
+  background: rgba(255, 255, 255, 0.55);
+  transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.icon-link:hover {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  transform: translateY(-1px);
+}
+
+.link-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(194, 68, 127, 0.28);
+  background: linear-gradient(
+    120deg,
+    rgba(224, 85, 155, 0.09) 0%,
+    rgba(255, 255, 255, 0.6) 60%
+  );
+  color: var(--ink);
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.link-feature:hover {
+  color: var(--ink);
+  border-color: rgba(194, 68, 127, 0.65);
+  transform: translateY(-1px);
+}
+
+.link-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(224, 85, 155, 0.32);
+}
+
+.link-feature-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.link-feature-name {
+  font-size: clamp(14px, 1.7vw, 15.5px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.link-feature-note {
+  font-size: clamp(12px, 1.4vw, 13px);
+  line-height: 1.4;
+  color: rgba(36, 16, 24, 0.58);
+}
+
+.link-feature-go {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 15px;
+  color: var(--pink-mid);
+}
+
+/* The rest read as a footer, but a legible one — underlined and full-contrast
+   rather than the greyed-out run-on they replaced. */
+.link-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
+  gap: 8px 18px;
 }
 
-.closing-meta a {
-  color: rgba(36, 16, 24, 0.6);
+.link-row a {
+  font-size: clamp(12.5px, 1.5vw, 13.5px);
+  font-weight: 600;
+  color: rgba(36, 16, 24, 0.72);
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid rgba(194, 68, 127, 0.35);
 }
 
-.closing-meta a:hover {
+.link-row a:hover {
   color: var(--pink-mid);
+  border-bottom-color: var(--pink-mid);
+}
+
+/* Content that only exists to cover for a missing verso on phones. */
+.only-narrow {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .only-narrow {
+    display: contents;
+  }
 }
 
 /* -------------------------------------------------- left page + turning */
@@ -844,6 +988,15 @@ body.story-book-lock {
     rgba(36, 16, 24, 0) 76%,
     rgba(36, 16, 24, 0.17) 100%
   );
+}
+
+/* The last verso carries the prologue instead of a plate. */
+.verso--prose {
+  color: var(--ink);
+  padding: clamp(24px, 4.5vw, 44px) clamp(26px, 5vw, 52px);
+  gap: clamp(10px, 1.6vh, 15px);
+  justify-content: safe center;
+  overflow: hidden;
 }
 
 .verso-quote {
@@ -1047,8 +1200,40 @@ body.story-book-lock {
 }
 
 /* Below this the verso has nowhere to go, so the book stays a single page
-   and only the front of the turning sheet is ever seen. */
+   and only the front of the turning sheet is ever seen — and a single page
+   has to carry everything both pages carried, which no fixed page shape can
+   promise to hold. So the phone page is sized by its contents and the
+   document scrolls, rather than the page keeping its proportions and quietly
+   clipping whatever runs past them. */
 @media (max-width: 560px) {
+  .story-book {
+    overflow: visible;
+    justify-content: flex-start;
+  }
+
+  .book {
+    aspect-ratio: auto;
+  }
+
+  /* The cover has nothing to overflow with, so it keeps its proportions. */
+  .book > .spread--cover {
+    position: relative;
+    aspect-ratio: 3 / 4.05;
+  }
+
+  /* Both copies of a paper page — the one lying on the book and the one
+     printed on the turning sheet — have to flow the same way, or the turn
+     would land on a differently-laid-out page. */
+  .book > .spread--paper,
+  .face-slide > .spread--paper {
+    overflow: visible;
+    min-height: calc(100vh - 270px);
+  }
+
+  .book > .spread--paper {
+    position: relative;
+  }
+
   .leftpage,
   .strip-face--verso {
     display: none;

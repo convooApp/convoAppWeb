@@ -9,7 +9,7 @@ import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import BookSheet from "./BookSheet";
-import Spread from "./BookSpreads";
+import Spread, { PrologueText } from "./BookSpreads";
 import {
   COVER_TURN_SECONDS,
   STRIPS,
@@ -38,7 +38,7 @@ const LAST_PAGE = 6;
 
 /* One photo + one line per left-hand page. Index 0 is the closed cover,
    which has no verso. */
-const VERSOS = [
+const VERSOS: (VersoData | null)[] = [
   null,
   {
     src: img("index.jpg"),
@@ -65,16 +65,23 @@ const VERSOS = [
     alt: "a couple laughing together holding flowers",
     quote: "we're the friend who insists you'll get along.",
   },
-  {
-    src: img("cover-sunset.jpg"),
-    alt: "a couple silhouetted against the sunset",
-    quote: "somewhere, someone is about to show up.",
-  },
-] as const;
+  /* The book closes on a full page of prose facing the call to action,
+     rather than another photo. */
+  { prose: true },
+];
 
-type VersoData = Exclude<(typeof VERSOS)[number], null>;
+type PhotoVerso = { src: string; alt: string; quote: string };
+type ProseVerso = { prose: true };
+type VersoData = PhotoVerso | ProseVerso;
 
 function Verso({ verso }: { verso: VersoData }) {
+  if ("prose" in verso)
+    return (
+      <div className="verso verso--prose">
+        <PrologueText />
+      </div>
+    );
+
   return (
     <div className="verso">
       <div className="verso-plate">
@@ -165,6 +172,10 @@ export default function StoryHome() {
     const opens = (turn.from === 0) !== (turn.to === 0);
     const atLow = closed;
     const atHigh = shift;
+    /* Below the verso breakpoint the book never opens out, so the masthead
+       stays the width of the single page it sits on. */
+    const spreads = window.innerWidth > 560;
+    const openLow = Math.min(turn.from, turn.to) > 0 ? 1 : 0;
 
     /* The tween runs linearly; all the shaping lives in sweep(), so the page,
        the shadows and the book's slide are driven off one motion curve. */
@@ -210,12 +221,29 @@ export default function StoryHome() {
       if (under) under.style.setProperty("--rk", `${rectoShadow(angle)}`);
 
       /* Opening and closing rides the same curve as the page rather than its
-         own tween, so the book can never drift out of step with the sheet. */
+         own tween, so the book can never drift out of step with the sheet.
+         Only interpolate when the cover is actually involved — a turn between
+         two open pages leaves the book where it is, and reading a ramped value
+         here made the masthead counter-scale zoom in and out on every turn. */
+      const scale = opens
+        ? atLow.scale + (atHigh.scale - atLow.scale) * glide
+        : shift.scale;
       if (opens && wrapRef.current) {
         gsap.set(wrapRef.current, {
           xPercent: atLow.x + (atHigh.x - atLow.x) * glide,
-          scale: atLow.scale + (atHigh.scale - atLow.scale) * glide,
+          scale,
         });
+      }
+
+      /* The masthead sits on the book's own corners, so it has to widen with
+         the spread as the cover comes off and close back up behind it. That
+         is the only thing that moves it — turns between two open pages leave
+         it exactly where it is. */
+      if (stageRef.current) {
+        const openness = spreads ? openLow + (1 - openLow) * glide : 0;
+        const st = stageRef.current.style;
+        st.setProperty("--hdr-left", `${-100 * openness}%`);
+        st.setProperty("--hdr-inv", `${1 / scale}`);
       }
     };
 
@@ -245,17 +273,24 @@ export default function StoryHome() {
     };
   }, [turn]);
 
-  /* Keep the open book positioned correctly when the breakpoint changes. */
+  /* Settle the book and its masthead into the resting position — on mount,
+     after every turn, and whenever the breakpoint moves under them. */
   useEffect(() => {
-    const onResize = () => {
-      if (!wrapRef.current || turn) return;
+    const settle = () => {
+      const stage = stageRef.current;
+      if (!stage || !wrapRef.current || turn) return;
+
       const open = stateRef.current.page > 0;
+      const spreads = window.innerWidth > 560;
       const shift = open ? openShift(window.innerWidth) : { x: 0, scale: 1 };
+
       gsap.set(wrapRef.current, { xPercent: shift.x, scale: shift.scale });
+      stage.style.setProperty("--hdr-left", open && spreads ? "-100%" : "0%");
+      stage.style.setProperty("--hdr-inv", `${1 / shift.scale}`);
     };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    settle();
+    window.addEventListener("resize", settle);
+    return () => window.removeEventListener("resize", settle);
   }, [turn, page]);
 
   /* The whole spread is the control: left click forward, right click back,
@@ -320,7 +355,7 @@ export default function StoryHome() {
   /* Warm the versos so a page turn never reveals a half-loaded photo. */
   useEffect(() => {
     VERSOS.forEach((v) => {
-      if (!v) return;
+      if (!v || !("src" in v)) return;
       const im = new Image();
       im.src = v.src;
     });
@@ -348,15 +383,6 @@ export default function StoryHome() {
       ref={stageRef}
       style={{ "--cover-art": `url(${COVER_ART})` } as CSSProperties}
     >
-      <div className="book-topbar">
-        <Link className="book-brand" to="/">
-          convoo<span className="brand-dot">.</span>
-        </Link>
-        <Link className="book-cta" to="/download-now">
-          get the app
-        </Link>
-      </div>
-
       <div className="bookwrap" ref={wrapRef}>
         <div className="book" ref={bookRef}>
           <span className="book-edge-side" />
@@ -403,6 +429,17 @@ export default function StoryHome() {
               verso={sheetVerso ? <Verso verso={sheetVerso} /> : null}
             />
           )}
+        </div>
+
+        {/* Pinned to the top corners of the spread, not the viewport: it
+            widens with the book as it opens and closes back up with it. */}
+        <div className="book-topbar">
+          <Link className="book-brand" to="/">
+            convoo<span className="brand-dot">.</span>
+          </Link>
+          <Link className="book-cta" to="/download-now">
+            get the app
+          </Link>
         </div>
       </div>
 
