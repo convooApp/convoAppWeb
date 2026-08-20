@@ -882,25 +882,30 @@ body.story-book-lock {
 
 /* The verso is the same sheet flipped 178° around the spine, so it sits to
    the left of the book and keeps a believable page thickness behind it. */
+/* Flat on purpose. The resting verso is a half turn — a pure mirror with no
+   depth — so it needs no 3D context of its own, and giving it one made the
+   page depend on preserve-3d surviving three levels of nesting. Browsers that
+   flatten it (Brave with hardware acceleration off, among others) projected
+   the face and the paper under it differently, which showed up as the photo
+   hanging past the edge of its own page onto the background. */
 .leftpage {
   position: absolute;
   inset: 0;
   z-index: 5;
   pointer-events: none;
-  transform-style: preserve-3d;
 }
 
-/* Deeper into the book there are more turned pages behind the verso. It sits
-   parallel to the sheet and a few pixels further from the reader — sorting it
-   by angle instead would float it in front and hide the page. The negative
-   insets let it peek past the three outer edges, never past the spine. */
+/* Deeper into the book there are more turned pages behind the verso. It paints
+   before the sheet in document order, so it sits behind without needing depth
+   sorting. The negative insets let it peek past the three outer edges, never
+   past the spine. */
 .leftpage-stack {
   position: absolute;
   inset: -5px -5px -5px 0;
   border-radius: 14px 6px 6px 14px;
   background: linear-gradient(270deg, #decfb2 0%, #ecdfc8 16%, #f0e5d0 100%);
   transform-origin: left center;
-  transform: rotateY(-178deg) translateZ(4px);
+  transform: rotateY(-180deg);
 }
 
 @keyframes leafland {
@@ -920,8 +925,7 @@ body.story-book-lock {
   box-shadow: -14px 16px 44px rgba(0, 0, 0, 0.45);
   animation: leafland 0.4s ease-out both;
   transform-origin: left center;
-  transform: rotateY(-178deg);
-  transform-style: preserve-3d;
+  transform: rotateY(-180deg);
 }
 
 .leftpage-face {

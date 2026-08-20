@@ -167,7 +167,13 @@ export default function StoryHome() {
        to be keyed the same way. Keying it on from/to instead makes a close
        interpolate backwards: the book snaps shut and then slides open again
        under the returning cover. */
-    const shift = openShift(window.innerWidth);
+    /* offsetWidth is the book's layout width, unaffected by the scale the
+       wrapper is already carrying — measuring the rendered box here would
+       feed the previous scale back into the next one. */
+    const shift = openShift(
+      window.innerWidth,
+      book?.offsetWidth || window.innerWidth,
+    );
     const closed = { x: 0, scale: 1 };
     const opens = (turn.from === 0) !== (turn.to === 0);
     const atLow = closed;
@@ -282,7 +288,11 @@ export default function StoryHome() {
 
       const open = stateRef.current.page > 0;
       const spreads = window.innerWidth > 560;
-      const shift = open ? openShift(window.innerWidth) : { x: 0, scale: 1 };
+      const bookEl = bookRef.current;
+      const shift =
+        open && bookEl
+          ? openShift(window.innerWidth, bookEl.offsetWidth)
+          : { x: 0, scale: 1 };
 
       gsap.set(wrapRef.current, { xPercent: shift.x, scale: shift.scale });
       stage.style.setProperty("--hdr-left", open && spreads ? "-100%" : "0%");

@@ -14,8 +14,14 @@
    ------------------------------------------------------------------ */
 
 /** Where a turned page comes to rest — matches the static verso exactly, so
-    handing over from the animated sheet to the resting one is invisible. */
-export const REST_ANGLE = -178;
+    handing over from the animated sheet to the resting one is invisible.
+    Exactly -180 for a reason: a half turn is a pure mirror with no z extent,
+    so perspective cannot foreshorten it and the resting verso is guaranteed to
+    be the same size as the recto opposite. Anything short of 180 leaves the
+    page tilted, which reads as a misaligned spread and — because the
+    projection then depends on the 3D context surviving intact — renders
+    differently across browsers. */
+export const REST_ANGLE = -180;
 
 export const TURN_SECONDS = 2.5;
 
@@ -146,10 +152,24 @@ export function rectoShadow(turned: number) {
   return Math.sin(Math.PI * turned * 2) * 0.4;
 }
 
-/** How far the book slides right to make room for the verso, per breakpoint. */
-export function openShift(width: number) {
+/**
+ * How far the book slides right to make room for the verso, and how much it
+ * has to shrink to fit.
+ *
+ * Derived rather than tabulated. An open spread is two pages wide, so it fits
+ * only if `2 × bookWidth` clears the viewport; when it does not, the whole
+ * book scales down by exactly the shortfall. The recto starts centred, so
+ * sliding it right by half its own width puts the spine on the centre line and
+ * centres the pair — which is `50 × scale` once the shrink is taken into
+ * account.
+ *
+ * Fixed per-breakpoint constants got this wrong between roughly 700 and 900px,
+ * where a 620px book needs 1240px and only has ~800: the spread ran off both
+ * edges of the window.
+ */
+export function openShift(width: number, bookWidth: number) {
+  /* Below this the book never opens out — one page, no slide. */
   if (width <= 560) return { x: 0, scale: 1 };
-  if (width <= 1000) return { x: 37, scale: 0.68 };
-  if (width <= 1340) return { x: 40, scale: 0.8 };
-  return { x: 50, scale: 1 };
+  const scale = Math.min(1, (width * 0.96) / (2 * bookWidth));
+  return { x: 50 * scale, scale };
 }
