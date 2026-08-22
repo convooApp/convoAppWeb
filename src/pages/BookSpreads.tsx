@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GraduationCap, Instagram } from "lucide-react";
 
@@ -12,15 +13,30 @@ import { GraduationCap, Instagram } from "lucide-react";
    move off it.
    ------------------------------------------------------------------ */
 
+const teamImg = (file: string) =>
+  `${import.meta.env.BASE_URL}book/team/${file}`;
+
 const INSTAGRAM_URL = "https://www.instagram.com/convooindia/";
 const AMBASSADOR_URL = "https://forms.gle/pwpZ5nQ8xFRs1qDf9";
 
 type TeamPhotoProps = { name: string; src?: string };
 
-/* Team headshots aren't shot yet — until they are, fall back to an initial
-   in the same circle so the layout doesn't shift when they land. */
+/* Falls back to an initial in the same circle when a headshot is missing —
+   including when the file simply is not there yet, so a slot can be wired up
+   before the photograph lands without leaving a broken image on the page. */
 function TeamPhoto({ name, src }: TeamPhotoProps) {
-  if (src) return <img className="team-photo" src={src} alt={name} />;
+  const [failed, setFailed] = useState(false);
+
+  if (src && !failed)
+    return (
+      <img
+        className="team-photo"
+        src={src}
+        alt={name}
+        onError={() => setFailed(true)}
+      />
+    );
+
   return (
     <span className="team-photo" aria-hidden="true">
       {name.charAt(0)}
@@ -297,7 +313,7 @@ export default function Spread({
 
         <div className="team-grid">
           <div className="team-card">
-            <TeamPhoto name="chinmay" />
+            <TeamPhoto name="chinmay" src={teamImg("chinmay.jpg")} />
             <span className="team-id">
               <span className="team-name">Chinmay</span>
               <span className="team-role">founder</span>
@@ -309,7 +325,7 @@ export default function Spread({
           </div>
 
           <div className="team-card team-card--gold">
-            <TeamPhoto name="nivedita" />
+            <TeamPhoto name="nivedita" src={teamImg("nivedita.jpg")} />
             <span className="team-id">
               <span className="team-name">Nivedita</span>
               <span className="team-role team-role--gold">social media</span>
@@ -339,58 +355,64 @@ export default function Spread({
           <PrologueText />
         </div>
 
-        <span className="kicker">the last page</span>
-        <h2>See you tonight !</h2>
-        <p className="prose prose--airy">
-          someone in there is hoping you show up, and neither of you knows it
-          yet.
-        </p>
+        {/* Everything that asks something of the reader sits together and
+            stays optically centred; the reference links drop to the foot of
+            the page where a book's footnotes belong. */}
+        <div className="closing-main">
+          <h2>See you tonight !</h2>
+          <p className="prose prose--airy">
+            someone in there is hoping you show up, and neither of you knows it
+            yet.
+          </p>
 
-        <div className="closing-actions">
-          <Link className="btn-primary" to="/download-now">
-            get the app
-          </Link>
           <a
-            className="icon-link"
-            href={INSTAGRAM_URL}
+            className="link-feature"
+            href={AMBASSADOR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="convoo on instagram"
           >
-            <Instagram size={19} strokeWidth={2.2} aria-hidden="true" />
+            <span className="link-feature-icon" aria-hidden="true">
+              <GraduationCap size={19} strokeWidth={2.2} />
+            </span>
+            <span className="link-feature-copy">
+              <span className="link-feature-name">be a campus ambassador</span>
+              <span className="link-feature-note">
+                run convoo at your college. applications are open.
+              </span>
+            </span>
+            <span className="link-feature-go" aria-hidden="true">
+              &#8599;
+            </span>
           </a>
+
+          <div className="closing-actions">
+            <Link className="btn-primary" to="/download-now">
+              get the app
+            </Link>
+            <a
+              className="icon-link"
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="convoo on instagram"
+            >
+              <Instagram size={19} strokeWidth={2.2} aria-hidden="true" />
+            </a>
+          </div>
         </div>
 
-        <a
-          className="link-feature"
-          href={AMBASSADOR_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="link-feature-icon" aria-hidden="true">
-            <GraduationCap size={19} strokeWidth={2.2} />
-          </span>
-          <span className="link-feature-copy">
-            <span className="link-feature-name">be a campus ambassador</span>
-            <span className="link-feature-note">
-              run convoo at your college. applications are open.
-            </span>
-          </span>
-          <span className="link-feature-go" aria-hidden="true">
-            &#8599;
-          </span>
-        </a>
+        <div className="closing-foot">
+          <nav className="link-row" aria-label="more from convoo">
+            <Link to="/contact">contact</Link>
+            <Link to="/support">support</Link>
+            <Link to="/terms">terms</Link>
+            <Link to="/privacy">privacy</Link>
+          </nav>
 
-        <nav className="link-row" aria-label="more from convoo">
-          <Link to="/contact">contact</Link>
-          <Link to="/support">support</Link>
-          <Link to="/terms">terms</Link>
-          <Link to="/privacy">privacy</Link>
-        </nav>
-
-        <span className="closing-note">
-          free to join &middot; face verified
-        </span>
+          <span className="closing-note">
+            free to join &middot; face verified
+          </span>
+        </div>
       </div>
     );
   return null;

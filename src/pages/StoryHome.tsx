@@ -7,6 +7,7 @@ import {
 } from "react";
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
+import { Smartphone } from "lucide-react";
 import gsap from "gsap";
 import BookSheet from "./BookSheet";
 import Spread, { PrologueText } from "./BookSpreads";
@@ -20,6 +21,7 @@ import {
   sweep,
   turnFrame,
 } from "./storyBookTurn";
+import { playTurn, warmSound } from "./bookSound";
 import "./story-book.css";
 
 /* ------------------------------------------------------------------
@@ -256,6 +258,11 @@ export default function StoryHome() {
     const state = { p: reverse ? 1 : 0 };
     draw(state.p);
 
+    const seconds = opens ? COVER_TURN_SECONDS : TURN_SECONDS;
+    /* A short tick as the page is released, not a sound stretched over the
+       whole turn. */
+    playTurn(opens);
+
     const tl = gsap.timeline({
       onComplete: () => {
         setPage(turn.to);
@@ -267,7 +274,7 @@ export default function StoryHome() {
       state,
       {
         p: reverse ? 0 : 1,
-        duration: opens ? COVER_TURN_SECONDS : TURN_SECONDS,
+        duration: seconds,
         ease: "none",
         onUpdate: () => draw(state.p),
       },
@@ -371,6 +378,10 @@ export default function StoryHome() {
     });
   }, []);
 
+  /* Fetch and decode any custom turn sounds up front, so the first turn
+     already has them. Starts no audio — that still waits for a gesture. */
+  useEffect(() => warmSound(), []);
+
   useEffect(() => {
     document.body.classList.add("story-book-lock");
     return () => document.body.classList.remove("story-book-lock");
@@ -460,6 +471,15 @@ export default function StoryHome() {
         <span className="hint-touch">
           tap to turn the page &middot; swipe right to go back
         </span>
+      </span>
+
+      {/* Portrait on a phone is a single page — there is no room for the
+          verso, so the photographs never appear. Sideways is where the book
+          becomes a book. Shown by media query rather than by sniffing the
+          user agent, so it comes and goes as the phone is turned. */}
+      <span className="rotate-note">
+        <Smartphone size={13} strokeWidth={2} aria-hidden="true" />
+        turn your phone sideways for the full spread, pictures and all
       </span>
     </div>
   );

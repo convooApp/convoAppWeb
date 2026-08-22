@@ -122,6 +122,34 @@ body.story-book-lock {
   text-align: center;
 }
 
+/* Sideways on a phone crosses the 560px line, which is where the book stops
+   being a single page and opens into a spread — so it is the only way to see
+   the photographs at all on a handset. Hidden everywhere else, including
+   phones already held sideways. */
+.rotate-note {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  text-align: center;
+  color: rgba(253, 244, 248, 0.34);
+}
+
+.rotate-note svg {
+  flex-shrink: 0;
+  transform: rotate(90deg);
+  opacity: 0.8;
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) and (max-width: 560px) {
+  .rotate-note {
+    display: flex;
+  }
+}
+
 /* Right-click has no touch equivalent, so each pointer type gets its own
    instructions. */
 .hint-touch {
@@ -749,10 +777,29 @@ body.story-book-lock {
   border-color: rgba(36, 16, 24, 0.6);
 }
 
-/* The closing page is a call to action, so it sits low and firm rather than
-   floating in the middle of the page like the chapters do. */
+/* The closing page splits in two: the ask stays optically centred on the page,
+   and the reference links sit at the foot of it. Centring the whole lot
+   together buried the call to action in a list of legal links. */
 .spread--paper.is-closing {
+  justify-content: flex-start;
+}
+
+.closing-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   justify-content: safe center;
+  gap: clamp(10px, 1.6vh, 15px);
+}
+
+.closing-foot {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  /* The folio is absolutely positioned 12px off the bottom — stay clear. */
+  padding-bottom: 4px;
 }
 
 .closing-note {

@@ -33,8 +33,9 @@ export const COVER_TURN_SECONDS = 1.85;
     the reader has asked for reduced motion). */
 export const STRIPS = 7;
 
-/** Degrees of bow at the peak of the turn. Higher reads as flimsier paper. */
-const CURL = 22;
+/** Degrees the middle of the page bows away from flat at the peak of the
+    turn. Real paper bends maybe 10-20 degrees as it goes over. */
+const CURL = 15;
 
 /* The light sits in front of the book and slightly to the left. A page only
    ever rotates about its spine, so its normal stays in the x/z plane and the
@@ -101,17 +102,27 @@ export function turnFrame(
   const lead = end * turned;
   /* Zero at both ends, widest when the page is upright: it is flat when it
      leaves and flat when it lands, and only bows while it is in the air. */
-  const bow = -CURL * Math.sin(Math.PI * turned);
+  const bow = CURL * Math.sin(Math.PI * turned);
+
+  /* How far this strip's plane has been pushed off the flat page. Zero at the
+     spine, zero again at the free edge, a hump in between — a bow, not a roll.
+     Strips are nested, so this is the shape the *cumulative* angle traces; the
+     per-strip delta below is its difference. */
+  const bowAt = (k: number) =>
+    strips > 1 ? bow * Math.sin((Math.PI * (k + 1)) / strips) : 0;
 
   const out: StripState[] = [];
   let angle = 0;
 
   for (let k = 0; k < strips; k++) {
-    /* The shares sum to `lead` exactly, so however hard the page bows the
-       free edge still finishes where it was aimed. */
-    const spread =
-      strips > 1 ? ((2 * bow) / strips) * (k / (strips - 1) - 0.5) : 0;
-    const delta = lead / strips + spread;
+    /* The whole turn is one hinge at the spine — a page is a stiff sheet, not
+       a chain of seven equal hinges. Giving every strip `lead / strips` is
+       what a scroll does: seven hinges of 26 degrees curls the page into a
+       half cylinder that never lies down on the far side. So strip 0 carries
+       the entire rotation and the rest carry only the bow, which sums to
+       nothing — leaving the free edge exactly at `lead`, and the whole sheet
+       perfectly flat whenever the bow is zero. */
+    const delta = (k === 0 ? lead : 0) + bowAt(k) - bowAt(k - 1);
     angle += delta;
 
     const recto = shade(angle, false);
