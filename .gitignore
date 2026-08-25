@@ -66,3 +66,6 @@ storybook-static
 # Cypress
 cypress/videos
 cypress/screenshots
+# recorded promo videos
+book.mp4
+*.mp4

@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:cards": "node scripts/generate-share-cards.mjs"
+    "gen:cards": "node scripts/generate-share-cards.mjs",
+    "record:book": "node scripts/record-book.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "^5.0.17",

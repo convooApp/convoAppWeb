@@ -22,6 +22,7 @@ import {
   turnFrame,
 } from "./storyBookTurn";
 import { playTurn, warmSound } from "./bookSound";
+import { track } from "../lib/analytics";
 import "./story-book.css";
 
 /* ------------------------------------------------------------------
@@ -124,9 +125,29 @@ export default function StoryHome() {
   const stateRef = useRef({ page: 0, busy: false });
   stateRef.current = { page, busy: turn !== null };
 
+  /* Fired once each per visit — the aggregates only mean anything if a reader
+     going back and forth cannot inflate them. */
+  const opened = useRef(false);
+  const finished = useRef(false);
+
   const turnTo = useCallback((n: number) => {
     const { page: current, busy } = stateRef.current;
     if (busy || n === current || n < 0 || n > LAST_PAGE) return;
+
+    /* Every turn, so the drop-off across the seven pages can be read back. */
+    track("page_turn", {
+      book_page: n,
+      from_page: current,
+      direction: n > current ? "next" : "prev",
+    });
+    if (current === 0 && !opened.current) {
+      opened.current = true;
+      track("book_open");
+    }
+    if (n === LAST_PAGE && !finished.current) {
+      finished.current = true;
+      track("book_complete");
+    }
 
     if (reducedMotion()) {
       setPage(n);
@@ -458,7 +479,17 @@ export default function StoryHome() {
           <Link className="book-brand" to="/">
             convoo<span className="brand-dot">.</span>
           </Link>
-          <Link className="book-cta" to="/download-now">
+          <Link
+            className="book-cta"
+            to="/download-now"
+            onClick={() =>
+              track("cta_click", {
+                cta: "get_app",
+                placement: "masthead",
+                book_page: page,
+              })
+            }
+          >
             get the app
           </Link>
         </div>

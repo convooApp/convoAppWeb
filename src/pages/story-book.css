@@ -1156,6 +1156,21 @@ body.story-book-lock {
   width: calc((100% - 2 * var(--seam)) * var(--n));
 }
 
+/* Paper behind the page printed on the back of the sheet. Without it the
+   incoming verso is transparent and the outgoing one reads straight through
+   it — two photographs and two quotes stacked on each other for the whole
+   second half of the turn.
+
+   It goes on the slide, not the face, because the slide is a full page wide:
+   one continuous gradient that each strip clips its own slice out of, rather
+   than the gradient restarting seven times across the page. The stops are the
+   resting verso's, mirrored (270deg becomes 90deg) because this side of the
+   sheet is viewed through one more flip — so the two are identical at the
+   moment the turn hands over. */
+.strip-face--verso .face-slide {
+  background: linear-gradient(90deg, #e7d9c0 0%, #f2e8d5 16%, #f6eddd 100%);
+}
+
 .strip-face--recto .face-slide {
   left: calc(var(--seam) - (100% - 2 * var(--seam)) * var(--i));
 }

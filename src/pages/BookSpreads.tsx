@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GraduationCap, Instagram } from "lucide-react";
+import { track } from "../lib/analytics";
 
 /* ------------------------------------------------------------------
    The right-hand pages.
@@ -370,6 +371,9 @@ export default function Spread({
             href={AMBASSADOR_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() =>
+              track("cta_click", { cta: "ambassador", placement: "closing" })
+            }
           >
             <span className="link-feature-icon" aria-hidden="true">
               <GraduationCap size={19} strokeWidth={2.2} />
@@ -386,7 +390,13 @@ export default function Spread({
           </a>
 
           <div className="closing-actions">
-            <Link className="btn-primary" to="/download-now">
+            <Link
+              className="btn-primary"
+              to="/download-now"
+              onClick={() =>
+              track("cta_click", { cta: "get_app", placement: "closing" })
+            }
+            >
               get the app
             </Link>
             <a
@@ -395,6 +405,9 @@ export default function Spread({
               target="_blank"
               rel="noopener noreferrer"
               aria-label="convoo on instagram"
+              onClick={() =>
+              track("cta_click", { cta: "instagram", placement: "closing" })
+            }
             >
               <Instagram size={19} strokeWidth={2.2} aria-hidden="true" />
             </a>
@@ -403,10 +416,22 @@ export default function Spread({
 
         <div className="closing-foot">
           <nav className="link-row" aria-label="more from convoo">
-            <Link to="/contact">contact</Link>
-            <Link to="/support">support</Link>
-            <Link to="/terms">terms</Link>
-            <Link to="/privacy">privacy</Link>
+            {[
+              ["contact", "/contact"],
+              ["support", "/support"],
+              ["terms", "/terms"],
+              ["privacy", "/privacy"],
+            ].map(([label, to]) => (
+              <Link
+                key={to}
+                to={to}
+                onClick={() =>
+                  track("cta_click", { cta: label, placement: "closing" })
+                }
+              >
+                {label}
+              </Link>
+            ))}
           </nav>
 
           <span className="closing-note">
