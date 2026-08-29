@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  useParams,
 } from "react-router-dom";
 import { useEffect } from "react";
 import StoryHome from "./pages/StoryHome";
@@ -23,6 +24,14 @@ import DownloadNow from "./pages/downloadNow";
 import Links from "./pages/Links";
 import ApplyToHost from "./pages/ApplyToHost";
 import In from "./pages/In";
+import Apply from "./pages/Apply";
+
+/* Carries the position slug across, so a shared /join/husband link still
+   lands on that listing rather than dumping the reader on the board. */
+function JoinRedirect() {
+  const { slug } = useParams();
+  return <Navigate to={`/apply/${slug}`} replace />;
+}
 
 function ScrollToTop() {
   const location = useLocation();
@@ -62,6 +71,12 @@ function AppRoutes() {
             <Route path="/links" element={<Links />} />
             <Route path="/apply-to-host" element={<ApplyToHost />} />
             <Route path="/in" element={<In />} />
+            <Route path="/apply" element={<Apply />} />
+            {/* A listing is shareable on its own; the board renders behind it. */}
+            <Route path="/apply/:slug" element={<Apply />} />
+            {/* Links to the old path are already out in the world. */}
+            <Route path="/join" element={<Navigate to="/apply" replace />} />
+            <Route path="/join/:slug" element={<JoinRedirect />} />
             {/* Any unknown path falls back to Home so visitors never see a
                 blank screen from a stale link. */}
             <Route path="*" element={<Navigate to="/" replace />} />

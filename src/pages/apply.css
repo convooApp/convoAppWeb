@@ -1,0 +1,753 @@
+/* ------------------------------------------------------------------
+   /apply — group tiles and the signup form.
+
+   Same palette and type as the storybook homepage so the two read as one
+   site: dark ground, cream cards, Archivo with Instrument Serif accents.
+   ------------------------------------------------------------------ */
+
+.apply {
+  --ink: #241018;
+  --pink: #e0559b;
+  --pink-deep: #a8386e;
+  --pink-mid: #c2447f;
+  --gold: #b07c20;
+  --paper: #fbf5ea;
+
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: radial-gradient(120% 80% at 50% 0%, #2a081a 0%, #14040c 55%, #0c0308 100%);
+  color: #fdf4f8;
+  font-family: Archivo, system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 3vw, 30px);
+  gap: clamp(28px, 5vh, 52px);
+}
+
+.apply a {
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.apply-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+.apply-brand {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fdf4f8;
+}
+
+.apply-brand:hover {
+  opacity: 0.75;
+}
+
+.apply-dot {
+  color: var(--pink);
+}
+
+/* ------------------------------------------------------------------ body */
+
+.apply-body {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(26px, 4.5vh, 44px);
+  flex: 1;
+}
+
+/* A drive announces itself. The dot is the only moving thing on the page, so
+   it reads as "this is running right now" without any copy having to say it. */
+.drive-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 14px 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(224, 85, 155, 0.35);
+  background: rgba(224, 85, 155, 0.1);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f8c3dd;
+  box-shadow: 0 0 26px rgba(224, 85, 155, 0.22);
+}
+
+.drive-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 0 0 rgba(224, 85, 155, 0.7);
+  animation: drivepulse 2.2s ease-out infinite;
+}
+
+@keyframes drivepulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 85, 155, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(224, 85, 155, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 85, 155, 0);
+  }
+}
+
+.apply-hero {
+  display: flex;
+  flex-direction: column;
+}
+
+.drive-tally {
+  margin: 16px 0 0;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.9vw, 18px);
+  color: rgba(253, 244, 248, 0.62);
+}
+
+.drive-tally strong {
+  font-family: Archivo, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  color: var(--pink);
+}
+
+.squad-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.squad-head {
+  margin: 0;
+  font-size: clamp(19px, 2.4vw, 23px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.apply-kicker {
+  margin-top: 18px;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: #f2a9cc;
+}
+
+/* The cycling word. Keyed in React so the entrance restarts each time; the
+   slot is inline-block so the punctuation after it travels with the word
+   rather than jumping as the width changes. */
+.cycle-slot {
+  display: inline-block;
+}
+
+.cycle-word {
+  display: inline-block;
+  animation: cyclein 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes cyclein {
+  from {
+    opacity: 0;
+    transform: translateY(0.32em) rotate(-1.4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Job boards lead with numbers. */
+.drive-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(18px, 4vw, 52px);
+  margin: 26px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(253, 244, 248, 0.14);
+}
+
+.drive-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.drive-stats dt {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(253, 244, 248, 0.38);
+}
+
+.drive-stats dd {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--pink);
+  line-height: 1;
+}
+
+.drive-stats dd.is-word {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(253, 244, 248, 0.7);
+}
+
+.apply-hero h1 {
+  margin: 8px 0 0;
+  font-size: clamp(32px, 5.4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.apply-em {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--pink);
+}
+
+.apply-lede {
+  margin: 14px 0 0;
+  max-width: 60ch;
+  font-size: clamp(14px, 1.7vw, 16.5px);
+  line-height: 1.6;
+  color: rgba(253, 244, 248, 0.66);
+  text-wrap: pretty;
+}
+
+/* ----------------------------------------------------------------- tiles */
+
+/* Four listings, so a fixed two-by-two rather than an auto-fit track that
+   would reflow to 3+1 the moment the viewport allowed it. */
+.group-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(12px, 1.6vw, 18px);
+}
+
+@media (max-width: 560px) {
+  .group-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.group-tile {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(16px, 2vw, 22px);
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(194, 68, 127, 0.22);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.group-tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(194, 68, 127, 0.6);
+  box-shadow: 0 0 0 1px rgba(224, 85, 155, 0.25), 0 26px 56px rgba(0, 0, 0, 0.44);
+}
+
+.group-tile:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 3px;
+}
+
+.group-tile.is-gold {
+  border-color: rgba(176, 124, 32, 0.28);
+}
+
+.group-tile.is-gold:hover {
+  border-color: rgba(176, 124, 32, 0.62);
+}
+
+.post-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.post-ref {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(36, 16, 24, 0.4);
+}
+
+.post-open {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1f7a4d;
+  background: rgba(31, 122, 77, 0.1);
+  border: 1px solid rgba(31, 122, 77, 0.24);
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
+.post-terms {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--pink-mid);
+  margin-top: -4px;
+}
+
+.is-gold .post-terms {
+  color: var(--gold);
+}
+
+.group-name {
+  font-size: clamp(18px, 2.2vw, 21px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.group-dot {
+  color: var(--pink-mid);
+}
+
+.is-gold .group-dot {
+  color: var(--gold);
+}
+
+.group-blurb {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(36, 16, 24, 0.62);
+}
+
+.group-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.group-pick {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--pink-mid);
+  white-space: nowrap;
+}
+
+.is-gold .group-pick {
+  color: var(--gold);
+}
+
+/* ------------------------------------------------------------------ form */
+
+/* ---------------------------------------------------- the job description */
+
+.jd-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(12px, 4vh, 46px) clamp(12px, 3vw, 24px);
+  background: rgba(8, 2, 6, 0.72);
+  backdrop-filter: blur(5px);
+  animation: jdfade 0.2s ease both;
+  overflow: auto;
+}
+
+@keyframes jdfade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.jd-panel {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 22px;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+  animation: jdrise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  outline: none;
+}
+
+@keyframes jdrise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sticky, so the requisition number and the way out stay put however long
+   the description runs. */
+.jd-top {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px clamp(18px, 3vw, 30px);
+  background: var(--paper);
+  border-bottom: 1px solid rgba(36, 16, 24, 0.1);
+  border-radius: 22px 22px 0 0;
+}
+
+.jd-topmeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jd-close {
+  all: unset;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(36, 16, 24, 0.5);
+}
+
+.jd-close:hover {
+  background: rgba(36, 16, 24, 0.07);
+  color: var(--ink);
+}
+
+.jd-close:focus-visible {
+  outline: 2px solid var(--pink-mid);
+  outline-offset: 2px;
+}
+
+.jd-scroll {
+  overflow: auto;
+  padding: clamp(18px, 3vw, 30px);
+  padding-top: 20px;
+}
+
+.jd-title {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.jd-terms {
+  margin: 5px 0 0;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--pink-mid);
+}
+
+.is-gold .jd-terms {
+  color: var(--gold);
+}
+
+.jd-summary {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(36, 16, 24, 0.68);
+}
+
+.jd-status {
+  margin: 14px 0 0;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(224, 85, 155, 0.09);
+  border: 1px solid rgba(224, 85, 155, 0.22);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--pink-deep);
+}
+
+.jd-section {
+  margin-top: 24px;
+}
+
+.jd-section h3 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(36, 16, 24, 0.42);
+}
+
+.jd-section ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.jd-section li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(36, 16, 24, 0.74);
+}
+
+.jd-section li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink-mid);
+}
+
+.jd-apply {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(36, 16, 24, 0.12);
+}
+
+.jd-apply h3 {
+  margin: 0 0 4px;
+  font-size: clamp(19px, 2.6vw, 23px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.apply-formnote {
+  margin: 0 0 18px;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: rgba(36, 16, 24, 0.5);
+}
+
+.jd-panel .apply-dot {
+  color: var(--pink-mid);
+}
+
+.apply-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(36, 16, 24, 0.62);
+}
+
+.apply-field em {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  color: rgba(36, 16, 24, 0.4);
+}
+
+.apply-field input,
+.apply-field select {
+  font: inherit;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid rgba(36, 16, 24, 0.18);
+  border-radius: 11px;
+  padding: 12px 13px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.apply-field input:focus,
+.apply-field select:focus {
+  outline: none;
+  border-color: var(--pink-mid);
+  box-shadow: 0 0 0 3px rgba(194, 68, 127, 0.16);
+}
+
+.apply-field input::placeholder {
+  color: rgba(36, 16, 24, 0.32);
+}
+
+.apply-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Age is two characters and the two selects are short — an even split just
+   leaves fields mostly empty. */
+.apply-row.is-age {
+  grid-template-columns: 108px 1fr;
+}
+
+.apply-row.is-triple {
+  grid-template-columns: 88px 1fr 1fr;
+}
+
+@media (max-width: 560px) {
+  .apply-row.is-triple {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .apply-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.apply-error {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #b3245c;
+}
+
+.apply-submit {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(145deg, #e0559b 0%, #a8386e 100%);
+  box-shadow: 0 14px 34px rgba(224, 85, 155, 0.28);
+}
+
+.apply-submit:hover {
+  filter: brightness(1.07);
+}
+
+.apply-submit:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.apply-submit:disabled {
+  cursor: default;
+  filter: saturate(0.5);
+}
+
+.apply-fine {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: rgba(36, 16, 24, 0.45);
+}
+
+.apply-done h2 {
+  margin-bottom: 6px;
+}
+
+.apply-done .apply-lede {
+  color: rgba(36, 16, 24, 0.68);
+  margin-top: 0;
+}
+
+.apply-ghost {
+  all: unset;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 18px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(36, 16, 24, 0.3);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.apply-ghost:hover {
+  border-color: rgba(36, 16, 24, 0.6);
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.apply-foot {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.apply-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.apply-links a {
+  font-size: 13px;
+  color: rgba(253, 244, 248, 0.5);
+}
+
+.apply-links a:hover {
+  color: var(--pink);
+}
+
+.apply-note {
+  font-size: 12px;
+  color: rgba(253, 244, 248, 0.32);
+}
