@@ -53,6 +53,23 @@
   color: var(--pink);
 }
 
+/* Deliberately quiet. This is the door for somebody who is interested but not
+   ready to hand over an email — it should be findable, not competing with the
+   thing the page is actually asking for. */
+.apply-cta {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(253, 244, 248, 0.55);
+  border-bottom: 1px solid rgba(253, 244, 248, 0.22);
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+
+.apply-cta:hover {
+  color: #fdf4f8;
+  border-bottom-color: var(--pink);
+}
+
 /* ------------------------------------------------------------------ body */
 
 .apply-body {
@@ -225,6 +242,15 @@
   color: var(--pink);
 }
 
+.apply-explainer {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  font-size: clamp(14px, 1.7vw, 16.5px);
+  line-height: 1.6;
+  color: rgba(253, 244, 248, 0.72);
+  text-wrap: pretty;
+}
+
 .apply-lede {
   margin: 14px 0 0;
   max-width: 60ch;
@@ -232,6 +258,78 @@
   line-height: 1.6;
   color: rgba(253, 244, 248, 0.66);
   text-wrap: pretty;
+}
+
+/* --------------------------------------------------- what actually happens */
+
+.how-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Two phases, side by side — getting hired, then the interview. Stacked
+   below 900px, where four numbered lines in half a column stop being
+   readable. */
+.how-tracks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(22px, 4vw, 54px);
+}
+
+@media (max-width: 900px) {
+  .how-tracks {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+}
+
+.how-track {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.how-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.how-list li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 11px;
+  align-items: baseline;
+  padding-top: 13px;
+  border-top: 1px solid rgba(253, 244, 248, 0.13);
+}
+
+.how-n {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 16.5px;
+  color: var(--pink);
+}
+
+/* This is the only place the page explains itself, so it is set to be read
+   rather than skimmed — bigger and brighter than the supporting text it used
+   to match. */
+.how-body {
+  font-size: clamp(14.5px, 1.7vw, 16px);
+  line-height: 1.6;
+  color: rgba(253, 244, 248, 0.8);
+  text-wrap: pretty;
+}
+
+.how-trust {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: rgba(253, 244, 248, 0.42);
 }
 
 /* ----------------------------------------------------------------- tiles */
@@ -298,6 +396,10 @@
   margin-bottom: 2px;
 }
 
+.post-head {
+  opacity: 0.72;
+}
+
 .post-ref {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 10.5px;
@@ -357,6 +459,13 @@
   align-items: baseline;
   gap: 10px;
   margin-top: 2px;
+}
+
+.group-count {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 13.5px;
+  color: rgba(36, 16, 24, 0.5);
 }
 
 .group-pick {

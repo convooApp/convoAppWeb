@@ -145,7 +145,9 @@ export default function PositionModal({ position, onClose }: Props) {
           <p className="jd-summary">{position.summary}</p>
 
           <p className="jd-status">
-            we&apos;ll send you instructions for the interview date and time.
+            the interview is three minutes of conversation in the convoo app.
+            we&apos;ll email you the night it runs — no photos until you have
+            both said yes.
           </p>
 
           <section className="jd-section">
@@ -184,8 +186,8 @@ export default function PositionModal({ position, onClose }: Props) {
                 </h3>
                 <p className="jd-summary">
                   you&apos;ve applied for <strong>{position.title}</strong>.
-                  we&apos;ll send you instructions for the interview date and
-                  time.
+                  we&apos;ll email you the night your interview runs — three
+                  minutes of conversation in the convoo app.
                 </p>
                 <button type="button" className="apply-ghost" onClick={onClose}>
                   back to the other positions
