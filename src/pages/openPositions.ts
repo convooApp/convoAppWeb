@@ -133,10 +133,7 @@ export const POSITIONS: Position[] = [
 
 export type Region = { value: string; label: string };
 
-export const REGIONS: Region[] = [
-  { value: "in", label: "India" },
-  { value: "us", label: "United States" },
-];
+export const REGIONS: Region[] = [{ value: "in", label: "India" }];
 
 /** A first guess from the browser's own timezone, so most people find the
     field already correct. Always visible and always editable — a guess that
