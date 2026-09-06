@@ -126,28 +126,20 @@ export const POSITIONS: Position[] = [
 /* ------------------------------------------------------------------
    Where an applicant is applying from.
 
-   Convoo runs IN and US as separate data regions with their own rooms, so
-   this is not a demographic field — it decides which region's room somebody
-   can actually be placed in, and only the regions that have rooms are listed.
+   Convoo runs IN and US as separate data regions with their own rooms. The
+   drive is only recruiting for one of them at a time, so this is no longer
+   asked — it is stamped on every application from the list below, and the
+   board reads its "locations" line from the same place.
    ------------------------------------------------------------------ */
 
 export type Region = { value: string; label: string };
 
 export const REGIONS: Region[] = [{ value: "in", label: "India" }];
 
-/** A first guess from the browser's own timezone, so most people find the
-    field already correct. Always visible and always editable — a guess that
-    cannot be corrected is worse than no guess. */
-export function guessRegion(): string {
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
-    if (tz === "Asia/Kolkata" || tz === "Asia/Calcutta") return "in";
-    if (tz.startsWith("America/")) return "us";
-  } catch {
-    /* no Intl, or a browser that refuses to say — fall through to unset */
-  }
-  return "";
-}
+/** Filed against every application. The drive runs in one region, so asking
+    was a question with one answer — but the column stays, so a second region
+    later is a one-line change here rather than a migration. */
+export const DEFAULT_REGION = REGIONS[0].value;
 
 /* ------------------------------------------------------------------
    Who an applicant wants to be matched with.
@@ -175,7 +167,23 @@ export const SEEKING_LABELS: Record<"casual" | "formal", Seeking[]> = {
   ],
 };
 
+/** Who the applicant wants to meet. */
 export const seekingFor = (p: Position) =>
+  SEEKING_LABELS[p.seekingStyle ?? "casual"];
+
+/**
+ * How the applicant describes themselves — the same vocabulary the post uses
+ * for who they want, so the two fields read as one sentence: "i am a boy, i
+ * want to meet a girl." A boyfriend post says boy and girl; a marriage one
+ * says man and woman.
+ *
+ * This is the field that makes the position title stop mattering. Gender used
+ * to be inferred from the post applied for, which only held if everybody read
+ * "Boyfriend" as "I would be one" rather than "I want one" — and the first
+ * fifteen applications proved they do not. Asked outright, a room can still be
+ * built correctly when somebody applies for the wrong post.
+ */
+export const identityFor = (p: Position) =>
   SEEKING_LABELS[p.seekingStyle ?? "casual"];
 
 export const positionBySlug = (slug?: string) =>

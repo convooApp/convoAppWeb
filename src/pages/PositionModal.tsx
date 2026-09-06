@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { track } from "../lib/analytics";
 import type { Position } from "./openPositions";
-import { REGIONS, guessRegion, seekingFor } from "./openPositions";
+import { DEFAULT_REGION, identityFor, seekingFor } from "./openPositions";
 
 /* ------------------------------------------------------------------
    One job description, and the form to apply for it.
@@ -25,10 +25,10 @@ const MIN_AGE = 18;
 export default function PositionModal({ position, onClose }: Props) {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
-  const [region, setRegion] = useState(guessRegion);
+  const [gender, setGender] = useState("");
   const [seeking, setSeeking] = useState("");
-  /* The only locator either region has, so it is asked for in both and
-     required in both — a room is opened in a city, not in a country. */
+  /* The only locator on the form now that the region is fixed — and a room is
+     opened in a city, not in a country, so it is required. */
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -69,9 +69,8 @@ export default function PositionModal({ position, onClose }: Props) {
     if (years < MIN_AGE)
       return setError(`You have to be ${MIN_AGE} or over to apply.`);
     if (years > 120) return setError("Please enter a real age.");
-    if (!region) return setError("Please say where you're applying from.");
-    if (!seeking)
-      return setError("Please say who you're looking to work with.");
+    if (!gender) return setError("Please say whether you're a man or a woman.");
+    if (!seeking) return setError("Please say who you want to meet.");
     if (!city.trim()) return setError("Please enter your city.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return setError("Please enter a valid email address.");
@@ -83,7 +82,8 @@ export default function PositionModal({ position, onClose }: Props) {
       {
         name: name.trim(),
         age: years,
-        region,
+        region: DEFAULT_REGION,
+        gender,
         seeking,
         city: city.trim(),
         email: email.trim().toLowerCase(),
@@ -200,7 +200,9 @@ export default function PositionModal({ position, onClose }: Props) {
                   <span className="apply-dot">.</span>
                 </h3>
                 <p className="apply-formnote">
-                  six fields. that is the entire hiring process.
+                  you&apos;re applying to <em>be</em> somebody&apos;s{" "}
+                  {position.title.toLowerCase()}. six fields, and that is the
+                  entire hiring process.
                 </p>
 
                 <label className="apply-field">
@@ -227,21 +229,21 @@ export default function PositionModal({ position, onClose }: Props) {
                     />
                   </label>
                   <label className="apply-field">
-                    <span>applying from</span>
+                    <span>i am</span>
                     <select
-                      value={region}
-                      onChange={(e) => setRegion(e.target.value)}
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
                     >
-                      <option value="">region…</option>
-                      {REGIONS.map((r) => (
-                        <option key={r.value} value={r.value}>
-                          {r.label}
+                      <option value="">choose…</option>
+                      {identityFor(position).map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
                         </option>
                       ))}
                     </select>
                   </label>
                   <label className="apply-field">
-                    <span>looking to work with</span>
+                    <span>i want to meet</span>
                     <select
                       value={seeking}
                       onChange={(e) => setSeeking(e.target.value)}
@@ -255,7 +257,6 @@ export default function PositionModal({ position, onClose }: Props) {
                     </select>
                   </label>
                 </div>
-
 
                 <div className="apply-row">
                   <label className="apply-field">
