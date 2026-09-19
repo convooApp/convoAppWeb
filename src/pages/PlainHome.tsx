@@ -30,7 +30,7 @@ const TRACKS = [
     steps: [
       {
         title: "Turn up",
-        body: "Open the app when tonight's event starts, or tap the invite to a friend's room.",
+        body: "Open the app when tonight's event goes live, or tap the invite to a friend's room. Everyone arrives at the same time.",
       },
       {
         title: "Talk for three minutes",
@@ -62,6 +62,10 @@ const TRACKS = [
   },
 ];
 const REASONS = [
+  {
+    title: "It happens live",
+    body: "Rooms run at a set time and everyone is in them at once. You are talking to somebody who showed up tonight, not to a profile last opened in March.",
+  },
   {
     title: "No swiping",
     body: "You never scroll a grid of faces. One person at a time, and an actual conversation.",
@@ -132,9 +136,9 @@ export default function PlainHome() {
             Conversations <em>aren&apos;t</em>.
           </h1>
           <p className="ph-lede">
-            Convoo is a dating app built on one three-minute conversation. No
-            swiping, no profiles to scroll — you both decide after you have
-            actually talked.
+            Convoo is a dating app built on one live three-minute conversation.
+            Everyone is online at the same time — no swiping, no profiles to
+            scroll, and nothing left on read.
           </p>
           <div className="ph-actions">
             <StoreLinks placement="home_hero" />
