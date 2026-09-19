@@ -56,19 +56,21 @@
   gap: clamp(14px, 2.4vw, 26px);
 }
 
-.ph-nav a:not(.ph-cta) {
+/* Direct children only — the store links are anchors too, but they live
+   inside .store-links and must survive the rule below. */
+.ph-nav > a {
   font-size: 14px;
   color: rgba(253, 244, 248, 0.6);
 }
 
-.ph-nav a:not(.ph-cta):hover {
+.ph-nav > a:hover {
   color: #fdf4f8;
 }
 
-/* Anchor links are for people already reading; below 620px they compete with
-   the one action that matters. */
+/* Section anchors are for people already reading; below 620px they crowd out
+   the store links, which are the thing worth keeping. */
 @media (max-width: 620px) {
-  .ph-nav a:not(.ph-cta) {
+  .ph-nav > a {
     display: none;
   }
 }
@@ -128,12 +130,6 @@
 .ph-cta:hover {
   color: #fff;
   filter: brightness(1.07);
-}
-
-.ph-cta--sm {
-  font-size: 13.5px;
-  padding: 9px 20px;
-  box-shadow: 0 10px 26px rgba(224, 85, 155, 0.26);
 }
 
 .ph-ghost {

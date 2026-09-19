@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { AppStoreButtons } from "../components/AppStoreButtons";
+import { StoreLinks } from "../components/StoreLinks";
 import { track } from "../lib/analytics";
 import "./plain-home.css";
 
@@ -114,15 +114,7 @@ export default function PlainHome() {
         <nav className="ph-nav">
           <a href="#how">How it works</a>
           <a href="#faq">FAQ</a>
-          <Link
-            className="ph-cta ph-cta--sm"
-            to="/download-now"
-            onClick={() =>
-              track("cta_click", { cta: "get_app", placement: "home_masthead" })
-            }
-          >
-            Get the app
-          </Link>
+          <StoreLinks variant="compact" placement="home_masthead" />
         </nav>
       </header>
 
@@ -142,15 +134,7 @@ export default function PlainHome() {
             actually talked.
           </p>
           <div className="ph-actions">
-            <Link
-              className="ph-cta"
-              to="/download-now"
-              onClick={() =>
-                track("cta_click", { cta: "get_app", placement: "home_hero" })
-              }
-            >
-              Get the app
-            </Link>
+            <StoreLinks placement="home_hero" />
             <a className="ph-ghost" href="#how">
               See how it works
             </a>
@@ -245,7 +229,7 @@ export default function PlainHome() {
             and turn up.
           </p>
           <div className="ph-stores">
-            <AppStoreButtons />
+            <StoreLinks placement="home_close" />
           </div>
         </section>
       </main>

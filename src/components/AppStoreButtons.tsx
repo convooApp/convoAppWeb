@@ -1,8 +1,10 @@
+import { APP_STORE_URL, PLAY_STORE_URL } from "../lib/appStores";
+
 export const AppStoreButtons = () => {
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4 mt-8 sm:mt-12">
       <a
-        href="https://apps.apple.com/us/app/convoo/id6746660683"
+        href={APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="transition-transform hover:scale-105 duration-300"
@@ -19,7 +21,7 @@ export const AppStoreButtons = () => {
       </a>
 
       <a
-        href="https://play.google.com/store/apps/details?id=com.convooapp.convoo"
+        href={PLAY_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="transition-transform hover:scale-105 duration-300"

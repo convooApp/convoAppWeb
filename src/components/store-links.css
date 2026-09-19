@@ -1,0 +1,90 @@
+/* ------------------------------------------------------------------
+   App Store / Play Store links, in the two sizes the site needs.
+   ------------------------------------------------------------------ */
+
+.store-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.store-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 20px 10px 16px;
+  border-radius: 12px;
+  background: #0b0409;
+  border: 1px solid rgba(253, 244, 248, 0.22);
+  color: #fdf4f8;
+  text-decoration: none;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.store-link:hover {
+  color: #fdf4f8;
+  border-color: rgba(224, 85, 155, 0.75);
+  transform: translateY(-2px);
+}
+
+.store-link:focus-visible {
+  outline: 2px solid #e0559b;
+  outline-offset: 3px;
+}
+
+.store-mark {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.store-mark svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.store-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.store-pre {
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: rgba(253, 244, 248, 0.62);
+}
+
+.store-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Masthead: the mark alone. Two full badges up there outweigh the wordmark
+   and the nav put together. */
+.store-links.is-compact {
+  gap: 8px;
+}
+
+.store-links.is-compact .store-link {
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.store-links.is-compact .store-mark svg {
+  width: 19px;
+  height: 19px;
+}
+
+@media (max-width: 420px) {
+  .store-links:not(.is-compact) {
+    width: 100%;
+  }
+
+  .store-links:not(.is-compact) .store-link {
+    flex: 1;
+    justify-content: center;
+  }
+}
