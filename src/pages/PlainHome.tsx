@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { StoreLinks } from "../components/StoreLinks";
 import { track } from "../lib/analytics";
@@ -148,20 +148,29 @@ export default function PlainHome() {
         <section className="ph-section" id="how">
           <h2>How it works</h2>
           <div className="ph-tracks">
-            {TRACKS.map((t) => (
-              <div className="ph-track" key={t.heading}>
-                <h3>{t.heading}</h3>
-                <p className="ph-track-note">{t.note}</p>
-                <ol className="ph-steps">
-                  {t.steps.map((s, i) => (
-                    <li key={s.title}>
-                      <span className="ph-n">{`0${i + 1}`}</span>
-                      <span className="ph-step-title">{s.title}</span>
-                      <span className="ph-step-body">{s.body}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+            {TRACKS.map((t, ti) => (
+              <Fragment key={t.heading}>
+                {/* Not decoration — it is the word that tells somebody these
+                    are two ways in, not two halves of one process. */}
+                {ti > 0 && (
+                  <div className="ph-or">
+                    <span>or</span>
+                  </div>
+                )}
+                <div className="ph-track">
+                  <h3>{t.heading}</h3>
+                  <p className="ph-track-note">{t.note}</p>
+                  <ol className="ph-steps">
+                    {t.steps.map((s, i) => (
+                      <li key={s.title}>
+                        <span className="ph-n">{`0${i + 1}`}</span>
+                        <span className="ph-step-title">{s.title}</span>
+                        <span className="ph-step-body">{s.body}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </Fragment>
             ))}
           </div>
         </section>
