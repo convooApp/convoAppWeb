@@ -59,7 +59,6 @@ const TRACKS = [
         body: "Convoo pairs people up inside your room, three minutes each. You just bring the people.",
       },
     ],
-    cta: { label: "Apply to host", to: "/apply-to-host" },
   },
 ];
 const REASONS = [
@@ -120,6 +119,10 @@ export default function PlainHome() {
 
       <main>
         <section className="ph-hero">
+          {/* Says what it is before the headline says what is wrong with the
+              alternatives — so "photos are easy to fake" lands on somebody who
+              already knows what they are looking at. */}
+          <span className="ph-pill">Not your regular dating app.</span>
           {/* The book cover's line. It states the whole argument for the
               product in nine words, which no description of the mechanic
               managed to do. */}
@@ -158,20 +161,6 @@ export default function PlainHome() {
                     </li>
                   ))}
                 </ol>
-                {t.cta && (
-                  <Link
-                    className="ph-track-cta"
-                    to={t.cta.to}
-                    onClick={() =>
-                      track("cta_click", {
-                        cta: "apply_to_host",
-                        placement: "home_how",
-                      })
-                    }
-                  >
-                    {t.cta.label} &rarr;
-                  </Link>
-                )}
               </div>
             ))}
           </div>
