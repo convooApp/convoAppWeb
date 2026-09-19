@@ -17,13 +17,17 @@ create table if not exists public.group_signups (
   -- copy calls it a position, and the two are allowed to differ.
   group_slug  text        not null,
   age         int         not null,
-  -- Which region's room this application belongs to: 'in', 'us' or 'other'.
+  -- Which region's room this application belongs to: 'in' or 'us'.
   -- Convoo runs IN and US as separate data regions, so this is routing
   -- information, not a demographic.
   region      text,
-  -- Which side of the room this application belongs on: 'girl' or 'boy'.
-  -- Kept separate from the position, because the position says which role
-  -- somebody would play, not who they want to be matched with.
+  -- What the applicant is, asked outright. Never inferred from group_slug:
+  -- that only holds if everyone reads "Boyfriend" as the post they would fill
+  -- rather than the person they want, and in practice they do not.
+  gender      text,
+  -- Who they want to meet. Kept separate from both the position and `gender`,
+  -- because assuming a Boyfriend applicant wants a woman is exactly the
+  -- assumption that puts the wrong people in the same room.
   seeking     text,
   -- Where to open the room. Asked for in both regions, because a room is
   -- opened in a city and 'US' or 'India' is not a place two people can meet.
@@ -47,6 +51,7 @@ alter table public.group_signups add column if not exists age int;
 alter table public.group_signups add column if not exists name text;
 alter table public.group_signups add column if not exists region text;
 alter table public.group_signups add column if not exists seeking text;
+alter table public.group_signups add column if not exists gender text;
 alter table public.group_signups add column if not exists city text;
 
 do $$

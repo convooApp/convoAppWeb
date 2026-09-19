@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 import StoryHome from "./pages/StoryHome";
+import PlainHome from "./pages/PlainHome";
 import Home from "./pages/Home";
 import Meter from "./pages/Meter";
 import Terms from "./pages/Terms";
@@ -50,7 +51,10 @@ function AppRoutes() {
       <div className="flex flex-col min-h-screen bg-[#121212]">
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<StoryHome />} />
+            <Route path="/" element={<PlainHome />} />
+            {/* The storybook homepage, kept reachable while the plain one is
+                being evaluated. */}
+            <Route path="/story" element={<StoryHome />} />
             {/* Previous scrolling landing page, kept reachable while the
                 storytelling homepage settles in. */}
             <Route path="/classic" element={<Home />} />
