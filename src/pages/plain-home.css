@@ -172,19 +172,62 @@
   letter-spacing: -0.03em;
 }
 
+/* Two ways in, side by side, so neither looks like the afterthought. */
+.ph-tracks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(24px, 4.5vw, 64px);
+}
+
+.ph-track h3 {
+  margin: 0;
+  font-size: clamp(17px, 2.2vw, 21px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.ph-track-note {
+  margin: 5px 0 20px;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.7vw, 16px);
+  color: rgba(253, 244, 248, 0.5);
+}
+
+.ph-track-cta {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--pink);
+  border-bottom: 1px solid rgba(224, 85, 155, 0.4);
+  padding-bottom: 2px;
+}
+
+.ph-track-cta:hover {
+  color: #f27ab4;
+  border-bottom-color: #f27ab4;
+}
+
 .ph-steps {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(16px, 3vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .ph-steps li {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 12px;
+  row-gap: 4px;
+}
+
+.ph-steps .ph-n {
+  grid-row: span 2;
+  padding-top: 2px;
 }
 
 .ph-n {
@@ -235,10 +278,10 @@
 }
 
 @media (max-width: 860px) {
-  .ph-steps,
+  .ph-tracks,
   .ph-cards {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 34px;
   }
 }
 

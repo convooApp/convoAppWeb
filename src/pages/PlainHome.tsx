@@ -20,24 +20,48 @@ import "./plain-home.css";
    is why this says "dating app" and the headline does not have to. */
 const TITLE = "Convoo — The dating app where you talk first";
 
-const STEPS = [
+/* Two ways in, because the product has two of them. The single joins a room;
+   the matchmaker opens one. Presenting only the first left the host side —
+   and the /apply-to-host page behind it — invisible from the homepage. */
+const TRACKS = [
   {
-    n: "01",
-    title: "Join a room",
-    body: "Rooms open at a set time and everyone joins at once, so there is nobody to wait around for.",
+    heading: "Join an event or a room",
+    note: "For anyone who wants to meet someone.",
+    steps: [
+      {
+        title: "Turn up",
+        body: "Open the app when tonight's event starts, or tap the invite to a friend's room.",
+      },
+      {
+        title: "Talk for three minutes",
+        body: "You are paired with one person and given something to start from. No photo, no profile, no bio to skim.",
+      },
+      {
+        title: "Decide together",
+        body: "Photos and answers arrive in the same moment, and it is only a match if you both said yes.",
+      },
+    ],
   },
   {
-    n: "02",
-    title: "Talk for three minutes",
-    body: "You are paired with one person and given something to start from. No photo, no profile, no bio to skim.",
-  },
-  {
-    n: "03",
-    title: "Decide together",
-    body: "At zero you each say yes or no. Photos and answers arrive in the same moment — and it is only a match if you both said yes.",
+    heading: "Host your own room",
+    note: "For anyone whose friends are the single ones.",
+    steps: [
+      {
+        title: "Pick a night",
+        body: "Tell us when you want it and we set the room up for you. Everyone joins at the same time.",
+      },
+      {
+        title: "Invite whoever you want",
+        body: "Your friends, your community, your run club. Distance does not matter inside a room.",
+      },
+      {
+        title: "We do the pairing",
+        body: "Convoo pairs people up inside your room, three minutes each. You just bring the people.",
+      },
+    ],
+    cta: { label: "Apply to host", to: "/apply-to-host" },
   },
 ];
-
 const REASONS = [
   {
     title: "No swiping",
@@ -104,13 +128,13 @@ export default function PlainHome() {
 
       <main>
         <section className="ph-hero">
-          {/* States the frustration and the flattery in one line, which the
-              old "Talk first. See photos after." did not — that described the
-              mechanic and left the reader to work out why it mattered. */}
+          {/* The book cover's line. It states the whole argument for the
+              product in nine words, which no description of the mechanic
+              managed to do. */}
           <h1>
-            You&apos;re <em>more interesting</em>
+            Photos are easy to fake.
             <br />
-            than your photos.
+            Conversations <em>aren&apos;t</em>.
           </h1>
           <p className="ph-lede">
             Convoo is a dating app built on one three-minute conversation. No
@@ -136,15 +160,37 @@ export default function PlainHome() {
 
         <section className="ph-section" id="how">
           <h2>How it works</h2>
-          <ol className="ph-steps">
-            {STEPS.map((s) => (
-              <li key={s.n}>
-                <span className="ph-n">{s.n}</span>
-                <span className="ph-step-title">{s.title}</span>
-                <span className="ph-step-body">{s.body}</span>
-              </li>
+          <div className="ph-tracks">
+            {TRACKS.map((t) => (
+              <div className="ph-track" key={t.heading}>
+                <h3>{t.heading}</h3>
+                <p className="ph-track-note">{t.note}</p>
+                <ol className="ph-steps">
+                  {t.steps.map((s, i) => (
+                    <li key={s.title}>
+                      <span className="ph-n">{`0${i + 1}`}</span>
+                      <span className="ph-step-title">{s.title}</span>
+                      <span className="ph-step-body">{s.body}</span>
+                    </li>
+                  ))}
+                </ol>
+                {t.cta && (
+                  <Link
+                    className="ph-track-cta"
+                    to={t.cta.to}
+                    onClick={() =>
+                      track("cta_click", {
+                        cta: "apply_to_host",
+                        placement: "home_how",
+                      })
+                    }
+                  >
+                    {t.cta.label} &rarr;
+                  </Link>
+                )}
+              </div>
             ))}
-          </ol>
+          </div>
         </section>
 
         <section className="ph-section">
