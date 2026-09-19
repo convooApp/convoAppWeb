@@ -16,7 +16,9 @@ import "./plain-home.css";
    Nothing here is clever on purpose. The book still lives at /story.
    ------------------------------------------------------------------ */
 
-const TITLE = "Convoo — Talk first. See photos after.";
+/* The hero carries the feeling; the tab title carries the search terms, which
+   is why this says "dating app" and the headline does not have to. */
+const TITLE = "Convoo — The dating app where you talk first";
 
 const STEPS = [
   {
@@ -102,15 +104,18 @@ export default function PlainHome() {
 
       <main>
         <section className="ph-hero">
+          {/* States the frustration and the flattery in one line, which the
+              old "Talk first. See photos after." did not — that described the
+              mechanic and left the reader to work out why it mattered. */}
           <h1>
-            Talk first.
+            You&apos;re <em>more interesting</em>
             <br />
-            See photos <em>after</em>.
+            than your photos.
           </h1>
           <p className="ph-lede">
-            Convoo is a dating app built around one three-minute conversation.
-            No swiping and no profiles to browse — you meet someone by actually
-            talking to them.
+            Convoo is a dating app built on one three-minute conversation. No
+            swiping, no profiles to scroll — you both decide after you have
+            actually talked.
           </p>
           <div className="ph-actions">
             <Link
