@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { StoreLinks } from "../components/StoreLinks";
-import { track } from "../lib/analytics";
 import "./plain-home.css";
 
 /* ------------------------------------------------------------------
@@ -191,26 +190,6 @@ export default function PlainHome() {
           </div>
         </section>
 
-        {/* The drive is the one thing currently bringing people in, so the
-            homepage should hand people to it rather than compete with it. */}
-        <section className="ph-band">
-          <div>
-            <h2>Rooms are forming now</h2>
-            <p>
-              We are putting the next rooms together in India. Tell us who you
-              are and we will send you a slot.
-            </p>
-          </div>
-          <Link
-            className="ph-cta"
-            to="/apply"
-            onClick={() =>
-              track("cta_click", { cta: "apply", placement: "home_band" })
-            }
-          >
-            Apply for a room
-          </Link>
-        </section>
 
         <section className="ph-section" id="faq">
           <h2>Questions</h2>
